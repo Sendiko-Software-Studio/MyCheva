@@ -1,4 +1,4 @@
-package com.mycheva.app.ui.theme
+package com.mycheva.app.core.ui.theme
 
 import androidx.compose.ui.graphics.Color
 
