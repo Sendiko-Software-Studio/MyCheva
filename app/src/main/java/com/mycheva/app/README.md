@@ -16,7 +16,7 @@ Untuk setiap fitur, sudah tersedia package yang tertera. sehingga penempatan fil
 
 ## Branching Git
 
-Setiap fitur akan memiliki branch mereka masing-masing, sehingga dapat memaksimalkan efektifitas progess aplikasi. Setiap branch akan dikerjakan oleh satu orang, berfokus kepada 1 fitur. Mohon informasikan kepada developer lain jika anda mengubah file diluar package dari fitur yang anda kerjakan, Untuk meminimalisir terjadinya Conflict.
+Setiap fitur akan memiliki branch mereka masing-masing, sehingga dapat memaksimalkan efektifitas progress aplikasi. Setiap branch akan dikerjakan oleh satu orang, berfokus kepada 1 fitur. Mohon informasikan kepada developer lain jika anda mengubah file diluar package dari fitur yang anda kerjakan, Untuk meminimalisir terjadinya Conflict.
 
 Jika fitur yang anda kerjakan dirasa cukup, buatlah Pull Request dari branch kalian ke branch main, dan mention ```@Sendiko``` sebagai reviewer untuk pengecekan Conflict. Setelah Pull Request di Merge, maka anda bisa mengerjakan fitur yang lainnya di branch yang telah ditentukan.
 
