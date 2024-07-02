@@ -8,6 +8,8 @@ Package announcement ini diisi oleh file file inti, atau class yang digunakan di
 \core
     \room
     \retrofit
+    \ui
+    MainActivity.kt
 ```
 
 Contoh dari penggunaan package core ini adalah penyimpanan file inti seperti Room Database, Retrofit, dan lainnya.
