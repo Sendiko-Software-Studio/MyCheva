@@ -16,7 +16,9 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
-            MyChevaTheme {
+            MyChevaTheme(
+                darkTheme = false
+            ) {
                 val navController = rememberNavController()
                 NavHost(navController = navController, startDestination = SplashScreen.name){
                     /* Tambahkan Screen Composable disini */
