@@ -10,10 +10,11 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.mycheva.app.core.navigation.MainNavGraphContainer
+import com.mycheva.app.core.navigation.NavigationViewModel
 import com.mycheva.app.core.navigation.Screens
 import com.mycheva.app.core.navigation.Screens.SplashScreen
 import com.mycheva.app.core.ui.theme.MyChevaTheme
-import com.mycheva.app.dashboard.presentation.DashboardScreen
 import com.mycheva.app.login.presentation.LoginScreen
 import com.mycheva.app.login.presentation.LoginScreenViewModel
 import com.mycheva.app.splashscreen.presentation.SplashScreen
@@ -46,13 +47,21 @@ class MainActivity : ComponentActivity() {
                         LoginScreen(
                             state = state,
                             onEvent = viewModel::onEvent,
-                            onNavigate = { navController.navigate(Screens.DashboardScreen.name) }
+                            onNavigate = { navController.navigate(Screens.Container.name) }
                         )
                     }
                     composable(
-                        route = Screens.DashboardScreen.name
+                        route = Screens.Container.name
                     ) {
-                        DashboardScreen()
+                        val viewModel = viewModel<NavigationViewModel>()
+                        val state by viewModel.state.collectAsStateWithLifecycle()
+                        MainNavGraphContainer(
+                            state = state,
+                            onNavigate = { index, route ->
+                                viewModel.onNavigate(index)
+                                navController.navigate(route)
+                            }
+                        )
                     }
                 }
             }
