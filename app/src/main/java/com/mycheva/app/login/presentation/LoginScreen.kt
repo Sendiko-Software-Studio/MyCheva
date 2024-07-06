@@ -10,8 +10,13 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.rounded.Visibility
+import androidx.compose.material.icons.rounded.VisibilityOff
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
@@ -32,7 +37,10 @@ import androidx.compose.ui.res.painterResource as painterResource1
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
-fun LoginScreen() {
+fun LoginScreen(
+    state: LoginScreenState,
+    onEvent: (LoginScreenEvent) -> Unit
+) {
     ContentBoxWithNotification(message = "") {
         Scaffold {
             Column(
@@ -66,8 +74,8 @@ fun LoginScreen() {
                 TextField(
                     modifier = Modifier
                         .fillMaxWidth(),
-                    value = "",
-                    onValueChange = { },
+                    value = state.usernameText,
+                    onValueChange = { onEvent(LoginScreenEvent.OnUsernameChanged(it)) },
                     colors = TextFieldDefaults.colors(
                         unfocusedIndicatorColor = Color.Black,
                         focusedIndicatorColor = Color.Black,
@@ -94,10 +102,10 @@ fun LoginScreen() {
                     textAlign = TextAlign.Start
                 )
                 TextField(
-                    value = "",
-                    onValueChange = { },
                     modifier = Modifier
                         .fillMaxWidth(),
+                    value = state.passwordText,
+                    onValueChange = { onEvent(LoginScreenEvent.OnPasswordChanged(it)) },
                     colors = TextFieldDefaults.colors(
                         unfocusedIndicatorColor = Color.Black,
                         focusedIndicatorColor = Color.Black,
@@ -106,12 +114,25 @@ fun LoginScreen() {
                     ),
                     leadingIcon = {
                         Image(
-                            painter = painterResource1(id = R.drawable.password_logo),
-                            contentDescription = "logo password",
                             modifier = Modifier
                                 .size(30.dp)
                                 .padding(horizontal = 4.dp)
-                                .padding(bottom = 8.dp)
+                                .padding(bottom = 8.dp),
+                            painter = painterResource1(id = R.drawable.password_logo),
+                            contentDescription = "logo password"
+                        )
+                    },
+                    trailingIcon = {
+                        val icon = if (state.isPasswordVisible) Icons.Rounded.Visibility
+                        else Icons.Rounded.VisibilityOff
+                        IconButton(
+                            onClick = { onEvent(LoginScreenEvent.OnPasswordVisibilityToggle(!state.isPasswordVisible)) },
+                            content = {
+                                Icon(
+                                    imageVector = icon,
+                                    contentDescription = "password"
+                                )
+                            }
                         )
                     }
                 )
@@ -144,5 +165,8 @@ fun LoginScreen() {
 @Preview
 @Composable
 private fun LoginScreenPrev() {
-    LoginScreen()
+    LoginScreen(
+        state = LoginScreenState(),
+        onEvent = { }
+    )
 }
