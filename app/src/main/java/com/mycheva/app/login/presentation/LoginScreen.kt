@@ -26,6 +26,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.PasswordVisualTransformation
+import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -39,7 +41,8 @@ import androidx.compose.ui.res.painterResource as painterResource1
 @Composable
 fun LoginScreen(
     state: LoginScreenState,
-    onEvent: (LoginScreenEvent) -> Unit
+    onEvent: (LoginScreenEvent) -> Unit,
+    onNavigate: () -> Unit
 ) {
     ContentBoxWithNotification(message = "") {
         Scaffold {
@@ -134,7 +137,8 @@ fun LoginScreen(
                                 )
                             }
                         )
-                    }
+                    },
+                    visualTransformation = if (state.isPasswordVisible) VisualTransformation.None else PasswordVisualTransformation()
                 )
                 Text(
                     text = "Lupa Password?",
@@ -152,7 +156,7 @@ fun LoginScreen(
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(vertical = 30.dp),
-                    onClick = { },
+                    onClick = { onNavigate() },
                     content = {
                         Text(text = "Login")
                     }
@@ -167,6 +171,7 @@ fun LoginScreen(
 private fun LoginScreenPrev() {
     LoginScreen(
         state = LoginScreenState(),
-        onEvent = { }
+        onEvent = { },
+        onNavigate = { }
     )
 }
