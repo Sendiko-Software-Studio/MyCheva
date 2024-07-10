@@ -14,18 +14,12 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.rounded.Announcement
 import androidx.compose.material.icons.filled.Person
-import androidx.compose.material.icons.rounded.CalendarMonth
-import androidx.compose.material.icons.rounded.Dashboard
-import androidx.compose.material.icons.rounded.Forum
 import androidx.compose.material.icons.rounded.Map
 import androidx.compose.material.icons.rounded.QrCode
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.IconButtonDefaults
-import androidx.compose.material3.NavigationBar
-import androidx.compose.material3.NavigationBarItem
-import androidx.compose.material3.NavigationBarItemDefaults
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
@@ -41,18 +35,14 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.mycheva.app.R
-import com.mycheva.app.core.ui.theme.Primary100
 import com.mycheva.app.core.ui.theme.Primary500
-import com.mycheva.app.core.ui.theme.Primary950
 import com.mycheva.app.core.ui.theme.poppinsFamily
 import com.mycheva.app.dashboard.presentation.component.MeetingCard
 import com.mycheva.app.dashboard.presentation.component.MenuCard
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun DashboardScreen(
-    modifier: Modifier = Modifier
-) {
+fun DashboardScreen() {
     val topAppBarScrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior()
     Scaffold(
         topBar = {
@@ -98,54 +88,6 @@ fun DashboardScreen(
                 }
             )
         },
-        bottomBar = {
-            NavigationBar(
-                containerColor = Primary500
-            ) {
-                NavigationBarItem(
-                    selected = true,
-                    onClick = { /*TODO*/ },
-                    icon = {
-                        Icon(
-                            imageVector = Icons.Rounded.Dashboard,
-                            contentDescription = "Dashboard"
-                        )
-                    },
-                    colors = NavigationBarItemDefaults.colors(
-                        indicatorColor = Primary100,
-                        unselectedIconColor = Primary950
-                    )
-                )
-                NavigationBarItem(
-                    selected = false,
-                    onClick = { /*TODO*/ },
-                    icon = {
-                        Icon(
-                            imageVector = Icons.Rounded.CalendarMonth,
-                            contentDescription = "Schedule"
-                        )
-                    },
-                    colors = NavigationBarItemDefaults.colors(
-                        indicatorColor = Primary100,
-                        unselectedIconColor = Primary950
-                    )
-                )
-                NavigationBarItem(
-                    selected = false,
-                    onClick = { /*TODO*/ },
-                    icon = {
-                        Icon(
-                            imageVector = Icons.Rounded.Forum,
-                            contentDescription = "Forum"
-                        )
-                    },
-                    colors = NavigationBarItemDefaults.colors(
-                        indicatorColor = Primary100,
-                        unselectedIconColor = Primary950
-                    )
-                )
-            }
-        }
     ) {
         LazyColumn(
             modifier = Modifier
