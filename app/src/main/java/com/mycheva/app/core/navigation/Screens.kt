@@ -6,5 +6,6 @@ package com.mycheva.app.core.navigation
 *
 * */
 enum class Screens {
-    SplashScreen
+    SplashScreen,
+    ProfilePage
 }

@@ -9,7 +9,11 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.mycheva.app.core.navigation.Screens.SplashScreen
 import com.mycheva.app.core.ui.theme.MyChevaTheme
+import com.mycheva.app.profile.ProfileScreen
 import com.mycheva.app.splashscreen.presentation.SplashScreen
+import com.mycheva.app.profile.ProfileScreen
+import com.mycheva.app.profile.UbahPasswordScreen
+import com.mycheva.app.profile.UbahUsernameScreen
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -18,17 +22,8 @@ class MainActivity : ComponentActivity() {
         setContent {
             MyChevaTheme {
                 val navController = rememberNavController()
-                NavHost(navController = navController, startDestination = SplashScreen.name){
-                    /* Tambahkan Screen Composable disini */
-                    composable(
-                        route = SplashScreen.name
-                    ) {
-                        SplashScreen(
-                            onNavigate = { }
-                        )
-                    }
+                ProfileScreen()
                 }
             }
         }
     }
-}
