@@ -9,5 +9,6 @@ enum class Screens {
     SplashScreen,
     LoginScreen,
     Container,
-    DashboardScreen
+    DashboardScreen,
+    ProfileScreen
 }
