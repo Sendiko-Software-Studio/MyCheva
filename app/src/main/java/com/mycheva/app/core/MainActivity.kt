@@ -4,20 +4,9 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
-import androidx.compose.runtime.getValue
-import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import androidx.lifecycle.viewmodel.compose.viewModel
-import androidx.navigation.compose.NavHost
-import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.mycheva.app.core.navigation.MainNavGraphContainer
-import com.mycheva.app.core.navigation.NavigationViewModel
-import com.mycheva.app.core.navigation.Screens
-import com.mycheva.app.core.navigation.Screens.SplashScreen
+import com.mycheva.app.core.navigation.RootNavGraph
 import com.mycheva.app.core.ui.theme.MyChevaTheme
-import com.mycheva.app.login.presentation.LoginScreen
-import com.mycheva.app.login.presentation.LoginScreenViewModel
-import com.mycheva.app.splashscreen.presentation.SplashScreen
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -28,42 +17,7 @@ class MainActivity : ComponentActivity() {
                 darkTheme = false
             ) {
                 val navController = rememberNavController()
-                NavHost(navController = navController, startDestination = SplashScreen.name){
-                    /* Tambahkan Screen Composable disini */
-                    composable(
-                        route = SplashScreen.name
-                    ) {
-                        SplashScreen(
-                            onNavigate = {
-                                navController.navigate(Screens.LoginScreen.name)
-                            }
-                        )
-                    }
-                    composable(
-                        route = Screens.LoginScreen.name
-                    ) {
-                        val viewModel = viewModel<LoginScreenViewModel>()
-                        val state by viewModel.state.collectAsStateWithLifecycle()
-                        LoginScreen(
-                            state = state,
-                            onEvent = viewModel::onEvent,
-                            onNavigate = { navController.navigate(Screens.Container.name) }
-                        )
-                    }
-                    composable(
-                        route = Screens.Container.name
-                    ) {
-                        val viewModel = viewModel<NavigationViewModel>()
-                        val state by viewModel.state.collectAsStateWithLifecycle()
-                        MainNavGraphContainer(
-                            state = state,
-                            onNavigate = { index, route ->
-                                viewModel.onNavigate(index)
-                                navController.navigate(route)
-                            }
-                        )
-                    }
-                }
+                RootNavGraph(navController = navController)
             }
         }
     }
