@@ -1,0 +1,51 @@
+package com.mycheva.app.core.navigation
+
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.ui.Modifier
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.navigation
+import com.mycheva.app.login.presentation.LoginScreen
+import com.mycheva.app.login.presentation.LoginScreenViewModel
+import com.mycheva.app.splashscreen.presentation.SplashScreen
+
+@Composable
+fun RootNavGraph(
+    modifier: Modifier = Modifier,
+    navController: NavHostController
+) {
+    NavHost(
+        navController = navController,
+        startDestination = AuthGraph
+    ) {
+        navigation<AuthGraph>(
+            startDestination = SplashScreen
+        ) {
+            composable<SplashScreen> {
+                SplashScreen(
+                    onNavigate = {
+                        navController.navigate(LoginScreen)
+                    }
+                )
+            }
+            composable<LoginScreen> {
+                val viewModel = viewModel<LoginScreenViewModel>()
+                val state by viewModel.state.collectAsStateWithLifecycle()
+                LoginScreen(
+                    state = state,
+                    onEvent = viewModel::onEvent,
+                    onNavigate = {
+                        navController.navigate(MainGraph)
+                    }
+                )
+            }
+        }
+        composable<MainGraph> {
+            MainNavGraphContainer()
+        }
+    }
+}
