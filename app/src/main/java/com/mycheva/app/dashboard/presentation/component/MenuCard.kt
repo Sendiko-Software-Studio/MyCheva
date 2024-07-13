@@ -18,9 +18,10 @@ fun MenuCard(
     modifier: Modifier = Modifier,
     icon: ImageVector,
     label: String,
+    onClick: () -> Unit
 ) {
     OutlinedCard(
-        onClick = { /*TODO*/ },
+        onClick = onClick,
         modifier = modifier
     ) {
         Column(
