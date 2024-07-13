@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -35,6 +36,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.mycheva.app.R
+import com.mycheva.app.core.navigation.AttendanceScreen
 import com.mycheva.app.core.ui.theme.Primary500
 import com.mycheva.app.core.ui.theme.poppinsFamily
 import com.mycheva.app.dashboard.presentation.component.MeetingCard
@@ -42,9 +44,12 @@ import com.mycheva.app.dashboard.presentation.component.MenuCard
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun DashboardScreen() {
+fun DashboardScreen(
+    onNavigate: (route: Any) -> Unit
+) {
     val topAppBarScrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior()
     Scaffold(
+        modifier = Modifier.fillMaxSize(),
         topBar = {
             TopAppBar(
                 scrollBehavior = topAppBarScrollBehavior,
@@ -142,12 +147,16 @@ fun DashboardScreen() {
                     MenuCard(
                         modifier = Modifier.weight(1f),
                         icon = Icons.Rounded.QrCode,
-                        label = "Presensi QR"
+                        label = "Presensi QR",
+                        onClick = {
+                            onNavigate(AttendanceScreen)
+                        }
                     )
                     MenuCard(
                         modifier = Modifier.weight(1f),
                         icon = Icons.Rounded.Map,
-                        label = "Lihat Roadmap"
+                        label = "Lihat Roadmap",
+                        onClick = { }
                     )
                 }
             }
@@ -158,5 +167,9 @@ fun DashboardScreen() {
 @Preview
 @Composable
 private fun DashboardScreenPrev() {
-    DashboardScreen()
+    DashboardScreen(
+        onNavigate = {
+
+        }
+    )
 }
