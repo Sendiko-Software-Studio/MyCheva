@@ -14,13 +14,10 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.rounded.Announcement
-import androidx.compose.material.icons.filled.Person
+import androidx.compose.material.icons.rounded.Forum
 import androidx.compose.material.icons.rounded.Map
 import androidx.compose.material.icons.rounded.QrCode
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
-import androidx.compose.material3.IconButtonDefaults
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
@@ -28,7 +25,6 @@ import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
@@ -37,7 +33,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.mycheva.app.R
 import com.mycheva.app.core.navigation.AttendanceScreen
-import com.mycheva.app.core.ui.theme.Primary500
 import com.mycheva.app.core.ui.theme.poppinsFamily
 import com.mycheva.app.dashboard.presentation.component.MeetingCard
 import com.mycheva.app.dashboard.presentation.component.MenuCard
@@ -70,27 +65,6 @@ fun DashboardScreen(
                         )
                     }
                 },
-                actions = {
-                    IconButton(onClick = { /*TODO*/ }) {
-                        Icon(
-                            imageVector = Icons.AutoMirrored.Rounded.Announcement,
-                            contentDescription = "Announcement",
-                            tint = Color.Black
-                        )
-                    }
-                    IconButton(
-                        onClick = { /*TODO*/ },
-                        colors = IconButtonDefaults.filledIconButtonColors(
-                            containerColor = Primary500,
-                            contentColor = Color.White
-                        )
-                    ) {
-                        Icon(
-                            imageVector = Icons.Default.Person,
-                            contentDescription = "Profile"
-                        )
-                    }
-                }
             )
         },
     ) {
@@ -157,6 +131,28 @@ fun DashboardScreen(
                         icon = Icons.Rounded.Map,
                         label = "Lihat Roadmap",
                         onClick = { }
+                    )
+                }
+                Spacer(modifier = Modifier.height(8.dp))
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.spacedBy(8.dp)
+                ) {
+                    MenuCard(
+                        modifier = Modifier.weight(1f),
+                        icon = Icons.AutoMirrored.Rounded.Announcement,
+                        label = "Announcement",
+                        onClick = {
+//                            onNavigate(AttendanceScreen)
+                        }
+                    )
+                    MenuCard(
+                        modifier = Modifier.weight(1f),
+                        icon = Icons.Rounded.Forum,
+                        label = "Forum",
+                        onClick = {
+//                            onNavigate(AttendanceScreen)
+                        }
                     )
                 }
             }
