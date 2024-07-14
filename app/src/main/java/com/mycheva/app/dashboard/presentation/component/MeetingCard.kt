@@ -45,11 +45,6 @@ fun MeetingCard(modifier: Modifier = Modifier) {
                 horizontalArrangement = Arrangement.SpaceBetween,
                 modifier = Modifier.fillMaxWidth()
             ) {
-                Text(
-                    text = "Minggu 1",
-                    fontFamily = poppinsFamily,
-                    fontWeight = FontWeight.Bold,
-                )
                 Row(
                     verticalAlignment = Alignment.CenterVertically,
                     horizontalArrangement = Arrangement.spacedBy(4.dp)
@@ -71,6 +66,11 @@ fun MeetingCard(modifier: Modifier = Modifier) {
                         )
                     }
                 }
+                Text(
+                    text = "Minggu 1",
+                    fontFamily = poppinsFamily,
+                    fontWeight = FontWeight.Bold,
+                )
             }
             Spacer(modifier = Modifier.height(4.dp))
             Text(
