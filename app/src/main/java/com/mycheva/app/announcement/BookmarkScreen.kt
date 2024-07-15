@@ -86,7 +86,7 @@ fun BookmarkScreen() {
                             //NAMA
                             Text(
                                 text = "Daffa Fadilah",
-                                fontSize = 28.sp,
+                                fontSize = 23.sp,
                                 fontWeight = FontWeight.Bold,
                                 color = Color.Black,
                                 modifier = Modifier
