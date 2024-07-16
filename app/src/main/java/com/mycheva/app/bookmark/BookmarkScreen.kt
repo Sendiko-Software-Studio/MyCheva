@@ -1,9 +1,7 @@
-package com.mycheva.app.announcement
+package com.mycheva.app.bookmark
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -86,7 +84,7 @@ fun BookmarkScreen() {
                             //NAMA
                             Text(
                                 text = "Daffa Fadilah",
-                                fontSize = 28.sp,
+                                fontSize = 23.sp,
                                 fontWeight = FontWeight.Bold,
                                 color = Color.Black,
                                 modifier = Modifier
