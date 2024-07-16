@@ -1,4 +1,4 @@
-package com.mycheva.app.login
+package com.mycheva.app.reset_password
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
