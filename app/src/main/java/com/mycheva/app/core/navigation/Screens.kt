@@ -35,3 +35,9 @@ data object ProfileScreen
 
 @Serializable
 data object ScheduleScreen
+
+@Serializable
+data object AnnouncementScreen
+
+@Serializable
+data object BookmarkScreen

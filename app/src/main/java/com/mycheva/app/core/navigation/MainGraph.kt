@@ -7,7 +7,9 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.navigation
+import com.mycheva.app.announcement.AnnouncementScreen
 import com.mycheva.app.attendance.presentation.AttendanceScreen
+import com.mycheva.app.bookmark.BookmarkScreen
 import com.mycheva.app.dashboard.presentation.DashboardScreen
 import com.mycheva.app.profile.presentation.ProfileScreen
 
@@ -40,6 +42,12 @@ fun MainGraph(
                         navController.navigateUp()
                     }
                 )
+            }
+            composable<AnnouncementScreen> {
+                AnnouncementScreen()
+            }
+            composable<BookmarkScreen> {
+                BookmarkScreen()
             }
         }
     }
