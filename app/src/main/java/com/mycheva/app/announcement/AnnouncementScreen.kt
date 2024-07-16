@@ -64,7 +64,6 @@ fun AnnouncementScreen() {
                 )
             }
         },
-
         content = { paddingValues ->
             Column(
                 modifier = Modifier
