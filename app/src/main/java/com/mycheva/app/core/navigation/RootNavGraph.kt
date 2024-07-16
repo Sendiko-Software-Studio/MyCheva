@@ -11,6 +11,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.navigation
 import com.mycheva.app.login.presentation.LoginScreen
 import com.mycheva.app.login.presentation.LoginScreenViewModel
+import com.mycheva.app.reset_password.ResetPasswordScreen
 import com.mycheva.app.splashscreen.presentation.SplashScreen
 
 @Composable
@@ -42,6 +43,9 @@ fun RootNavGraph(
                         navController.navigate(MainGraph)
                     }
                 )
+            }
+            composable<ResetPasswordScreen> {
+                ResetPasswordScreen()
             }
         }
         composable<MainGraph> {
