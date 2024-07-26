@@ -70,6 +70,7 @@ dependencies {
     implementation(libs.com.google.mlkit.barcode.scanning)
     implementation(libs.com.google.accompanist.permission)
     implementation(libs.kotlinx.serialization.json)
+    implementation(libs.androidx.datastore.preferences)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
