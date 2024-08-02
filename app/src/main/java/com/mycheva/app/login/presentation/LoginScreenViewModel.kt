@@ -1,11 +1,18 @@
 package com.mycheva.app.login.presentation
 
 import androidx.lifecycle.ViewModel
+import com.mycheva.app.login.domain.LoginUseCase
+import dagger.hilt.android.HiltAndroidApp
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
+import javax.inject.Inject
 
-class LoginScreenViewModel: ViewModel() {
+@HiltViewModel
+class LoginScreenViewModel @Inject constructor(
+    private val loginUseCase: LoginUseCase
+) : ViewModel() {
 
     private val _state = MutableStateFlow(LoginScreenState())
     val state = _state.asStateFlow()
