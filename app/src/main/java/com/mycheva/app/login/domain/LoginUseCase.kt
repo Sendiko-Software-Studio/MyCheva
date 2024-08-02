@@ -10,4 +10,8 @@ class LoginUseCase @Inject constructor(
         loginRepository.login(username, password)
     }
 
+    fun verifyForm(username: String, password: String): Boolean {
+        return loginRepository.verifyForm(username, password)
+    }
+
 }
