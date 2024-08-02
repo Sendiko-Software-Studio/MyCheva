@@ -1,11 +1,21 @@
 package com.mycheva.app.login.presentation
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import com.mycheva.app.login.domain.LoginUseCase
+import dagger.hilt.android.HiltAndroidApp
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class LoginScreenViewModel: ViewModel() {
+@HiltViewModel
+class LoginScreenViewModel @Inject constructor(
+    private val loginUseCase: LoginUseCase
+) : ViewModel() {
 
     private val _state = MutableStateFlow(LoginScreenState())
     val state = _state.asStateFlow()
@@ -15,6 +25,21 @@ class LoginScreenViewModel: ViewModel() {
             is LoginScreenEvent.OnUsernameChanged -> onUsernameChanged(event.username)
             is LoginScreenEvent.OnPasswordChanged -> onPasswordChanged(event.password)
             is LoginScreenEvent.OnPasswordVisibilityToggle -> onPasswordVisibilityChanged(event.isVisible)
+            LoginScreenEvent.OnLogin -> {
+                val verifyForm = loginUseCase.verifyForm(
+                    username = state.value.usernameText,
+                    password = state.value.passwordText
+                )
+                if (verifyForm) {
+                    viewModelScope.launch {
+                        loginUseCase(
+                            username = state.value.usernameText,
+                            password = state.value.passwordText
+                        )
+                        _state.update { it.copy(isSignInSuccessful = true) }
+                    }
+                }
+            }
         }
     }
 

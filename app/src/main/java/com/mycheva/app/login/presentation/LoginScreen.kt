@@ -22,6 +22,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -44,6 +45,12 @@ fun LoginScreen(
     onEvent: (LoginScreenEvent) -> Unit,
     onNavigate: () -> Unit
 ) {
+
+    LaunchedEffect(key1 = state.isSignInSuccessful) {
+        if (state.isSignInSuccessful)
+            onNavigate()
+    }
+
     ContentBoxWithNotification(message = "") {
         Scaffold {
             Column(
@@ -156,7 +163,7 @@ fun LoginScreen(
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(vertical = 30.dp),
-                    onClick = { onNavigate() },
+                    onClick = { onEvent(LoginScreenEvent.OnLogin) },
                     content = {
                         Text(text = "Login")
                     }
