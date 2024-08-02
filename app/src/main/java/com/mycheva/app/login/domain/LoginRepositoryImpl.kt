@@ -11,4 +11,11 @@ class LoginRepositoryImpl @Inject constructor(
         appPreferences.saveToken("ABCD")
         return true
     }
+
+    override fun verifyForm(username: String, password: String): Boolean {
+        return when {
+            username.isNotBlank() && password.isNotBlank() -> true
+            else -> false
+        }
+    }
 }
