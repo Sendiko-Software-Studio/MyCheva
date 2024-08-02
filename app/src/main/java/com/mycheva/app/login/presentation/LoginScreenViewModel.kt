@@ -1,5 +1,6 @@
 package com.mycheva.app.login.presentation
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.mycheva.app.login.domain.LoginUseCase
@@ -35,6 +36,7 @@ class LoginScreenViewModel @Inject constructor(
                             username = state.value.usernameText,
                             password = state.value.passwordText
                         )
+                        _state.update { it.copy(isSignInSuccessful = true) }
                     }
                 }
             }
