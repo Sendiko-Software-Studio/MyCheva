@@ -3,6 +3,7 @@ package com.mycheva.app.core.navigation
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
@@ -34,7 +35,7 @@ fun RootNavGraph(
                 )
             }
             composable<LoginScreen> {
-                val viewModel = viewModel<LoginScreenViewModel>()
+                val viewModel = hiltViewModel<LoginScreenViewModel>()
                 val state by viewModel.state.collectAsStateWithLifecycle()
                 LoginScreen(
                     state = state,
