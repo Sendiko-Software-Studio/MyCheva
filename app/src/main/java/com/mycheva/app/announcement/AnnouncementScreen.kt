@@ -2,6 +2,7 @@ package com.mycheva.app.announcement
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.content.contentReceiver
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -9,9 +10,18 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.rounded.ArrowBack
+import androidx.compose.material.icons.rounded.Bookmark
+import androidx.compose.material3.CenterAlignedTopAppBar
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -22,193 +32,59 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.mycheva.app.R
+import com.mycheva.app.announcement.component.AnnouncementCard
+import com.mycheva.app.core.ui.theme.Primary50
+import com.mycheva.app.core.ui.theme.Primary500
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun AnnouncementScreen() {
-    //HEADER
+fun AnnouncementScreen(
+    state: AnnouncementScreenState,
+    onEvent: (AnnouncementScreenEvent) -> Unit,
+) {
     Scaffold(
         topBar = {
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .background(Color(0xFFFFA500))
-                    .padding(horizontal = 8.dp, vertical = 8.dp)
-            ) {
-                //BACK BUTTON
-                Icon(
-                    painter = painterResource(id = R.drawable.back_logo),
-                    contentDescription = "Logo back",
-                    tint = Color.Unspecified,
-                    modifier = Modifier
-                        .size(40.dp)
-                )
-
-                //ANNOUNCEMENT TEXT
-                Text(
-                    text = "Announcement",
-                    fontSize = 23.sp,
-                    fontWeight = FontWeight.SemiBold,
-                    color = Color.White,
-                    modifier = Modifier
-                        .padding(horizontal = 80.dp, vertical = 5.dp)
-                )
-
-                //BOOKMARK BUTTON
-                Icon(
-                    painter = painterResource(id = R.drawable.bookmark_logo),
-                    contentDescription = "Logo bookmark",
-                    tint = Color.Unspecified,
-                    modifier = Modifier
-                        .size(43.dp)
-                        .padding(horizontal = 8.dp)
-                )
-            }
+            CenterAlignedTopAppBar(
+                title = {
+                    Text(text = "Announcement")
+                },
+                colors = TopAppBarDefaults.centerAlignedTopAppBarColors(
+                    containerColor = Primary500,
+                    navigationIconContentColor = Primary50,
+                    actionIconContentColor = Primary50,
+                    titleContentColor = Primary50
+                ),
+                navigationIcon = {
+                    IconButton(onClick = { /*TODO*/ }) {
+                        Icon(
+                            imageVector = Icons.AutoMirrored.Rounded.ArrowBack,
+                            contentDescription = "arrow back"
+                        )
+                    }
+                },
+                actions = {
+                    IconButton(onClick = { /*TODO*/ }) {
+                        Icon(
+                            imageVector = Icons.Rounded.Bookmark,
+                            contentDescription = "bookmark"
+                        )
+                    }
+                }
+            )
         },
         content = { paddingValues ->
-            Column(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .padding(paddingValues)
+            LazyColumn(
+                contentPadding = paddingValues
             ) {
-                Spacer(modifier = Modifier.size(15.dp))
+                items(state.announcements) { announcement ->
+                    AnnouncementCard(
+                        profileUrl = announcement.profileUrl,
+                        name = announcement.name,
+                        timeStamp = announcement.timeStamp,
+                        content = announcement.content,
+                        onAddBookMark = {
 
-                //POSTINGAN 1
-                Row(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .background(Color.White)
-                        .padding(8.dp)
-                ) {
-                    //PROFILE
-                    Icon(
-                        painter = painterResource(id = R.drawable.profile_logo),
-                        contentDescription = "Logo profile",
-                        tint = Color.Unspecified,
-                        modifier = Modifier
-                            .size(40.dp),
-                    )
-
-                    Column {
-                        //NAMA
-                        Text(
-                            text = "Daffa Fadilah",
-                            fontSize = 28.sp,
-                            fontWeight = FontWeight.Bold,
-                            color = Color.Black,
-                            modifier = Modifier
-                                .padding(horizontal = 10.dp)
-                        )
-
-                        //JAM
-                        Text(
-                            text = "3 Jam Lalu",
-                            fontSize = 15.sp,
-                            fontWeight = FontWeight.SemiBold,
-                            color = Color.Gray,
-                            modifier = Modifier
-                                .padding(horizontal = 10.dp)
-                        )
-                    }
-                }
-
-                Column(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(horizontal = 8.dp, vertical = 4.dp),
-                    horizontalAlignment = Alignment.End
-                ) {
-                    //DESKRIPSI
-                    Text(
-                        text = "Guyss mau reminder ntar malam ada presentasi progres lagi ya, tolong siapin progress kalian.. Semangat",
-                        fontSize = 18.sp,
-                        fontWeight = FontWeight.Normal,
-                        color = Color.Black,
-                        modifier = Modifier
-                            .padding(horizontal = 5.dp)
-                    )
-
-                    //BOOKMARK LOGO
-                    Icon(
-                        painter = painterResource(id = R.drawable.nonbookmark_logo),
-                        contentDescription = "Logo Non Bookmark",
-                        tint = Color.Unspecified,
-                        modifier = Modifier
-                            .size(30.dp)
-                    )
-                }
-
-                //POSTINGAN 2
-                Row(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(8.dp)
-                ) {
-                    //PROFILE
-                    Icon(
-                        painter = painterResource(id = R.drawable.profile_logo),
-                        contentDescription = "Logo profile",
-                        tint = Color.Unspecified,
-                        modifier = Modifier
-                            .size(40.dp),
-                    )
-
-                    Column {
-                        //NAMA
-                        Text(
-                            text = "Daffa Fadilah",
-                            fontSize = 28.sp,
-                            fontWeight = FontWeight.Bold,
-                            color = Color.Black,
-                            modifier = Modifier
-                                .padding(horizontal = 10.dp)
-                        )
-
-                        //JAM
-                        Text(
-                            text = "7 hari yang Lalu",
-                            fontSize = 15.sp,
-                            fontWeight = FontWeight.SemiBold,
-                            color = Color.Gray,
-                            modifier = Modifier
-                                .padding(horizontal = 10.dp)
-                        )
-                    }
-                }
-
-                Image(
-                    painter = painterResource(id = R.drawable.postingan),
-                    contentDescription = "Ilustrasi postingan",
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .size(200.dp)
-                        .padding(vertical = 8.dp)
-                        .align(Alignment.CenterHorizontally)
-                )
-
-                Column(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(horizontal = 8.dp, vertical = 4.dp),
-                    horizontalAlignment = Alignment.End
-                ) {
-
-                    //DESKRIPSI
-                    Text(
-                        text = "Jangan lupa pengerjaannya sesuai sama yang dibilang kordas kemarin, minggu depan kita ada presentasi progres tubes pertama. Semangat guyss",
-                        fontSize = 18.sp,
-                        fontWeight = FontWeight.Normal,
-                        color = Color.Black,
-                        modifier = Modifier
-                            .padding(horizontal = 5.dp)
-                    )
-
-                    //BOOKMARK LOGO
-                    Icon(
-                        painter = painterResource(id = R.drawable.bookmark_black_logo),
-                        contentDescription = "Logo Bookmark",
-                        tint = Color.Unspecified,
-                        modifier = Modifier
-                            .size(30.dp)
+                        }
                     )
                 }
             }
@@ -219,5 +95,8 @@ fun AnnouncementScreen() {
 @Preview
 @Composable
 private fun AnnouncementScreenPrev() {
-    AnnouncementScreen()
+    AnnouncementScreen(
+        state = AnnouncementScreenState(),
+        onEvent = {  }
+    )
 }
