@@ -60,10 +60,7 @@ fun AnnouncementScreen(
             ) {
                 items(state.announcements) { announcement ->
                     AnnouncementCard(
-                        profileUrl = announcement.profileUrl,
-                        name = announcement.name,
-                        timeStamp = announcement.timeStamp,
-                        content = announcement.content,
+                        announcement = announcement,
                         onAddBookMark = {
 
                         }
