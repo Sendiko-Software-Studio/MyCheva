@@ -43,6 +43,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.mycheva.app.R
 import com.mycheva.app.core.navigation.DashboardScreen
+import com.mycheva.app.core.navigation.MainGraph
 import com.mycheva.app.core.navigation.ResetPasswordScreen
 import com.mycheva.app.core.ui.components.ContentBoxWithNotification
 import com.mycheva.app.core.ui.components.CustomPasswordTextField
@@ -61,7 +62,7 @@ fun LoginScreen(
 
     LaunchedEffect(key1 = state.isSignInSuccessful) {
         if (state.isSignInSuccessful)
-            onNavigate(DashboardScreen)
+            onNavigate(MainGraph)
     }
 
     ContentBoxWithNotification(
