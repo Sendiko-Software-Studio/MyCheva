@@ -41,7 +41,7 @@ fun RootNavGraph(
                     state = state,
                     onEvent = viewModel::onEvent,
                     onNavigate = {
-                        navController.navigate(MainGraph)
+                        navController.navigate(it)
                     }
                 )
             }
