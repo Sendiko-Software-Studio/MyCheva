@@ -1,4 +1,4 @@
-package com.mycheva.app.bookmark
+package com.mycheva.app.bookmark.presentation
 
 import com.mycheva.app.announcement.data.Announcement
 

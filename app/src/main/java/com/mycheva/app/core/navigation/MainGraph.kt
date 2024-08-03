@@ -13,8 +13,8 @@ import androidx.navigation.compose.navigation
 import com.mycheva.app.announcement.presentation.AnnouncementScreen
 import com.mycheva.app.announcement.presentation.AnnouncementViewModel
 import com.mycheva.app.attendance.presentation.AttendanceScreen
-import com.mycheva.app.bookmark.BookmarkScreen
-import com.mycheva.app.bookmark.BookmarkScreenViewModel
+import com.mycheva.app.bookmark.presentation.BookmarkScreen
+import com.mycheva.app.bookmark.presentation.BookmarkScreenViewModel
 import com.mycheva.app.dashboard.presentation.DashboardScreen
 import com.mycheva.app.profile.presentation.ProfileScreen
 
