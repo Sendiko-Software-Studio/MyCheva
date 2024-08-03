@@ -5,6 +5,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
@@ -52,7 +53,7 @@ fun MainGraph(
             }
             composable<AnnouncementScreen> {
                 val viewModel = viewModel<AnnouncementViewModel>()
-                val state by viewModel.state.collectAsState()
+                val state by viewModel.state.collectAsStateWithLifecycle()
                 AnnouncementScreen(
                     state = state,
                     onEvent = viewModel::onEvent,
@@ -65,7 +66,7 @@ fun MainGraph(
             }
             composable<ForumScreen> {
                 val viewModel = viewModel<ForumScreenViewModel>()
-                val state by viewModel.state.collectAsState()
+                val state by viewModel.state.collectAsStateWithLifecycle()
                 ForumScreen(
                     state = state,
                     onEvent = viewModel::onEvent,
@@ -78,7 +79,7 @@ fun MainGraph(
             }
             composable<BookmarkScreen> {
                 val viewModel = viewModel<BookmarkScreenViewModel>()
-                val state by viewModel.state.collectAsState()
+                val state by viewModel.state.collectAsStateWithLifecycle()
                 BookmarkScreen(
                     state = state,
                     onEvent = viewModel::onEvent,
