@@ -5,14 +5,13 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.navigation
 import com.mycheva.app.login.presentation.LoginScreen
 import com.mycheva.app.login.presentation.LoginScreenViewModel
-import com.mycheva.app.reset_password.ResetPasswordScreen
+import com.mycheva.app.reset_password.presentation.ResetPasswordScreen
 import com.mycheva.app.splashscreen.presentation.SplashScreen
 
 @Composable
