@@ -1,6 +1,6 @@
 package com.mycheva.app.bookmark
 
-import com.mycheva.app.announcement.Announcement
+import com.mycheva.app.announcement.data.Announcement
 
 data class BookmarkScreenState(
     val announcements: List<Announcement> = emptyList(),

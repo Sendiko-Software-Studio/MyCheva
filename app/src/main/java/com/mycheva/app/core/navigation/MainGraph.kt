@@ -10,8 +10,8 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.navigation
-import com.mycheva.app.announcement.AnnouncementScreen
-import com.mycheva.app.announcement.AnnouncementViewModel
+import com.mycheva.app.announcement.presentation.AnnouncementScreen
+import com.mycheva.app.announcement.presentation.AnnouncementViewModel
 import com.mycheva.app.attendance.presentation.AttendanceScreen
 import com.mycheva.app.bookmark.BookmarkScreen
 import com.mycheva.app.bookmark.BookmarkScreenViewModel

@@ -1,4 +1,4 @@
-package com.mycheva.app.announcement
+package com.mycheva.app.announcement.data
 
 data class Announcement(
     val profileUrl: String,
