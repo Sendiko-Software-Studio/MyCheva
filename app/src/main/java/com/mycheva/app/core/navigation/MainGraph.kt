@@ -16,6 +16,8 @@ import com.mycheva.app.attendance.presentation.AttendanceScreen
 import com.mycheva.app.bookmark.presentation.BookmarkScreen
 import com.mycheva.app.bookmark.presentation.BookmarkScreenViewModel
 import com.mycheva.app.dashboard.presentation.DashboardScreen
+import com.mycheva.app.forum.main.presentation.ForumScreen
+import com.mycheva.app.forum.main.presentation.ForumScreenViewModel
 import com.mycheva.app.profile.presentation.ProfileScreen
 
 @Composable
@@ -52,6 +54,14 @@ fun MainGraph(
                 val viewModel = viewModel<AnnouncementViewModel>()
                 val state by viewModel.state.collectAsState()
                 AnnouncementScreen(
+                    state = state,
+                    onEvent = viewModel::onEvent
+                )
+            }
+            composable<ForumScreen> {
+                val viewModel = viewModel<ForumScreenViewModel>()
+                val state by viewModel.state.collectAsState()
+                ForumScreen(
                     state = state,
                     onEvent = viewModel::onEvent
                 )

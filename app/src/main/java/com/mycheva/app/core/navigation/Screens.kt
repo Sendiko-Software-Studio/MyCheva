@@ -41,3 +41,6 @@ data object AnnouncementScreen
 
 @Serializable
 data object BookmarkScreen
+
+@Serializable
+data object ForumScreen
