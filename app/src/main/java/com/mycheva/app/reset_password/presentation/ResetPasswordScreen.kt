@@ -24,13 +24,17 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.mycheva.app.R
+import com.mycheva.app.core.navigation.ResetPasswordScreen
 import com.mycheva.app.core.ui.components.CustomTextField
 import com.mycheva.app.core.ui.theme.Primary500
 import androidx.compose.ui.res.painterResource as painterResource1
 
 
 @Composable
-fun ResetPasswordScreen() {
+fun ResetPasswordScreen(
+    state: ResetPasswordScreenState,
+    onEvent: (ResetPasswordScreenEvent) -> Unit,
+) {
     Column(
         verticalArrangement = Arrangement.Top,
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -94,5 +98,8 @@ fun ResetPasswordScreen() {
 @Preview
 @Composable
 private fun ResetPasswordScreenPrev() {
-    ResetPasswordScreen()
+    ResetPasswordScreen(
+        state = ResetPasswordScreenState(),
+        onEvent = { }
+    )
 }
