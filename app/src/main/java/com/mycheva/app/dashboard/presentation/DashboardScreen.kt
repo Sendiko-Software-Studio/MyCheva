@@ -32,7 +32,9 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.mycheva.app.R
+import com.mycheva.app.core.navigation.AnnouncementScreen
 import com.mycheva.app.core.navigation.AttendanceScreen
+import com.mycheva.app.core.navigation.ForumScreen
 import com.mycheva.app.core.ui.theme.poppinsFamily
 import com.mycheva.app.dashboard.presentation.component.MeetingCard
 import com.mycheva.app.dashboard.presentation.component.MenuCard
@@ -143,7 +145,7 @@ fun DashboardScreen(
                         icon = Icons.AutoMirrored.Rounded.Announcement,
                         label = "Announcement",
                         onClick = {
-//                            onNavigate(AttendanceScreen)
+                            onNavigate(AnnouncementScreen)
                         }
                     )
                     MenuCard(
@@ -151,7 +153,7 @@ fun DashboardScreen(
                         icon = Icons.Rounded.Forum,
                         label = "Forum",
                         onClick = {
-//                            onNavigate(AttendanceScreen)
+                            onNavigate(ForumScreen)
                         }
                     )
                 }
