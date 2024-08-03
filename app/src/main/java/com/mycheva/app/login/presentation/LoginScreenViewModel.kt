@@ -40,7 +40,13 @@ class LoginScreenViewModel @Inject constructor(
                     }
                 }
             }
+
+            LoginScreenEvent.OnUsernameCleared -> onUsernameClear()
         }
+    }
+
+    private fun onUsernameClear() {
+        _state.update { it.copy(usernameText = "") }
     }
 
     private fun onPasswordVisibilityChanged(isVisible: Boolean) {

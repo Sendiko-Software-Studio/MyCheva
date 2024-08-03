@@ -18,6 +18,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import com.mycheva.app.core.ui.theme.Primary50
+import com.mycheva.app.core.ui.theme.Primary500
 
 /**
  * Sendiko's custom notification composables!.
@@ -69,12 +71,12 @@ fun Notification(
         Box(
             modifier = Modifier
                 .fillMaxWidth()
-                .background(if (isErrorNotification) MaterialTheme.colorScheme.error else MaterialTheme.colorScheme.surfaceVariant),
+                .background(if (isErrorNotification) MaterialTheme.colorScheme.error else Primary500),
             content = {
                 Text(
                     text = message,
                     modifier = Modifier.padding(top = 28.dp + 8.dp, end = 8.dp, start = 8.dp, bottom = 16.dp),
-                    color = if (isErrorNotification) MaterialTheme.colorScheme.onError else MaterialTheme.colorScheme.onSurfaceVariant,
+                    color = if (isErrorNotification) MaterialTheme.colorScheme.onError else Primary50,
                 )
             }
         )
