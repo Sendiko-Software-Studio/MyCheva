@@ -2,10 +2,13 @@ package com.mycheva.app.forum.main.presentation
 
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.rounded.ArrowBack
+import androidx.compose.material.icons.rounded.Add
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Scaffold
@@ -44,7 +47,16 @@ fun ForumScreen(
                 )
             )
         },
-
+        floatingActionButton = {
+            FloatingActionButton(
+                onClick = { /*TODO*/ },
+                containerColor = Primary500,
+                contentColor = Primary50,
+                shape = CircleShape
+            ) {
+                Icon(imageVector = Icons.Rounded.Add, contentDescription = "add post")
+            }
+        },
         content = { paddingValues ->
             LazyColumn(
                 contentPadding = paddingValues
