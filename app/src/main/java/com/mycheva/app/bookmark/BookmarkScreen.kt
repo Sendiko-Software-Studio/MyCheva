@@ -69,14 +69,10 @@ fun BookmarkScreen(
             ) {
                 items(state.announcements) {
                     AnnouncementCard(
-                        profileUrl = it.profileUrl,
-                        name = it.name,
-                        timeStamp = it.timeStamp,
-                        content = it.content,
+                        announcement = it,
                         onAddBookMark = {
 
                         },
-                        isBookmarked = true
                     )
                 }
             }
