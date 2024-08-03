@@ -1,4 +1,4 @@
-package com.mycheva.app.forum.main.component
+package com.mycheva.app.forum.main.presentation.component
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column

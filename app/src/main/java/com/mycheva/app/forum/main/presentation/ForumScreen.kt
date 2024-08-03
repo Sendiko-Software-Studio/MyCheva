@@ -18,7 +18,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.Preview
 import com.mycheva.app.core.ui.theme.Primary50
 import com.mycheva.app.core.ui.theme.Primary500
-import com.mycheva.app.forum.main.component.ForumPostCard
+import com.mycheva.app.forum.main.presentation.component.ForumPostCard
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
