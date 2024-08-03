@@ -2,14 +2,19 @@ package com.mycheva.app.core.navigation
 
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.navigation
 import com.mycheva.app.announcement.AnnouncementScreen
+import com.mycheva.app.announcement.AnnouncementViewModel
 import com.mycheva.app.attendance.presentation.AttendanceScreen
 import com.mycheva.app.bookmark.BookmarkScreen
+import com.mycheva.app.bookmark.BookmarkScreenViewModel
 import com.mycheva.app.dashboard.presentation.DashboardScreen
 import com.mycheva.app.profile.presentation.ProfileScreen
 
@@ -44,10 +49,20 @@ fun MainGraph(
                 )
             }
             composable<AnnouncementScreen> {
-                AnnouncementScreen()
+                val viewModel = viewModel<AnnouncementViewModel>()
+                val state by viewModel.state.collectAsState()
+                AnnouncementScreen(
+                    state = state,
+                    onEvent = viewModel::onEvent
+                )
             }
             composable<BookmarkScreen> {
-                BookmarkScreen()
+                val viewModel = viewModel<BookmarkScreenViewModel>()
+                val state by viewModel.state.collectAsState()
+                BookmarkScreen(
+                    state = state,
+                    onEvent = viewModel::onEvent
+                )
             }
         }
     }
