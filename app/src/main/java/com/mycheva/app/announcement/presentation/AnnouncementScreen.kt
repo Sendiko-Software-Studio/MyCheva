@@ -15,6 +15,7 @@ import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.Preview
 import com.mycheva.app.announcement.presentation.component.AnnouncementCard
+import com.mycheva.app.core.navigation.BookmarkScreen
 import com.mycheva.app.core.ui.theme.Primary50
 import com.mycheva.app.core.ui.theme.Primary500
 
@@ -23,6 +24,7 @@ import com.mycheva.app.core.ui.theme.Primary500
 fun AnnouncementScreen(
     state: AnnouncementScreenState,
     onEvent: (AnnouncementScreenEvent) -> Unit,
+    onNavigate: (destination: Any?) -> Unit,
 ) {
     Scaffold(
         topBar = {
@@ -37,7 +39,7 @@ fun AnnouncementScreen(
                     titleContentColor = Primary50
                 ),
                 navigationIcon = {
-                    IconButton(onClick = { /*TODO*/ }) {
+                    IconButton(onClick = { onNavigate(null) }) {
                         Icon(
                             imageVector = Icons.AutoMirrored.Rounded.ArrowBack,
                             contentDescription = "arrow back"
@@ -45,7 +47,7 @@ fun AnnouncementScreen(
                     }
                 },
                 actions = {
-                    IconButton(onClick = { /*TODO*/ }) {
+                    IconButton(onClick = { onNavigate(BookmarkScreen) }) {
                         Icon(
                             imageVector = Icons.Rounded.Bookmark,
                             contentDescription = "bookmark"
@@ -62,7 +64,7 @@ fun AnnouncementScreen(
                     AnnouncementCard(
                         announcement = announcement,
                         onAddBookMark = {
-
+                            onEvent(AnnouncementScreenEvent.OnAddBookmark(announcement))
                         }
                     )
                 }
@@ -76,6 +78,7 @@ fun AnnouncementScreen(
 private fun AnnouncementScreenPrev() {
     AnnouncementScreen(
         state = AnnouncementScreenState(),
-        onEvent = {  }
+        onEvent = {  },
+        onNavigate = {  }
     )
 }

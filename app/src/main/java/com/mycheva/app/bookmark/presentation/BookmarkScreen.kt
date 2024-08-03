@@ -22,6 +22,7 @@ import com.mycheva.app.core.ui.theme.Primary500
 fun BookmarkScreen(
     state: BookmarkScreenState,
     onEvent: (BookmarkScreenEvent) -> Unit,
+    onNavigate: (destination: Any?) -> Unit,
 ) {
     Scaffold(
         topBar = {
@@ -36,7 +37,7 @@ fun BookmarkScreen(
                     titleContentColor = Primary50
                 ),
                 navigationIcon = {
-                    IconButton(onClick = { /*TODO*/ }) {
+                    IconButton(onClick = { onNavigate(null) }) {
                         Icon(
                             imageVector = Icons.AutoMirrored.Rounded.ArrowBack,
                             contentDescription = "arrow back"
@@ -53,7 +54,7 @@ fun BookmarkScreen(
                     AnnouncementCard(
                         announcement = it,
                         onAddBookMark = {
-
+                            onEvent(BookmarkScreenEvent.OnRemoveBookmark(it))
                         },
                     )
                 }
@@ -67,6 +68,7 @@ fun BookmarkScreen(
 private fun BookmarkScreenPrev() {
     BookmarkScreen(
         state = BookmarkScreenState(),
-        onEvent = {  }
+        onEvent = {  },
+        onNavigate = {  }
     )
 }

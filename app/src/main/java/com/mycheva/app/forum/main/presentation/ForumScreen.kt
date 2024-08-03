@@ -24,7 +24,8 @@ import com.mycheva.app.forum.main.presentation.component.ForumPostCard
 @Composable
 fun ForumScreen(
     state: ForumScreenState,
-    onEvent: (ForumScreenEvent) -> Unit
+    onEvent: (ForumScreenEvent) -> Unit,
+    onNavigate: (destination: Any?) -> Unit,
 ) {
     Scaffold(
         topBar = {
@@ -33,7 +34,7 @@ fun ForumScreen(
                     Text(text = "Forum")
                 },
                 navigationIcon = {
-                    IconButton(onClick = { /*TODO*/ }) {
+                    IconButton(onClick = { onNavigate(null) }) {
                         Icon(
                             imageVector = Icons.AutoMirrored.Rounded.ArrowBack,
                             contentDescription = "back"
@@ -75,6 +76,7 @@ fun ForumScreen(
 private fun ForumScreenPrev() {
     ForumScreen(
         state = ForumScreenState(),
-        onEvent = { }
+        onEvent = { },
+        onNavigate = { }
     )
 }

@@ -55,7 +55,12 @@ fun MainGraph(
                 val state by viewModel.state.collectAsState()
                 AnnouncementScreen(
                     state = state,
-                    onEvent = viewModel::onEvent
+                    onEvent = viewModel::onEvent,
+                    onNavigate = {
+                        if (it == null) {
+                            navController.navigateUp()
+                        } else navController.navigate(it)
+                    }
                 )
             }
             composable<ForumScreen> {
@@ -63,7 +68,12 @@ fun MainGraph(
                 val state by viewModel.state.collectAsState()
                 ForumScreen(
                     state = state,
-                    onEvent = viewModel::onEvent
+                    onEvent = viewModel::onEvent,
+                    onNavigate = {
+                        if (it == null) {
+                            navController.navigateUp()
+                        } else navController.navigate(it)
+                    }
                 )
             }
             composable<BookmarkScreen> {
@@ -71,7 +81,12 @@ fun MainGraph(
                 val state by viewModel.state.collectAsState()
                 BookmarkScreen(
                     state = state,
-                    onEvent = viewModel::onEvent
+                    onEvent = viewModel::onEvent,
+                    onNavigate = {
+                        if (it == null) {
+                            navController.navigateUp()
+                        } else navController.navigate(it)
+                    }
                 )
             }
         }
