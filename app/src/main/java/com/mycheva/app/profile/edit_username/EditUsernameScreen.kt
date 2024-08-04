@@ -38,17 +38,17 @@ fun EditUsernameScreen(
                 }
             )
         }
-    ) {
+    ) { paddingValues ->
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(it)
+                .padding(paddingValues)
         ) {
             CustomTextField(
                 modifier = Modifier.padding(16.dp),
-                value = "",
-                onValueChange = {},
-                onClearClick = { /*TODO*/ },
+                value = state.usernameText,
+                onValueChange = { onEvent(EditUsernameScreenEvent.OnUsernameChanged(it)) },
+                onClearClick = { onEvent(EditUsernameScreenEvent.OnUsernameCleared) },
                 leadingIcon = {
                     Icon(
                         imageVector = Icons.Rounded.Person,

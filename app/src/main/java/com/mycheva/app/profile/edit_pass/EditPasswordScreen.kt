@@ -58,7 +58,7 @@ fun EditPasswordScreen(
                 onValueChange = {
                     onEvent(EditPasswordScreenEvent.OnOldPassChanged(it))
                 },
-                onClearClick = { /*TODO*/ },
+                onClearClick = { onEvent(EditPasswordScreenEvent.OnOldPassCleared) },
                 leadingIcon = {
                     Icon(imageVector = Icons.Rounded.Lock, contentDescription = "password")
                 }
@@ -70,7 +70,7 @@ fun EditPasswordScreen(
                 onValueChange = {
                     onEvent(EditPasswordScreenEvent.OnNewPassChanged(it))
                 },
-                onClearClick = { /*TODO*/ },
+                onClearClick = { onEvent(EditPasswordScreenEvent.OnNewPassCleared) },
                 leadingIcon = {
                     Icon(imageVector = Icons.Rounded.Lock, contentDescription = "password")
                 }
