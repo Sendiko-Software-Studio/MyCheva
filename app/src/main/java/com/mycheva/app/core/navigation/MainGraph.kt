@@ -18,8 +18,8 @@ import com.mycheva.app.bookmark.presentation.BookmarkScreenViewModel
 import com.mycheva.app.dashboard.presentation.DashboardScreen
 import com.mycheva.app.forum.main.presentation.ForumScreen
 import com.mycheva.app.forum.main.presentation.ForumScreenViewModel
-import com.mycheva.app.profile.presentation.ProfileScreen
-import com.mycheva.app.profile.presentation.ProfileScreenViewModel
+import com.mycheva.app.profile.main.presentation.ProfileScreen
+import com.mycheva.app.profile.main.presentation.ProfileScreenViewModel
 import com.mycheva.app.schedule.ScheduleScreen
 
 @Composable

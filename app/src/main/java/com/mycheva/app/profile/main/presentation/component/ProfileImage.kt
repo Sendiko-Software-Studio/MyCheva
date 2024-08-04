@@ -1,4 +1,4 @@
-package com.mycheva.app.profile.presentation.component
+package com.mycheva.app.profile.main.presentation.component
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box

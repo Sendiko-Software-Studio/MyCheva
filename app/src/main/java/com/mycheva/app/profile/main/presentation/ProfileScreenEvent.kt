@@ -1,4 +1,4 @@
-package com.mycheva.app.profile.presentation
+package com.mycheva.app.profile.main.presentation
 
 sealed class ProfileScreenEvent {
     data object OnLogout: ProfileScreenEvent()

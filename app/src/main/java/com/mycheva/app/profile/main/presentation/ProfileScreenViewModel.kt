@@ -1,4 +1,4 @@
-package com.mycheva.app.profile.presentation
+package com.mycheva.app.profile.main.presentation
 
 import androidx.lifecycle.ViewModel
 import kotlinx.coroutines.flow.MutableStateFlow

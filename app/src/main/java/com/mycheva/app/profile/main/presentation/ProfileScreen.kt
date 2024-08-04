@@ -1,4 +1,4 @@
-package com.mycheva.app.profile.presentation
+package com.mycheva.app.profile.main.presentation
 
 import android.annotation.SuppressLint
 import androidx.compose.foundation.background
@@ -24,9 +24,9 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.mycheva.app.core.ui.theme.Primary50
 import com.mycheva.app.core.ui.theme.Primary500
-import com.mycheva.app.profile.presentation.component.ProfileButtons
-import com.mycheva.app.profile.presentation.component.ProfileDetails
-import com.mycheva.app.profile.presentation.component.ProfileImage
+import com.mycheva.app.profile.main.presentation.component.ProfileButtons
+import com.mycheva.app.profile.main.presentation.component.ProfileDetails
+import com.mycheva.app.profile.main.presentation.component.ProfileImage
 
 @OptIn(ExperimentalMaterial3Api::class)
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")

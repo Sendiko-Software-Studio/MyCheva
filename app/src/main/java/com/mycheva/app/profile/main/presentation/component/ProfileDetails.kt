@@ -1,4 +1,4 @@
-package com.mycheva.app.profile.presentation.component
+package com.mycheva.app.profile.main.presentation.component
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -10,7 +10,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
-import com.mycheva.app.profile.data.User
+import com.mycheva.app.profile.main.data.User
 
 
 @Composable
