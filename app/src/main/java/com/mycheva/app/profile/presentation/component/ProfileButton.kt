@@ -5,13 +5,17 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.font.FontWeight.Companion.Bold
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
+import com.mycheva.app.core.ui.theme.Primary500
+import com.mycheva.app.core.ui.theme.poppinsFamily
 
 @Composable
 fun ProfileButtons() {
@@ -23,17 +27,29 @@ fun ProfileButtons() {
         Button(
             onClick = { },
             modifier = Modifier.fillMaxWidth(),
-            colors = ButtonDefaults.buttonColors(containerColor = Color(0xFFFFA000))
+            colors = ButtonDefaults.buttonColors(containerColor = Primary500),
+            shape = RoundedCornerShape(8.dp)
         ) {
-            Text(text = "Ubah username", color = Color.White)
+            Text(
+                text = "Ubah username",
+                fontSize = 16.sp,
+                fontWeight = Bold,
+                fontFamily = poppinsFamily
+            )
         }
         Spacer(modifier = Modifier.height(8.dp))
         Button(
             onClick = { },
             modifier = Modifier.fillMaxWidth(),
-            colors = ButtonDefaults.buttonColors(containerColor = Color(0xFFFFA000))
+            colors = ButtonDefaults.buttonColors(containerColor = Primary500),
+            shape = RoundedCornerShape(8.dp)
         ) {
-            Text(text = "Ubah password", color = Color.White)
+            Text(
+                text = "Ubah password",
+                fontSize = 16.sp,
+                fontWeight = Bold,
+                fontFamily = poppinsFamily,
+            )
         }
     }
 }

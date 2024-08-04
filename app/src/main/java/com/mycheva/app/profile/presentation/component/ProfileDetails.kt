@@ -1,6 +1,7 @@
 package com.mycheva.app.profile.presentation.component
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -9,21 +10,23 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import com.mycheva.app.profile.data.User
 
 
 @Composable
-fun ProfileDetails() {
+fun ProfileDetails(user: User) {
     Column(
         modifier = Modifier
             .fillMaxWidth()
             .padding(horizontal = 16.dp, vertical = 8.dp)
-            .background(Color.White, shape = MaterialTheme.shapes.medium)
+            .background(Color.White, shape = MaterialTheme.shapes.medium),
+        verticalArrangement = Arrangement.spacedBy(8.dp)
     ) {
-        ProfileDetailRow(label = "Username", value = "Kapal Laut")
-        ProfileDetailRow(label = "Nama", value = "Budiono Siregar")
-        ProfileDetailRow(label = "NIM", value = "1234567890")
-        ProfileDetailRow(label = "Fakultas", value = "Kedokteran")
-        ProfileDetailRow(label = "Jurusan", value = "Tata boga")
-        ProfileDetailRow(label = "Divisi", value = "UI/UX")
+        ProfileDetailRow(label = "Username", value = user.username)
+        ProfileDetailRow(label = "Nama", value = user.name)
+        ProfileDetailRow(label = "NIM", value = user.nim)
+        ProfileDetailRow(label = "Fakultas", value = user.faculty)
+        ProfileDetailRow(label = "Jurusan", value = user.major)
+        ProfileDetailRow(label = "Divisi", value = user.division)
     }
 }
