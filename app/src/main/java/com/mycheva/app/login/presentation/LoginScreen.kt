@@ -25,6 +25,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.font.FontWeight.Companion.Bold
 import androidx.compose.ui.text.input.KeyboardType
@@ -73,6 +74,9 @@ fun LoginScreen(
         contentErrorColor = Primary50,
         loadingContainerColor = Primary500,
         loadingContentColor = Primary50,
+        textStyle = TextStyle(
+            fontFamily = poppinsFamily
+        ),
         content = {
             Scaffold {
                 Column(
