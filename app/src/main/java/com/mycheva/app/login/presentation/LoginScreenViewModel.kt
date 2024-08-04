@@ -1,11 +1,10 @@
 package com.mycheva.app.login.presentation
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.mycheva.app.login.domain.LoginUseCase
-import dagger.hilt.android.HiltAndroidApp
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
@@ -26,22 +25,40 @@ class LoginScreenViewModel @Inject constructor(
             is LoginScreenEvent.OnPasswordChanged -> onPasswordChanged(event.password)
             is LoginScreenEvent.OnPasswordVisibilityToggle -> onPasswordVisibilityChanged(event.isVisible)
             LoginScreenEvent.OnLogin -> {
+                _state.update { it.copy(isLoading = true) }
                 val verifyForm = loginUseCase.verifyForm(
                     username = state.value.usernameText,
                     password = state.value.passwordText
                 )
-                if (verifyForm) {
+                val isValid = verifyForm.first
+                if (isValid) {
                     viewModelScope.launch {
+                        delay(2000)
                         loginUseCase(
                             username = state.value.usernameText,
                             password = state.value.passwordText
                         )
-                        _state.update { it.copy(isSignInSuccessful = true) }
+                        _state.update { it.copy(isSignInSuccessful = true, isLoading = false) }
+                    }
+                } else {
+                    _state.update {
+                        it.copy(
+                            isLoading = false,
+                            notificationMessage = verifyForm.second!!,
+                            isSignInFailed = true
+                        )
                     }
                 }
             }
 
             LoginScreenEvent.OnUsernameCleared -> onUsernameClear()
+            LoginScreenEvent.OnClearState -> _state.update {
+                it.copy(
+                    notificationMessage = "",
+                    isLoading = false,
+                    isSignInFailed = false,
+                )
+            }
         }
     }
 

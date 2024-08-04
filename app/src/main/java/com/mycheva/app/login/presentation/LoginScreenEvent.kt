@@ -6,4 +6,5 @@ sealed class LoginScreenEvent {
     data class OnPasswordChanged(val password: String): LoginScreenEvent()
     data class OnPasswordVisibilityToggle(val isVisible: Boolean): LoginScreenEvent()
     data object OnLogin: LoginScreenEvent()
+    data object OnClearState: LoginScreenEvent()
 }
