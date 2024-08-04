@@ -17,14 +17,14 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.mycheva.app.core.navigation.bottom_nav.bottomNavItems
-import com.mycheva.app.core.ui.theme.Primary100
+import com.mycheva.app.core.ui.theme.Primary50
 import com.mycheva.app.core.ui.theme.Primary500
 import com.mycheva.app.core.ui.theme.Primary900
-import com.mycheva.app.core.ui.theme.Primary950
 import com.mycheva.app.core.ui.theme.poppinsFamily
 
 @Composable
@@ -47,12 +47,13 @@ fun MainNavGraphContainer(
                 exit = shrinkVertically()
             ) {
                 NavigationBar(
-                    containerColor = Primary500
+                    containerColor = Primary500,
                 ) {
                     bottomNavItems.forEach { item ->
                         NavigationBarItem(
                             selected = currentRoute.contains(item.route.toString()),
                             onClick = {
+                                navController.navigate(item.route)
                                 currentRoute = item.route.toString()
                             },
                             icon = {
@@ -62,11 +63,11 @@ fun MainNavGraphContainer(
                                 )
                             },
                             colors = NavigationBarItemDefaults.colors(
-                                indicatorColor = Primary100,
+                                indicatorColor = Color.Transparent,
                                 unselectedIconColor = Primary900,
                                 unselectedTextColor = Primary900,
-                                selectedIconColor = Primary950,
-                                selectedTextColor = Primary950
+                                selectedIconColor = Primary50,
+                                selectedTextColor = Primary50
                             ),
                             label = {
                                 Text(

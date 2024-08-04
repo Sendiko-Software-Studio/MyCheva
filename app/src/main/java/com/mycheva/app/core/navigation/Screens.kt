@@ -34,6 +34,12 @@ data object AttendanceScreen
 data object ProfileScreen
 
 @Serializable
+data object EditUsernameScreen
+
+@Serializable
+data object EditPasswordScreen
+
+@Serializable
 data object ScheduleScreen
 
 @Serializable
@@ -41,3 +47,6 @@ data object AnnouncementScreen
 
 @Serializable
 data object BookmarkScreen
+
+@Serializable
+data object ForumScreen

@@ -17,11 +17,13 @@ import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.mycheva.app.core.ui.theme.poppinsFamily
 
 @Composable
 fun CustomTextField(
@@ -41,7 +43,8 @@ fun CustomTextField(
             fontSize = 16.sp,
             fontWeight = FontWeight.Bold,
             modifier = Modifier.fillMaxWidth(),
-            textAlign = TextAlign.Start
+            textAlign = TextAlign.Start,
+            fontFamily = poppinsFamily
         )
         TextField(
             modifier = Modifier
@@ -69,7 +72,8 @@ fun CustomTextField(
                     }
                 }
             },
-            keyboardOptions = keyboardOption
+            keyboardOptions = keyboardOption,
+            textStyle = TextStyle(fontFamily = poppinsFamily)
         )
     }
 }
