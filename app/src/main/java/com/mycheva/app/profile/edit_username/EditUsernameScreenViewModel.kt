@@ -23,7 +23,7 @@ class EditUsernameScreenViewModel: ViewModel() {
     }
 
     private fun onUsernameChanged(value: String) {
-        _state.update { it.copy(usernameText = value) } }
+        _state.update { it.copy(usernameText = value) }
     }
 
 }
