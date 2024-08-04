@@ -66,7 +66,9 @@ fun MainGraph(
                 EditUsernameScreen(
                     state = state,
                     onEvent = viewModel::onEvent,
-                    onNavigate = { }
+                    onNavigate = {
+                        navController.navigateUp()
+                    }
                 )
             }
             composable<EditPasswordScreen> {
@@ -75,7 +77,9 @@ fun MainGraph(
                 EditPasswordScreen(
                     state = state,
                     onEvent = viewModel::onEvent,
-                    onNavigate = { }
+                    onNavigate = {
+                        navController.navigateUp()
+                    }
                 )
             }
             composable<AttendanceScreen> {
