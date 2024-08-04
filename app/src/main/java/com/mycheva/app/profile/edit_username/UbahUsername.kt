@@ -1,12 +1,9 @@
-package com.mycheva.app.profile.presentation
+package com.mycheva.app.profile.edit_username
 
-import android.annotation.SuppressLint
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
@@ -33,9 +30,8 @@ import com.mycheva.app.R
 import com.mycheva.app.core.ui.theme.Primary500
 
 @OptIn(ExperimentalMaterial3Api::class)
-@SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
-fun UbahPasswordScreen() {
+fun UbahUsernameScreen() {
     Scaffold(
         topBar = {
             CenterAlignedTopAppBar(
@@ -47,7 +43,7 @@ fun UbahPasswordScreen() {
                 ),
                 title = {
                     Text(
-                        text = "Ubah Password",
+                        text = "Ubah Username",
                         color = Color.White,
                         fontWeight = FontWeight.Bold,
                         fontSize = 20.sp,
@@ -65,7 +61,7 @@ fun UbahPasswordScreen() {
                 }
             )
         }
-    ) {
+    ){
         Column(
             modifier = Modifier
                 .fillMaxSize()
@@ -77,15 +73,16 @@ fun UbahPasswordScreen() {
                     .padding(horizontal = 16.dp, vertical = 8.dp)
             ) {
                 Text(
-                    text = "Password Sebelumnya",
+                    text = "Username",
                     fontSize = 18.sp,
                     fontWeight = FontWeight.Bold,
                     modifier = Modifier.fillMaxWidth(),
+                    //textAlign = TextAlign.Start
                 )
                 TextField(
                     modifier = Modifier
                         .fillMaxWidth(),
-                    value = "",
+                    value = "Kapal Laut",
                     onValueChange = { },
                     colors = TextFieldDefaults.colors(
                         unfocusedIndicatorColor = Color.Black,
@@ -97,35 +94,8 @@ fun UbahPasswordScreen() {
                         Image(
                             modifier = Modifier
                                 .size(24.dp),
-                            painter = painterResource(id = R.drawable.password_logo),
-                            contentDescription = "logo password"
-                        )
-                    }
-                )
-                Spacer(modifier = Modifier.height(16.dp))
-                Text(
-                    text = "Password Baru",
-                    fontSize = 18.sp,
-                    fontWeight = FontWeight.Bold,
-                    modifier = Modifier.fillMaxWidth(),
-                )
-                TextField(
-                    modifier = Modifier
-                        .fillMaxWidth(),
-                    value = "",
-                    onValueChange = { },
-                    colors = TextFieldDefaults.colors(
-                        unfocusedIndicatorColor = Color.Black,
-                        focusedIndicatorColor = Color.Black,
-                        unfocusedContainerColor = Color.Transparent,
-                        focusedContainerColor = Color.Transparent
-                    ),
-                    leadingIcon = {
-                        Image(
-                            modifier = Modifier
-                                .size(24.dp),
-                            painter = painterResource(id = R.drawable.password_logo),
-                            contentDescription = "logo password"
+                            painter = painterResource(id = R.drawable.username_logo),
+                            contentDescription = "logo username"
                         )
                     }
                 )
@@ -136,6 +106,6 @@ fun UbahPasswordScreen() {
 
 @Preview
 @Composable
-private fun UbahPasswordPrev() {
-    UbahPasswordScreen()
+private fun UbahUsernamePrev() {
+    UbahUsernameScreen()
 }
