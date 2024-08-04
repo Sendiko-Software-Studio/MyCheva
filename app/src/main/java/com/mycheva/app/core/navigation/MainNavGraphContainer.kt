@@ -22,11 +22,9 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.mycheva.app.core.navigation.bottom_nav.bottomNavItems
-import com.mycheva.app.core.ui.theme.Primary100
 import com.mycheva.app.core.ui.theme.Primary50
 import com.mycheva.app.core.ui.theme.Primary500
 import com.mycheva.app.core.ui.theme.Primary900
-import com.mycheva.app.core.ui.theme.Primary950
 import com.mycheva.app.core.ui.theme.poppinsFamily
 
 @Composable
@@ -55,6 +53,7 @@ fun MainNavGraphContainer(
                         NavigationBarItem(
                             selected = currentRoute.contains(item.route.toString()),
                             onClick = {
+                                navController.navigate(item.route)
                                 currentRoute = item.route.toString()
                             },
                             icon = {
