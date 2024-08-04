@@ -21,6 +21,7 @@ import com.mycheva.app.forum.main.presentation.ForumScreenViewModel
 import com.mycheva.app.profile.edit_pass.EditPasswordScreen
 import com.mycheva.app.profile.edit_pass.EditPasswordScreenViewModel
 import com.mycheva.app.profile.edit_username.EditUsernameScreen
+import com.mycheva.app.profile.edit_username.EditUsernameScreenViewModel
 import com.mycheva.app.profile.main.presentation.ProfileScreen
 import com.mycheva.app.profile.main.presentation.ProfileScreenViewModel
 import com.mycheva.app.schedule.ScheduleScreen
@@ -60,7 +61,11 @@ fun MainGraph(
             startDestination = AttendanceScreen
         ) {
             composable<EditUsernameScreen> {
+                val viewModel = viewModel<EditUsernameScreenViewModel>()
+                val state by viewModel.state.collectAsStateWithLifecycle()
                 EditUsernameScreen(
+                    state = state,
+                    onEvent = viewModel::onEvent,
                     onNavigate = { }
                 )
             }
