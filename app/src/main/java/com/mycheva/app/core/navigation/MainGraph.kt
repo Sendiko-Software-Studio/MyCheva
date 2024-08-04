@@ -2,7 +2,6 @@ package com.mycheva.app.core.navigation
 
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -20,6 +19,8 @@ import com.mycheva.app.dashboard.presentation.DashboardScreen
 import com.mycheva.app.forum.main.presentation.ForumScreen
 import com.mycheva.app.forum.main.presentation.ForumScreenViewModel
 import com.mycheva.app.profile.presentation.ProfileScreen
+import com.mycheva.app.profile.presentation.ProfileScreenViewModel
+import com.mycheva.app.schedule.ScheduleScreen
 
 @Composable
 fun MainGraph(
@@ -38,12 +39,19 @@ fun MainGraph(
                 }
             )
         }
+        composable<ProfileScreen> {
+            val viewModel = viewModel<ProfileScreenViewModel>()
+            val state by viewModel.state.collectAsStateWithLifecycle()
+            ProfileScreen(
+                state = state
+            )
+        }
+        composable<ScheduleScreen> {
+            ScheduleScreen()
+        }
         navigation<DetailsGraph>(
-            startDestination = ProfileScreen
+            startDestination = AttendanceScreen
         ) {
-            composable<ProfileScreen> {
-                ProfileScreen()
-            }
             composable<AttendanceScreen> {
                 AttendanceScreen(
                     onNavigateBack = {
