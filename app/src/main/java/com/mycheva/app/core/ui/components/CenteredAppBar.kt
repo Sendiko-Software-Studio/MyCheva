@@ -1,4 +1,4 @@
-package com.mycheva.app.core.ui
+package com.mycheva.app.core.ui.components
 
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api

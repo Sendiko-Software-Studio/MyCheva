@@ -12,7 +12,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.Preview
-import com.mycheva.app.core.ui.CenteredAppBar
+import com.mycheva.app.core.ui.components.CenteredAppBar
 import com.mycheva.app.core.ui.theme.Primary50
 import com.mycheva.app.core.ui.theme.Primary500
 import com.mycheva.app.forum.main.presentation.component.ForumPostCard
