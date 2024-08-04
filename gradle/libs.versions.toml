@@ -20,7 +20,7 @@ datastorePreferences = "1.1.1"
 kapt = "2.0.0"
 daggerHilt = "2.49"
 hiltWork = "1.2.0"
-contentBoxWithNotification = "1.1.0"
+contentBoxWithNotification = "1.1.1"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
