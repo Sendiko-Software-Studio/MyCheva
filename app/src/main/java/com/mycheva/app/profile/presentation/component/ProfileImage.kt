@@ -22,7 +22,8 @@ import com.mycheva.app.core.ui.theme.Primary500
 @Composable
 fun ProfileImage(
     modifier: Modifier = Modifier,
-    imageUrl: String = ""
+    imageUrl: String = "",
+    onEditImage: () -> Unit
 ) {
     Box(
         modifier = modifier.size(128.dp)
@@ -40,7 +41,7 @@ fun ProfileImage(
                 .size(48.dp)
                 .align(Alignment.BottomEnd)
                 .background(color = Primary500, shape = CircleShape),
-            onClick = { /*TODO*/ }
+            onClick = onEditImage
         ) {
             Icon(
                 imageVector = Icons.Rounded.Edit,

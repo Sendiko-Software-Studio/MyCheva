@@ -1,11 +1,7 @@
 package com.mycheva.app.profile.presentation
 
+import com.mycheva.app.profile.data.User
+
 data class ProfileScreenState(
-    val imageUrl: String = "",
-    val username: String = "",
-    val name: String = "",
-    val nim: String = "",
-    val faculty: String = "",
-    val major: String = "",
-    val division: String = "",
+    val user: User = User(),
 )

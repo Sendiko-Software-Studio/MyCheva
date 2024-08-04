@@ -14,18 +14,22 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight.Companion.Bold
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.mycheva.app.core.navigation.EditPasswordScreen
+import com.mycheva.app.core.navigation.EditUsernameScreen
 import com.mycheva.app.core.ui.theme.Primary500
 import com.mycheva.app.core.ui.theme.poppinsFamily
 
 @Composable
-fun ProfileButtons() {
+fun ProfileButtons(
+    onNavigate: (destination: Any) -> Unit,
+) {
     Column(
         modifier = Modifier
             .fillMaxWidth()
             .padding(horizontal = 16.dp, vertical = 8.dp)
     ) {
         Button(
-            onClick = { },
+            onClick = { onNavigate(EditUsernameScreen) },
             modifier = Modifier.fillMaxWidth(),
             colors = ButtonDefaults.buttonColors(containerColor = Primary500),
             shape = RoundedCornerShape(8.dp)
@@ -39,7 +43,7 @@ fun ProfileButtons() {
         }
         Spacer(modifier = Modifier.height(8.dp))
         Button(
-            onClick = { },
+            onClick = { onNavigate(EditPasswordScreen) },
             modifier = Modifier.fillMaxWidth(),
             colors = ButtonDefaults.buttonColors(containerColor = Primary500),
             shape = RoundedCornerShape(8.dp)
