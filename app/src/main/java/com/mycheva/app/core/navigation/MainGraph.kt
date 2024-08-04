@@ -18,6 +18,9 @@ import com.mycheva.app.bookmark.presentation.BookmarkScreenViewModel
 import com.mycheva.app.dashboard.presentation.DashboardScreen
 import com.mycheva.app.forum.main.presentation.ForumScreen
 import com.mycheva.app.forum.main.presentation.ForumScreenViewModel
+import com.mycheva.app.profile.edit_pass.EditPasswordScreen
+import com.mycheva.app.profile.edit_pass.EditPasswordScreenViewModel
+import com.mycheva.app.profile.edit_username.EditUsernameScreen
 import com.mycheva.app.profile.main.presentation.ProfileScreen
 import com.mycheva.app.profile.main.presentation.ProfileScreenViewModel
 import com.mycheva.app.schedule.ScheduleScreen
@@ -45,7 +48,9 @@ fun MainGraph(
             ProfileScreen(
                 state = state,
                 onEvent = viewModel::onEvent,
-                onNavigate = { }
+                onNavigate = {
+                    navController.navigate(it)
+                }
             )
         }
         composable<ScheduleScreen> {
@@ -54,6 +59,20 @@ fun MainGraph(
         navigation<DetailsGraph>(
             startDestination = AttendanceScreen
         ) {
+            composable<EditUsernameScreen> {
+                EditUsernameScreen(
+                    onNavigate = { }
+                )
+            }
+            composable<EditPasswordScreen> {
+                val viewModel = viewModel<EditPasswordScreenViewModel>()
+                val state by viewModel.state.collectAsStateWithLifecycle()
+                EditPasswordScreen(
+                    state = state,
+                    onEvent = viewModel::onEvent,
+                    onNavigate = { }
+                )
+            }
             composable<AttendanceScreen> {
                 AttendanceScreen(
                     onNavigateBack = {
