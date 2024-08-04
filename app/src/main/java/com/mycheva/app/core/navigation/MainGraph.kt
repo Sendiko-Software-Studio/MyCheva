@@ -43,7 +43,9 @@ fun MainGraph(
             val viewModel = viewModel<ProfileScreenViewModel>()
             val state by viewModel.state.collectAsStateWithLifecycle()
             ProfileScreen(
-                state = state
+                state = state,
+                onEvent = viewModel::onEvent,
+                onNavigate = { }
             )
         }
         composable<ScheduleScreen> {
