@@ -10,6 +10,11 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
+import okhttp3.OkHttpClient
+import okhttp3.logging.HttpLoggingInterceptor
+import retrofit2.Retrofit
+import retrofit2.converter.gson.GsonConverterFactory
+import java.util.concurrent.TimeUnit
 import javax.inject.Singleton
 
 @Module
@@ -26,6 +31,33 @@ object AppModule {
     @Provides
     fun provideLoginRepository(appPreferences: AppPreferences): LoginRepository {
         return LoginRepositoryImpl(appPreferences)
+    }
+
+    @Singleton
+    @Provides
+    fun provideOkHttp(): OkHttpClient {
+        return OkHttpClient.Builder().addInterceptor { chain ->
+            chain.proceed(chain.request().newBuilder().also {
+                it.addHeader("Accept", "application/json")
+            }.build())
+        }.also {
+            val logging = HttpLoggingInterceptor()
+            logging.setLevel(HttpLoggingInterceptor.Level.BODY)
+            it.addInterceptor(logging)
+        }
+            .connectTimeout(15, TimeUnit.SECONDS)
+            .readTimeout(15, TimeUnit.SECONDS)
+            .build()
+    }
+
+    @Singleton
+    @Provides
+    fun provideRetrofit(okHttpClient: OkHttpClient): Retrofit {
+        return Retrofit.Builder()
+            .baseUrl("http://192.168.100.12:8000/api/")
+            .client(okHttpClient)
+            .addConverterFactory(GsonConverterFactory.create())
+            .build()
     }
 
 }
