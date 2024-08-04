@@ -12,6 +12,7 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import com.mycheva.app.core.navigation.BookmarkScreen
 import com.mycheva.app.core.ui.theme.Primary50
 import com.mycheva.app.core.ui.theme.Primary500
+import com.mycheva.app.core.ui.theme.poppinsFamily
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -24,7 +25,8 @@ fun CenteredAppBar(
     actionAction: (any: Any?) -> Unit = {}
 ) {
     CenterAlignedTopAppBar(
-        title = { Text(text = title) },
+        modifier = modifier,
+        title = { Text(text = title, fontFamily = poppinsFamily) },
         colors = TopAppBarDefaults.centerAlignedTopAppBarColors(
             containerColor = Primary500,
             navigationIconContentColor = Primary50,

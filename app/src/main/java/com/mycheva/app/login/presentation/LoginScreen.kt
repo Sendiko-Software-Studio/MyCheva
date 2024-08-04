@@ -40,6 +40,7 @@ import com.mycheva.app.core.ui.components.CustomTextField
 import com.mycheva.app.core.ui.theme.Error
 import com.mycheva.app.core.ui.theme.Primary50
 import com.mycheva.app.core.ui.theme.Primary500
+import com.mycheva.app.core.ui.theme.poppinsFamily
 import com.sendiko.content_box_with_notification.ContentBoxWithNotification
 import kotlinx.coroutines.delay
 import androidx.compose.ui.res.painterResource as painterResource1
@@ -92,7 +93,8 @@ fun LoginScreen(
                     Text(
                         text = "Login",
                         fontSize = 32.sp,
-                        modifier = Modifier.padding(vertical = 16.dp)
+                        modifier = Modifier.padding(vertical = 16.dp),
+                        fontFamily = poppinsFamily
                     )
                     CustomTextField(
                         value = state.usernameText,
@@ -140,7 +142,8 @@ fun LoginScreen(
                             .padding(vertical = 16.dp)
                             .clickable {
                                 onNavigate(ResetPasswordScreen)
-                            }
+                            },
+                        fontFamily = poppinsFamily
                     )
                     Button(
                         colors = ButtonDefaults.buttonColors(
@@ -151,7 +154,12 @@ fun LoginScreen(
                             .padding(vertical = 16.dp),
                         onClick = { onEvent(LoginScreenEvent.OnLogin) },
                         content = {
-                            Text(text = "Login", fontSize = 16.sp, fontWeight = Bold)
+                            Text(
+                                text = "Login",
+                                fontSize = 16.sp,
+                                fontWeight = Bold,
+                                fontFamily = poppinsFamily
+                            )
                         },
                         shape = RoundedCornerShape(8.dp)
                     )
