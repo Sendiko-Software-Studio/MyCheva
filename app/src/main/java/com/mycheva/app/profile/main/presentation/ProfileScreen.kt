@@ -24,6 +24,7 @@ import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.mycheva.app.core.navigation.SplashScreen
 import com.mycheva.app.core.ui.theme.Error
 import com.mycheva.app.core.ui.theme.Primary50
 import com.mycheva.app.core.ui.theme.Primary500
@@ -32,6 +33,7 @@ import com.mycheva.app.profile.main.presentation.component.ProfileButtons
 import com.mycheva.app.profile.main.presentation.component.ProfileDetails
 import com.mycheva.app.profile.main.presentation.component.ProfileImage
 import com.sendiko.content_box_with_notification.ContentBoxWithNotification
+import kotlinx.coroutines.delay
 
 @OptIn(ExperimentalMaterial3Api::class)
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
@@ -42,10 +44,23 @@ fun ProfileScreen(
     onNavigate: (destination: Any) -> Unit,
 ) {
     val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior()
+
     LaunchedEffect(key1 = state.token) {
         if (state.token.isNotBlank())
             onEvent(ProfileScreenEvent.OnGetProfile(state.token))
     }
+
+    LaunchedEffect(key1 = state.isLogoutSuccess) {
+        if (state.isLogoutSuccess)
+            onNavigate(SplashScreen)
+    }
+
+    LaunchedEffect(key1 = state.notificationMessage) {
+        if (state.notificationMessage.isNotBlank())
+            delay(2000)
+            onEvent(ProfileScreenEvent.OnClearState)
+    }
+
     ContentBoxWithNotification(
         message = state.notificationMessage,
         isLoading = state.isLoading,
@@ -72,7 +87,7 @@ fun ProfileScreen(
                         actions = {
                             IconButton(
                                 onClick = {
-                                    onEvent(ProfileScreenEvent.OnLogout)
+                                    onEvent(ProfileScreenEvent.OnLogout(state.token))
                                 }
                             ) {
                                 Icon(

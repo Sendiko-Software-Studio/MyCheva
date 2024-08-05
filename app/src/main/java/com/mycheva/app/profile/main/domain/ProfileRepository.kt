@@ -14,6 +14,10 @@ class ProfileRepository @Inject constructor(
         return appPreferences.getToken()
     }
 
+    suspend fun deleteToken() = appPreferences.deleteToken()
+
     fun getUser(token: String) = apiServices.getUser(token)
+
+    fun logout(token: String) = apiServices.logout(token)
 
 }
