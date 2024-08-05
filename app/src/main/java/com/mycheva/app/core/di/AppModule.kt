@@ -1,10 +1,10 @@
 package com.mycheva.app.core.di
 
 import android.content.Context
+import com.mycheva.app.core.network.ApiServices
 import com.mycheva.app.core.preferences.AppPreferences
 import com.mycheva.app.core.preferences.dataStore
 import com.mycheva.app.login.domain.LoginRepository
-import com.mycheva.app.login.domain.LoginRepositoryImpl
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -29,22 +29,26 @@ object AppModule {
 
     @Singleton
     @Provides
-    fun provideLoginRepository(appPreferences: AppPreferences): LoginRepository {
-        return LoginRepositoryImpl(appPreferences)
+    fun provideLoginRepository(
+        appPreferences: AppPreferences,
+        apiServices: ApiServices
+    ): LoginRepository {
+        return LoginRepository(appPreferences, apiServices)
     }
 
     @Singleton
     @Provides
     fun provideOkHttp(): OkHttpClient {
-        return OkHttpClient.Builder().addInterceptor { chain ->
-            chain.proceed(chain.request().newBuilder().also {
-                it.addHeader("Accept", "application/json")
-            }.build())
-        }.also {
-            val logging = HttpLoggingInterceptor()
-            logging.setLevel(HttpLoggingInterceptor.Level.BODY)
-            it.addInterceptor(logging)
-        }
+        return OkHttpClient.Builder()
+            .addInterceptor { chain ->
+                chain.proceed(chain.request().newBuilder().also {
+                    it.addHeader("Accept", "application/json")
+                }.build())
+            }.also {
+                val logging = HttpLoggingInterceptor()
+                logging.setLevel(HttpLoggingInterceptor.Level.BODY)
+                it.addInterceptor(logging)
+            }
             .connectTimeout(15, TimeUnit.SECONDS)
             .readTimeout(15, TimeUnit.SECONDS)
             .build()
@@ -58,6 +62,12 @@ object AppModule {
             .client(okHttpClient)
             .addConverterFactory(GsonConverterFactory.create())
             .build()
+    }
+
+    @Singleton
+    @Provides
+    fun provideApiServices(retrofit: Retrofit): ApiServices {
+        return retrofit.create(ApiServices::class.java)
     }
 
 }
