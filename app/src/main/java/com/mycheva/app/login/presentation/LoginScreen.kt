@@ -165,7 +165,8 @@ fun LoginScreen(
                                 fontFamily = poppinsFamily
                             )
                         },
-                        shape = RoundedCornerShape(8.dp)
+                        shape = RoundedCornerShape(8.dp),
+                        enabled = !state.isLoading
                     )
                 }
             }

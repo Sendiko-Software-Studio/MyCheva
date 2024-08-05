@@ -1,8 +1,18 @@
 package com.mycheva.app.login.domain
 
-interface LoginRepository {
+import com.mycheva.app.core.network.ApiServices
+import com.mycheva.app.core.preferences.AppPreferences
+import com.mycheva.app.login.data.LoginRequest
 
-    suspend fun login(username: String, password: String): Boolean
-    fun verifyForm(username: String, password: String): Pair<Boolean, String?>
+class LoginRepository(
+    private val appPreferences: AppPreferences,
+    private val apiServices: ApiServices
+) {
+
+    fun login(loginRequest: LoginRequest) = apiServices.login(loginRequest)
+
+    suspend fun saveToken(token: String) {
+        appPreferences.saveToken(token)
+    }
 
 }
