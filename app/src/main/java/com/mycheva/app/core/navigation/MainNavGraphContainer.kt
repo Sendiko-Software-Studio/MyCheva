@@ -29,7 +29,8 @@ import com.mycheva.app.core.ui.theme.poppinsFamily
 
 @Composable
 fun MainNavGraphContainer(
-    navController: NavHostController = rememberNavController()
+    navController: NavHostController = rememberNavController(),
+    onNavigateOut: (destination: Any) -> Unit
 ) {
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val isVisible =
@@ -85,7 +86,8 @@ fun MainNavGraphContainer(
             navController = navController,
             modifier = Modifier
                 .fillMaxSize()
-                .padding(bottom = it.calculateBottomPadding())
+                .padding(bottom = it.calculateBottomPadding()),
+            onNavigate = { onNavigateOut(it) }
         )
     }
 }

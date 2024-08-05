@@ -5,7 +5,6 @@ import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.stringPreferencesKey
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 
@@ -18,6 +17,12 @@ class AppPreferences @Inject constructor(
     suspend fun saveToken(token: String) {
         dataStore.edit { preferences ->
             preferences[tokenKey] = token
+        }
+    }
+
+    suspend fun deleteToken() {
+        dataStore.edit { preferences ->
+            preferences[tokenKey] = ""
         }
     }
 

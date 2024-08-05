@@ -6,11 +6,13 @@ import com.mycheva.app.profile.main.data.GetUserResponse
 import com.mycheva.app.profile.main.data.User
 import com.mycheva.app.profile.main.domain.ProfileRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.launch
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -31,10 +33,36 @@ class ProfileScreenViewModel @Inject constructor(
         when (event) {
             ProfileScreenEvent.OnClearState -> clearState()
             ProfileScreenEvent.OnEditProfile -> TODO()
-            ProfileScreenEvent.OnLogout -> TODO()
+            is ProfileScreenEvent.OnLogout -> logout(event.token)
             is ProfileScreenEvent.OnGetProfile -> getProfile(event.token)
             }
         }
+
+    private fun logout(token: String) {
+        _state.update { it.copy(isLoading = true) }
+        val bearerToken = "Bearer $token"
+        val request = repository.logout(bearerToken)
+        viewModelScope.launch(Dispatchers.IO) {
+            if (request.execute().isSuccessful){
+                repository.deleteToken()
+                _state.update {
+                    it.copy(
+                        isLoading = false,
+                        isError = false,
+                        notificationMessage = "Logout success.",
+                        isLogoutSuccess = true
+                    )
+                }
+            } else {
+                _state.update {
+                    it.copy(
+                        isError = true,
+                        notificationMessage = "Something went wrong."
+                    )
+                }
+            }
+        }
+    }
 
     private fun getProfile(token: String) {
         _state.update { it.copy(isLoading = true) }

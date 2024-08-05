@@ -7,5 +7,6 @@ data class ProfileScreenState(
     val token: String = "",
     val isLoading: Boolean = false,
     val isError: Boolean = false,
-    val notificationMessage: String = ""
+    val notificationMessage: String = "",
+    val isLogoutSuccess: Boolean = false,
 )
