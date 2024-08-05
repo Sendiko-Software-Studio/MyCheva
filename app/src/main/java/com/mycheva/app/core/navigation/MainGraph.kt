@@ -30,7 +30,8 @@ import com.mycheva.app.schedule.ScheduleScreen
 @Composable
 fun MainGraph(
     modifier: Modifier = Modifier,
-    navController: NavHostController
+    navController: NavHostController,
+    onNavigate: (destination: Any) -> Unit
 ) {
     NavHost(
         navController = navController,
@@ -51,7 +52,11 @@ fun MainGraph(
                 state = state,
                 onEvent = viewModel::onEvent,
                 onNavigate = {
-                    navController.navigate(it)
+                    if (it is SplashScreen) {
+                        onNavigate(it)
+                    } else {
+                        navController.navigate(it)
+                    }
                 }
             )
         }

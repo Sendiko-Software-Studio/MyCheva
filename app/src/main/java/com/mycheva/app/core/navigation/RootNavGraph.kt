@@ -60,7 +60,11 @@ fun RootNavGraph(
             }
         }
         composable<MainGraph> {
-            MainNavGraphContainer()
+            MainNavGraphContainer(
+                onNavigateOut = {
+                    navController.navigate(it) { popUpTo(it) { inclusive  = true } }
+                }
+            )
         }
     }
 }
