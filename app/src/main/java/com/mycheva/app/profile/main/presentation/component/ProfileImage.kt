@@ -32,7 +32,7 @@ fun ProfileImage(
             modifier = Modifier
                 .fillMaxSize()
                 .clip(CircleShape),
-            model = imageUrl,
+            model = imageUrl.ifBlank { "https://t3.ftcdn.net/jpg/02/43/12/34/360_F_243123463_zTooub557xEWABDLk0jJklDyLSGl2jrr.jpg" },
             contentDescription = "Profile Picture",
             contentScale = ContentScale.Crop
         )
