@@ -1,7 +1,6 @@
 package com.mycheva.app.splashscreen.presentation
 
 import android.annotation.SuppressLint
-import android.window.SplashScreen
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -20,6 +19,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.mycheva.app.R
+import com.mycheva.app.core.navigation.LoginScreen
+import com.mycheva.app.core.navigation.MainGraph
 import com.mycheva.app.core.ui.theme.Primary500
 import com.mycheva.app.core.ui.theme.poppinsFamily
 import kotlinx.coroutines.delay
@@ -28,11 +29,17 @@ import kotlinx.coroutines.delay
 @Composable
 fun SplashScreen(
     modifier: Modifier = Modifier,
-    onNavigate: (String) -> Unit
+    state: SplashScreenState,
+    onNavigate: (destination: Any) -> Unit
 ) {
-    LaunchedEffect(key1 = true) {
-        delay(1000)
-        onNavigate("")
+    LaunchedEffect(key1 = state.token) {
+        if (state.token.isNotBlank()) {
+            delay(1000)
+            onNavigate(MainGraph)
+        } else {
+            delay(1000)
+            onNavigate(LoginScreen)
+        }
     }
 
     Scaffold(
@@ -69,7 +76,7 @@ fun SplashScreen(
 @Preview
 @Composable
 private fun SplashScreenPrev() {
-    SplashScreen {
+    SplashScreen(state = SplashScreenState()) {
 
     }
 }

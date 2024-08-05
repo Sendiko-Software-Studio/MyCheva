@@ -15,6 +15,7 @@ import com.mycheva.app.login.presentation.LoginScreenViewModel
 import com.mycheva.app.reset_password.presentation.ResetPasswordScreen
 import com.mycheva.app.reset_password.presentation.ResetPasswordScreenViewModel
 import com.mycheva.app.splashscreen.presentation.SplashScreen
+import com.mycheva.app.splashscreen.presentation.SplashScreenViewModel
 
 @Composable
 fun RootNavGraph(
@@ -29,9 +30,12 @@ fun RootNavGraph(
             startDestination = SplashScreen
         ) {
             composable<SplashScreen> {
+                val viewModel = hiltViewModel<SplashScreenViewModel>()
+                val state by viewModel.state.collectAsStateWithLifecycle()
                 SplashScreen(
+                    state = state,
                     onNavigate = {
-                        navController.navigate(LoginScreen)
+                        navController.navigate(it)
                     }
                 )
             }
