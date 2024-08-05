@@ -4,7 +4,6 @@ import android.content.Context
 import com.mycheva.app.core.network.ApiServices
 import com.mycheva.app.core.preferences.AppPreferences
 import com.mycheva.app.core.preferences.dataStore
-import com.mycheva.app.login.domain.LoginRepository
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -25,15 +24,6 @@ object AppModule {
     @Provides
     fun provideAppPreferences(@ApplicationContext context: Context): AppPreferences {
         return AppPreferences(requireNotNull(context.dataStore))
-    }
-
-    @Singleton
-    @Provides
-    fun provideLoginRepository(
-        appPreferences: AppPreferences,
-        apiServices: ApiServices
-    ): LoginRepository {
-        return LoginRepository(appPreferences, apiServices)
     }
 
     @Singleton
