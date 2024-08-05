@@ -17,16 +17,21 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.mycheva.app.core.ui.theme.Error
 import com.mycheva.app.core.ui.theme.Primary50
 import com.mycheva.app.core.ui.theme.Primary500
+import com.mycheva.app.core.ui.theme.poppinsFamily
 import com.mycheva.app.profile.main.presentation.component.ProfileButtons
 import com.mycheva.app.profile.main.presentation.component.ProfileDetails
 import com.mycheva.app.profile.main.presentation.component.ProfileImage
+import com.sendiko.content_box_with_notification.ContentBoxWithNotification
 
 @OptIn(ExperimentalMaterial3Api::class)
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
@@ -37,77 +42,97 @@ fun ProfileScreen(
     onNavigate: (destination: Any) -> Unit,
 ) {
     val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior()
-    Scaffold(
-        topBar = {
-            CenterAlignedTopAppBar(
-                title = {
-                    Text(
-                        text = "Profile",
-                        color = Primary50,
-                    )
-                },
-                actions = {
-                    IconButton(
-                        onClick = {
-                            onEvent(ProfileScreenEvent.OnLogout)
-                        }
-                    ) {
-                        Icon(
-                            imageVector = Icons.AutoMirrored.Rounded.Logout,
-                            contentDescription = "logout",
-                            tint = Primary50
-                        )
-                    }
-                },
-                colors = TopAppBarDefaults.centerAlignedTopAppBarColors(
-                    containerColor = Primary500
-                ),
-                scrollBehavior = scrollBehavior
-            )
-        }
-    ) {
-        LazyColumn(
-            modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
-            contentPadding = it
-        ) {
-            item {
-                Box(
-                    modifier = Modifier.height(156.dp),
-                    contentAlignment = Alignment.Center
-                ) {
-                    Column {
-                        Box(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .background(Primary500)
-                                .weight(1f)
-                        )
-                        Box(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .weight(1f)
-                        )
-                    }
-                    ProfileImage(
-                        imageUrl = state.user.imageUrl,
-                        onEditImage = {
-                            onEvent(ProfileScreenEvent.OnEditProfile)
-                        }
+    LaunchedEffect(key1 = state.token) {
+        if (state.token.isNotBlank())
+            onEvent(ProfileScreenEvent.OnGetProfile(state.token))
+    }
+    ContentBoxWithNotification(
+        message = state.notificationMessage,
+        isLoading = state.isLoading,
+        isErrorNotification = state.isError,
+        containerColor = Primary500,
+        contentColor = Primary50,
+        errorContainerColor = Error,
+        contentErrorColor = Primary50,
+        loadingContainerColor = Primary500,
+        loadingContentColor = Primary50,
+        textStyle = TextStyle(
+            fontFamily = poppinsFamily
+        ),
+        content = {
+            Scaffold(
+                topBar = {
+                    CenterAlignedTopAppBar(
+                        title = {
+                            Text(
+                                text = "Profile",
+                                color = Primary50,
+                            )
+                        },
+                        actions = {
+                            IconButton(
+                                onClick = {
+                                    onEvent(ProfileScreenEvent.OnLogout)
+                                }
+                            ) {
+                                Icon(
+                                    imageVector = Icons.AutoMirrored.Rounded.Logout,
+                                    contentDescription = "logout",
+                                    tint = Primary50
+                                )
+                            }
+                        },
+                        colors = TopAppBarDefaults.centerAlignedTopAppBarColors(
+                            containerColor = Primary500
+                        ),
+                        scrollBehavior = scrollBehavior
                     )
                 }
-            }
-            item {
-                ProfileDetails(
-                    user = state.user
-                )
-            }
-            item {
-                ProfileButtons(
-                    onNavigate = onNavigate
-                )
+            ) {
+                LazyColumn(
+                    modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
+                    contentPadding = it
+                ) {
+                    item {
+                        Box(
+                            modifier = Modifier.height(156.dp),
+                            contentAlignment = Alignment.Center
+                        ) {
+                            Column {
+                                Box(
+                                    modifier = Modifier
+                                        .fillMaxWidth()
+                                        .background(Primary500)
+                                        .weight(1f)
+                                )
+                                Box(
+                                    modifier = Modifier
+                                        .fillMaxWidth()
+                                        .weight(1f)
+                                )
+                            }
+                            ProfileImage(
+                                imageUrl = state.user.imageUrl,
+                                onEditImage = {
+                                    onEvent(ProfileScreenEvent.OnEditProfile)
+                                }
+                            )
+                        }
+                    }
+                    item {
+                        ProfileDetails(
+                            user = state.user
+                        )
+                    }
+                    item {
+                        ProfileButtons(
+                            onNavigate = onNavigate
+                        )
+                    }
+                }
             }
         }
-    }
+    )
 }
 
 @Preview
