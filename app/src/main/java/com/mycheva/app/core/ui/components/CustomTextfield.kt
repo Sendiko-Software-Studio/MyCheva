@@ -23,6 +23,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.mycheva.app.core.ui.theme.Error
 import com.mycheva.app.core.ui.theme.Neutral900
 import com.mycheva.app.core.ui.theme.poppinsFamily
 
@@ -34,7 +35,9 @@ fun CustomTextField(
     label: String = "",
     onClearClick: () -> Unit,
     leadingIcon: @Composable () -> Unit = {},
-    keyboardOption: KeyboardOptions = KeyboardOptions()
+    keyboardOption: KeyboardOptions = KeyboardOptions(),
+    isError: Boolean = false,
+    supportingText: String = ""
 ) {
     Column(
         modifier = modifier
@@ -52,6 +55,12 @@ fun CustomTextField(
                 .fillMaxWidth(),
             value = value,
             onValueChange = onValueChange,
+            leadingIcon = leadingIcon,
+            isError = isError,
+            keyboardOptions = keyboardOption,
+            supportingText = {
+                Text(text = supportingText,)
+            },
             colors = TextFieldDefaults.colors(
                 unfocusedIndicatorColor = Neutral900,
                 focusedIndicatorColor = Neutral900,
@@ -60,9 +69,11 @@ fun CustomTextField(
                 unfocusedTrailingIconColor = Neutral900,
                 focusedTrailingIconColor = Neutral900,
                 unfocusedLeadingIconColor = Neutral900,
-                focusedLeadingIconColor = Neutral900
+                focusedLeadingIconColor = Neutral900,
+                errorContainerColor = Color.Transparent,
+                errorIndicatorColor = Error,
+                errorLeadingIconColor = Error,
             ),
-            leadingIcon = leadingIcon,
             trailingIcon = {
                 AnimatedVisibility(visible = value.isNotBlank()) {
                     IconButton(onClick = onClearClick) {
@@ -73,8 +84,7 @@ fun CustomTextField(
                     }
                 }
             },
-            keyboardOptions = keyboardOption,
-            textStyle = TextStyle(fontFamily = poppinsFamily)
+            textStyle = TextStyle(fontFamily = poppinsFamily),
         )
     }
 }

@@ -21,6 +21,7 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.sp
+import com.mycheva.app.core.ui.theme.Error
 import com.mycheva.app.core.ui.theme.Neutral900
 import com.mycheva.app.core.ui.theme.poppinsFamily
 
@@ -33,6 +34,8 @@ fun CustomPasswordTextField(
     label: String = "",
     isVisible: Boolean = false,
     leadingIcon: @Composable () -> Unit = {},
+    isError: Boolean = false,
+    supportingText: String = ""
 ) {
     Column(
         modifier = modifier
@@ -50,6 +53,11 @@ fun CustomPasswordTextField(
                 .fillMaxWidth(),
             value = value,
             onValueChange = onValueChange,
+            textStyle = TextStyle(fontFamily = poppinsFamily),
+            isError = isError,
+            supportingText = {
+                Text(text = supportingText,)
+            },
             colors = TextFieldDefaults.colors(
                 unfocusedIndicatorColor = Neutral900,
                 focusedIndicatorColor = Neutral900,
@@ -58,7 +66,10 @@ fun CustomPasswordTextField(
                 unfocusedTrailingIconColor = Neutral900,
                 focusedTrailingIconColor = Neutral900,
                 unfocusedLeadingIconColor = Neutral900,
-                focusedLeadingIconColor = Neutral900
+                focusedLeadingIconColor = Neutral900,
+                errorContainerColor = Color.Transparent,
+                errorIndicatorColor = Error,
+                errorLeadingIconColor = Error,
             ),
             leadingIcon = leadingIcon,
             trailingIcon = {
@@ -81,8 +92,7 @@ fun CustomPasswordTextField(
             visualTransformation = if (isVisible) VisualTransformation.None else PasswordVisualTransformation(),
             keyboardOptions = KeyboardOptions(
                 keyboardType = KeyboardType.Password
-            ),
-            textStyle = TextStyle(fontFamily = poppinsFamily)
+            )
         )
     }
 }

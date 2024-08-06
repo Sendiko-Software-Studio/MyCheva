@@ -3,6 +3,7 @@ package com.mycheva.app.login.presentation
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.mycheva.app.core.ui.data.TextFieldError
 import com.mycheva.app.login.data.LoginRequest
 import com.mycheva.app.login.data.LoginResponse
 import com.mycheva.app.login.domain.LoginRepository
@@ -46,6 +47,28 @@ class LoginScreenViewModel @Inject constructor(
     }
 
     private fun login() {
+        if (state.value.usernameText.isBlank()) {
+            _state.update {
+                it.copy(
+                    usernameTextState = TextFieldError(
+                        isError = true,
+                        errorMessage = "Username can't be null."
+                    )
+                )
+            }
+            return
+        }
+        if (state.value.passwordText.isBlank()) {
+            _state.update {
+                it.copy(
+                    passwordTextState = TextFieldError(
+                        isError = true,
+                        errorMessage = "Password can't be null."
+                    )
+                )
+            }
+            return
+        }
         _state.update { it.copy(isLoading = true) }
         val data =
             LoginRequest(
@@ -66,12 +89,14 @@ class LoginScreenViewModel @Inject constructor(
                             viewModelScope.launch { repository.saveToken(response.body()!!.token) }
                             _state.update { it.copy(isSignInSuccessful = true) }
                         }
+
                         401 -> _state.update {
                             it.copy(
                                 isSignInFailed = true,
                                 notificationMessage = "Username atau password salah.",
                             )
                         }
+
                         else -> _state.update {
                             it.copy(
                                 isSignInFailed = true,

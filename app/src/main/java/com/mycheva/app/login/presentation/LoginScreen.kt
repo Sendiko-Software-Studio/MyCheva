@@ -25,10 +25,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.font.FontWeight.Companion.Bold
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -91,6 +91,8 @@ fun LoginScreen(
                     CustomTextField(
                         value = state.usernameText,
                         label = "Username",
+                        isError = state.usernameTextState.isError,
+                        supportingText = state.usernameTextState.errorMessage,
                         onValueChange = {
                             onEvent(LoginScreenEvent.OnUsernameChanged(it))
                         },
@@ -111,6 +113,9 @@ fun LoginScreen(
                     CustomPasswordTextField(
                         value = state.passwordText,
                         label = "Password",
+                        isVisible = state.isPasswordVisible,
+                        isError = state.passwordTextState.isError,
+                        supportingText = state.passwordTextState.errorMessage,
                         onValueChange = {
                             onEvent(LoginScreenEvent.OnPasswordChanged(it))
                         },
@@ -123,19 +128,19 @@ fun LoginScreen(
                                 contentDescription = "password"
                             )
                         },
-                        isVisible = state.isPasswordVisible
                     )
                     Text(
-                        text = "Lupa Password?",
-                        fontWeight = FontWeight.SemiBold,
-                        textAlign = TextAlign.End,
                         modifier = Modifier
                             .fillMaxWidth()
                             .padding(vertical = 16.dp)
                             .clickable {
                                 onNavigate(ResetPasswordScreen)
                             },
-                        fontFamily = poppinsFamily
+                        fontSize = 14.sp,
+                        text = "Lupa Password?",
+                        textAlign = TextAlign.End,
+                        fontFamily = poppinsFamily,
+                        textDecoration = TextDecoration.Underline,
                     )
                     Button(
                         colors = ButtonDefaults.buttonColors(
