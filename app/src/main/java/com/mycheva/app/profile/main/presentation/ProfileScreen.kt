@@ -21,18 +21,15 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
-import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.mycheva.app.core.navigation.SplashScreen
-import com.mycheva.app.core.ui.theme.Error
+import com.mycheva.app.core.ui.components.NotificationBox
 import com.mycheva.app.core.ui.theme.Primary50
 import com.mycheva.app.core.ui.theme.Primary500
-import com.mycheva.app.core.ui.theme.poppinsFamily
 import com.mycheva.app.profile.main.presentation.component.ProfileButtons
 import com.mycheva.app.profile.main.presentation.component.ProfileDetails
 import com.mycheva.app.profile.main.presentation.component.ProfileImage
-import com.sendiko.content_box_with_notification.ContentBoxWithNotification
 import kotlinx.coroutines.delay
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -61,19 +58,10 @@ fun ProfileScreen(
             onEvent(ProfileScreenEvent.OnClearState)
     }
 
-    ContentBoxWithNotification(
+    NotificationBox(
         message = state.notificationMessage,
         isLoading = state.isLoading,
         isErrorNotification = state.isError,
-        containerColor = Primary500,
-        contentColor = Primary50,
-        errorContainerColor = Error,
-        contentErrorColor = Primary50,
-        loadingContainerColor = Primary500,
-        loadingContentColor = Primary50,
-        textStyle = TextStyle(
-            fontFamily = poppinsFamily
-        ),
         content = {
             Scaffold(
                 topBar = {

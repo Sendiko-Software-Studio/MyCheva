@@ -25,7 +25,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.font.FontWeight.Companion.Bold
 import androidx.compose.ui.text.input.KeyboardType
@@ -38,11 +37,9 @@ import com.mycheva.app.core.navigation.MainGraph
 import com.mycheva.app.core.navigation.ResetPasswordScreen
 import com.mycheva.app.core.ui.components.CustomPasswordTextField
 import com.mycheva.app.core.ui.components.CustomTextField
-import com.mycheva.app.core.ui.theme.Error
-import com.mycheva.app.core.ui.theme.Primary50
+import com.mycheva.app.core.ui.components.NotificationBox
 import com.mycheva.app.core.ui.theme.Primary500
 import com.mycheva.app.core.ui.theme.poppinsFamily
-import com.sendiko.content_box_with_notification.ContentBoxWithNotification
 import kotlinx.coroutines.delay
 import androidx.compose.ui.res.painterResource as painterResource1
 
@@ -64,19 +61,10 @@ fun LoginScreen(
         }
     }
 
-    ContentBoxWithNotification(
+    NotificationBox(
         message = state.notificationMessage,
         isErrorNotification = state.isSignInFailed,
         isLoading = state.isLoading,
-        containerColor = Primary500,
-        contentColor = Primary50,
-        errorContainerColor = Error,
-        contentErrorColor = Primary50,
-        loadingContainerColor = Primary500,
-        loadingContentColor = Primary50,
-        textStyle = TextStyle(
-            fontFamily = poppinsFamily
-        ),
         content = {
             Scaffold {
                 Column(
