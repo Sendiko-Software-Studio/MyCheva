@@ -11,6 +11,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.mycheva.app.core.ui.theme.poppinsFamily
 
 @Composable
 fun ProfileDetailRow(label: String, value: String) {
@@ -23,13 +24,15 @@ fun ProfileDetailRow(label: String, value: String) {
             text = label,
             fontWeight = FontWeight.Normal,
             fontSize = 14.sp,
-            color = Color.Gray
+            color = Color.Gray,
+            fontFamily = poppinsFamily
         )
         Text(
             text = value,
             fontWeight = FontWeight.Normal,
             fontSize = 14.sp,
-            color = Color.Black
+            color = Color.Black,
+            fontFamily = poppinsFamily
         )
         HorizontalDivider(
             color = Color.Gray,

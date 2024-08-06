@@ -27,6 +27,7 @@ import com.mycheva.app.core.navigation.SplashScreen
 import com.mycheva.app.core.ui.components.NotificationBox
 import com.mycheva.app.core.ui.theme.Primary50
 import com.mycheva.app.core.ui.theme.Primary500
+import com.mycheva.app.core.ui.theme.poppinsFamily
 import com.mycheva.app.profile.main.presentation.component.ProfileButtons
 import com.mycheva.app.profile.main.presentation.component.ProfileDetails
 import com.mycheva.app.profile.main.presentation.component.ProfileImage
@@ -70,6 +71,7 @@ fun ProfileScreen(
                             Text(
                                 text = "Profile",
                                 color = Primary50,
+                                fontFamily = poppinsFamily
                             )
                         },
                         actions = {
