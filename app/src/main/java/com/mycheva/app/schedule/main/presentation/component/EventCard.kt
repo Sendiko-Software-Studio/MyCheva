@@ -1,14 +1,14 @@
 package com.mycheva.app.schedule.main.presentation.component
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.AccessTime
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -21,33 +21,41 @@ import com.mycheva.app.core.ui.theme.poppinsFamily
 
 @Composable
 fun EventCard(
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    onClick: () -> Unit,
 ) {
-    Column (
-        modifier = modifier
-            .fillMaxWidth()
-            .background(Primary300, shape = RoundedCornerShape(8.dp))
-            .padding(16.dp),
-        verticalArrangement = Arrangement.spacedBy(4.dp)
-    ) {
-        Text(
-            text = "Study group ke-3",
-            fontSize = 16.sp,
-            fontFamily = poppinsFamily
+    Card(
+        modifier = modifier,
+        onClick = onClick,
+        colors = CardDefaults.cardColors(
+            containerColor = Primary300
         )
-        Row(
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.spacedBy(8.dp)
+    ) {
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(16.dp),
+            verticalArrangement = Arrangement.spacedBy(4.dp)
         ) {
-            Icon(
-                imageVector = Icons.Rounded.AccessTime,
-                contentDescription = "Jam"
-            )
             Text(
-                text = "18.30 - 19.30",
+                text = "Study group ke-3",
                 fontSize = 16.sp,
                 fontFamily = poppinsFamily
             )
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.spacedBy(8.dp)
+            ) {
+                Icon(
+                    imageVector = Icons.Rounded.AccessTime,
+                    contentDescription = "Jam"
+                )
+                Text(
+                    text = "18.30 - 19.30",
+                    fontSize = 16.sp,
+                    fontFamily = poppinsFamily
+                )
+            }
         }
     }
 }

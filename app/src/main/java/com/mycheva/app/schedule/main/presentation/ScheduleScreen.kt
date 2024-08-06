@@ -14,6 +14,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.mycheva.app.core.navigation.DetailSchedule
 import com.mycheva.app.core.ui.theme.Primary50
 import com.mycheva.app.core.ui.theme.Primary500
 import com.mycheva.app.core.ui.theme.poppinsFamily
@@ -22,7 +23,9 @@ import com.mycheva.app.schedule.main.presentation.component.EventReminder
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun ScheduleScreen() {
+fun ScheduleScreen(
+    onNavigate: (destination: Any) -> Unit,
+) {
     Scaffold(
         topBar = {
             CenterAlignedTopAppBar(
@@ -50,7 +53,11 @@ fun ScheduleScreen() {
                     thickness = 2.dp,
                     modifier = Modifier.padding(vertical = 8.dp)
                 )
-                EventReminder(paddingValues)
+                EventReminder(
+                    onEventCalendarClick = {
+                        onNavigate(DetailSchedule)
+                    }
+                )
             }
 
         }
@@ -60,5 +67,7 @@ fun ScheduleScreen() {
 @Preview
 @Composable
 private fun ScheduleScreenPrev() {
-    ScheduleScreen()
+    ScheduleScreen(
+        onNavigate = { }
+    )
 }

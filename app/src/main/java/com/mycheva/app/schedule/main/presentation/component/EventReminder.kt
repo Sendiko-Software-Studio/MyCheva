@@ -2,7 +2,6 @@ package com.mycheva.app.schedule.main.presentation.component
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Text
@@ -17,7 +16,9 @@ import java.util.Calendar
 import java.util.Locale
 
 @Composable
-fun EventReminder(paddingValues: PaddingValues) {
+fun EventReminder(
+    onEventCalendarClick: () -> Unit,
+) {
     val calendar = Calendar.getInstance()
     val dateFormat = SimpleDateFormat("MMMM dd", Locale.getDefault())
     val formattedDate = dateFormat.format(calendar.time)
@@ -33,6 +34,8 @@ fun EventReminder(paddingValues: PaddingValues) {
             fontWeight = FontWeight.SemiBold,
             fontFamily = poppinsFamily,
         )
-        EventCard()
+        EventCard(
+            onClick = onEventCalendarClick
+        )
     }
 }

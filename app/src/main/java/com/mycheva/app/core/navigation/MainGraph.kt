@@ -25,6 +25,7 @@ import com.mycheva.app.profile.edit_username.EditUsernameScreen
 import com.mycheva.app.profile.edit_username.EditUsernameScreenViewModel
 import com.mycheva.app.profile.main.presentation.ProfileScreen
 import com.mycheva.app.profile.main.presentation.ProfileScreenViewModel
+import com.mycheva.app.schedule.detail.presentation.DetailScheduleScreen
 import com.mycheva.app.schedule.main.presentation.ScheduleScreen
 
 @Composable
@@ -61,11 +62,22 @@ fun MainGraph(
             )
         }
         composable<ScheduleScreen> {
-            ScheduleScreen()
+            ScheduleScreen(
+                onNavigate = {
+                    navController.navigate(it)
+                }
+            )
         }
         navigation<DetailsGraph>(
             startDestination = AttendanceScreen
         ) {
+            composable<DetailSchedule> {
+                DetailScheduleScreen(
+                    onNavigateBack = {
+                        navController.navigateUp()
+                    }
+                )
+            }
             composable<EditUsernameScreen> {
                 val viewModel = viewModel<EditUsernameScreenViewModel>()
                 val state by viewModel.state.collectAsStateWithLifecycle()
