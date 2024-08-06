@@ -43,6 +43,9 @@ data object EditPasswordScreen
 data object ScheduleScreen
 
 @Serializable
+data object DetailSchedule
+
+@Serializable
 data object AnnouncementScreen
 
 @Serializable
