@@ -1,4 +1,4 @@
-package com.mycheva.app.schedule
+package com.mycheva.app.schedule.detail.presentation
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column

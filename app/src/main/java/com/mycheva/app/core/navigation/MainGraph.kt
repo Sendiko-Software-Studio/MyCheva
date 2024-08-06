@@ -25,7 +25,7 @@ import com.mycheva.app.profile.edit_username.EditUsernameScreen
 import com.mycheva.app.profile.edit_username.EditUsernameScreenViewModel
 import com.mycheva.app.profile.main.presentation.ProfileScreen
 import com.mycheva.app.profile.main.presentation.ProfileScreenViewModel
-import com.mycheva.app.schedule.ScheduleScreen
+import com.mycheva.app.schedule.main.presentation.ScheduleScreen
 
 @Composable
 fun MainGraph(
