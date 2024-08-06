@@ -21,6 +21,7 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.sp
+import com.mycheva.app.core.ui.theme.Neutral900
 import com.mycheva.app.core.ui.theme.poppinsFamily
 
 @Composable
@@ -50,14 +51,14 @@ fun CustomPasswordTextField(
             value = value,
             onValueChange = onValueChange,
             colors = TextFieldDefaults.colors(
-                unfocusedIndicatorColor = Color.Black,
-                focusedIndicatorColor = Color.Black,
+                unfocusedIndicatorColor = Neutral900,
+                focusedIndicatorColor = Neutral900,
                 unfocusedContainerColor = Color.Transparent,
                 focusedContainerColor = Color.Transparent,
-                unfocusedTrailingIconColor = Color.Black,
-                focusedTrailingIconColor = Color.Black,
-                unfocusedLeadingIconColor = Color.Black,
-                focusedLeadingIconColor = Color.Black
+                unfocusedTrailingIconColor = Neutral900,
+                focusedTrailingIconColor = Neutral900,
+                unfocusedLeadingIconColor = Neutral900,
+                focusedLeadingIconColor = Neutral900
             ),
             leadingIcon = leadingIcon,
             trailingIcon = {
