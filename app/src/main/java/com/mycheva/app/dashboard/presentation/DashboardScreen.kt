@@ -1,5 +1,8 @@
 package com.mycheva.app.dashboard.presentation
 
+import androidx.compose.animation.AnimatedVisibilityScope
+import androidx.compose.animation.ExperimentalSharedTransitionApi
+import androidx.compose.animation.SharedTransitionScope
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -28,7 +31,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.mycheva.app.R
@@ -39,10 +41,11 @@ import com.mycheva.app.core.ui.theme.poppinsFamily
 import com.mycheva.app.dashboard.presentation.component.MeetingCard
 import com.mycheva.app.dashboard.presentation.component.MenuCard
 
-@OptIn(ExperimentalMaterial3Api::class)
+@OptIn(ExperimentalMaterial3Api::class, ExperimentalSharedTransitionApi::class)
 @Composable
-fun DashboardScreen(
-    onNavigate: (route: Any) -> Unit
+fun SharedTransitionScope.DashboardScreen(
+    onNavigate: (route: Any) -> Unit,
+    animatedVisibilityScope: AnimatedVisibilityScope
 ) {
     val topAppBarScrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior()
     Scaffold(
@@ -58,7 +61,12 @@ fun DashboardScreen(
                         Image(
                             painter = painterResource(id = R.drawable.chevalier_logo),
                             contentDescription = "logo",
-                            modifier = Modifier.size(48.dp)
+                            modifier = Modifier
+                                .size(48.dp)
+                                .sharedElement(
+                                state = rememberSharedContentState(key = "chevalier_logo"),
+                                animatedVisibilityScope = animatedVisibilityScope
+                            ),
                         )
                         Text(
                             text = "MyCheva",
@@ -160,14 +168,4 @@ fun DashboardScreen(
             }
         }
     }
-}
-
-@Preview
-@Composable
-private fun DashboardScreenPrev() {
-    DashboardScreen(
-        onNavigate = {
-
-        }
-    )
 }

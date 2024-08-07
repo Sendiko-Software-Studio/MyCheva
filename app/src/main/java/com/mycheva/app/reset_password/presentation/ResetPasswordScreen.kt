@@ -1,5 +1,8 @@
 package com.mycheva.app.reset_password.presentation
 
+import androidx.compose.animation.AnimatedContentScope
+import androidx.compose.animation.ExperimentalSharedTransitionApi
+import androidx.compose.animation.SharedTransitionScope
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -21,7 +24,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.mycheva.app.R
@@ -32,10 +34,13 @@ import com.mycheva.app.core.ui.theme.poppinsFamily
 import androidx.compose.ui.res.painterResource as painterResource1
 
 
+@OptIn(ExperimentalSharedTransitionApi::class)
 @Composable
-fun ResetPasswordScreen(
+fun SharedTransitionScope.ResetPasswordScreen(
     state: ResetPasswordScreenState,
     onEvent: (ResetPasswordScreenEvent) -> Unit,
+    animatedVisibilityScope: AnimatedContentScope,
+    onNavigateBack: () -> Unit,
 ) {
     Column(
         verticalArrangement = Arrangement.Top,
@@ -49,6 +54,10 @@ fun ResetPasswordScreen(
             contentDescription = "logo cheva",
             modifier = Modifier
                 .size(128.dp)
+                .sharedElement(
+                    state = rememberSharedContentState(key = "chevalier_logo"),
+                    animatedVisibilityScope = animatedVisibilityScope
+                )
         )
         Spacer(modifier = Modifier.height(16.dp))
         Text(
@@ -63,8 +72,8 @@ fun ResetPasswordScreen(
         Spacer(modifier = Modifier.height(64.dp))
         CustomTextField(
             label = "Masukkan email anda",
-            value = "",
-            onValueChange = { },
+            value = state.emailText,
+            onValueChange = { onEvent(ResetPasswordScreenEvent.OnEmailTextChange(it)) },
             onClearClick = { /*TODO*/ },
             modifier = Modifier
                 .fillMaxWidth()
@@ -92,7 +101,7 @@ fun ResetPasswordScreen(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(horizontal = 16.dp),
-            onClick = { },
+            onClick = onNavigateBack,
             content = {
                 Text(
                     text = "Kembali ke halaman login",
@@ -104,13 +113,4 @@ fun ResetPasswordScreen(
             },
         )
     }
-}
-
-@Preview
-@Composable
-private fun ResetPasswordScreenPrev() {
-    ResetPasswordScreen(
-        state = ResetPasswordScreenState(),
-        onEvent = { }
-    )
 }

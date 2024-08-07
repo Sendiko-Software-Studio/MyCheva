@@ -1,5 +1,8 @@
 package com.mycheva.app.schedule.detail.presentation
 
+import androidx.compose.animation.AnimatedVisibilityScope
+import androidx.compose.animation.ExperimentalSharedTransitionApi
+import androidx.compose.animation.SharedTransitionScope
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -13,17 +16,17 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.mycheva.app.core.ui.components.CenteredAppBar
 import com.mycheva.app.core.ui.theme.poppinsFamily
 import com.mycheva.app.schedule.main.presentation.component.EventCard
 
-@OptIn(ExperimentalMaterial3Api::class)
+@OptIn(ExperimentalMaterial3Api::class, ExperimentalSharedTransitionApi::class)
 @Composable
-fun DetailScheduleScreen(
-    onNavigateBack: () -> Unit
+fun SharedTransitionScope.DetailScheduleScreen(
+    onNavigateBack: () -> Unit,
+    animatedVisibilityScope: AnimatedVisibilityScope
 ) {
     Scaffold(
         topBar = {
@@ -40,7 +43,10 @@ fun DetailScheduleScreen(
             ) {
                 item {
                     EventCard(
-                        modifier = Modifier.padding(16.dp),
+                        modifier = Modifier.padding(16.dp).sharedElement(
+                            state = rememberSharedContentState(key = "event_card"),
+                            animatedVisibilityScope = animatedVisibilityScope
+                        ),
                         onClick = { }
                     )
                 }
@@ -114,12 +120,4 @@ fun LocationSection(
             )
         }
     }
-}
-
-@Preview
-@Composable
-private fun DetailScheduleScreenPrev() {
-    DetailScheduleScreen(
-        onNavigateBack = { }
-    )
 }
