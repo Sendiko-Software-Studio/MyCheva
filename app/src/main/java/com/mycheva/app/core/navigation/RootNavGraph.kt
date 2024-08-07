@@ -110,7 +110,9 @@ fun RootNavGraph(
             NavHost(
                 navController = navController,
                 startDestination = AuthGraph,
-                modifier = Modifier.padding().fillMaxSize()
+                modifier = Modifier
+                    .padding()
+                    .fillMaxSize(),
             ) {
                 navigation<AuthGraph>(
                     startDestination = SplashScreen
@@ -134,7 +136,7 @@ fun RootNavGraph(
                             onEvent = viewModel::onEvent,
                             animatedVisibilityScope = this,
                             onNavigate = {
-                                navController.navigate(it) { popUpTo(it) { inclusive  = true } }
+                                navController.navigate(it) { popUpTo(it) { inclusive = true } }
                             }
                         )
                     }
@@ -152,7 +154,13 @@ fun RootNavGraph(
                     }
                 }
                 navigation<MainGraph>(
-                    startDestination = DashboardScreen
+                    startDestination = DashboardScreen,
+                    enterTransition = {
+                        fadeIn()
+                    },
+                    exitTransition = {
+                        fadeOut()
+                    }
                 ) {
                     composable<DashboardScreen> {
                         DashboardScreen(
@@ -179,6 +187,7 @@ fun RootNavGraph(
                     }
                     composable<ScheduleScreen> {
                         ScheduleScreen(
+                            animatedVisibilityScope = this,
                             onNavigate = {
                                 navController.navigate(it)
                             }
@@ -189,6 +198,7 @@ fun RootNavGraph(
                     ) {
                         composable<DetailSchedule> {
                             DetailScheduleScreen(
+                                animatedVisibilityScope = this,
                                 onNavigateBack = {
                                     navController.navigateUp()
                                 }
