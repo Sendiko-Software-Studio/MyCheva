@@ -1,5 +1,7 @@
 package com.mycheva.app.core.navigation
 
+import androidx.compose.animation.ExperimentalSharedTransitionApi
+import androidx.compose.animation.SharedTransitionLayout
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -28,123 +30,127 @@ import com.mycheva.app.profile.main.presentation.ProfileScreenViewModel
 import com.mycheva.app.schedule.detail.presentation.DetailScheduleScreen
 import com.mycheva.app.schedule.main.presentation.ScheduleScreen
 
+@OptIn(ExperimentalSharedTransitionApi::class)
 @Composable
 fun MainGraph(
     modifier: Modifier = Modifier,
     navController: NavHostController,
     onNavigate: (destination: Any) -> Unit
 ) {
-    NavHost(
-        navController = navController,
-        startDestination = DashboardScreen,
-        modifier = modifier.fillMaxSize()
-    ) {
-        composable<DashboardScreen> {
-            DashboardScreen(
-                onNavigate = {
-                    navController.navigate(it)
-                }
-            )
-        }
-        composable<ProfileScreen> {
-            val viewModel = hiltViewModel<ProfileScreenViewModel>()
-            val state by viewModel.state.collectAsStateWithLifecycle()
-            ProfileScreen(
-                state = state,
-                onEvent = viewModel::onEvent,
-                onNavigate = {
-                    if (it is SplashScreen) {
-                        onNavigate(it)
-                    } else {
+    SharedTransitionLayout {
+        NavHost(
+            navController = navController,
+            startDestination = DashboardScreen,
+            modifier = modifier.fillMaxSize()
+        ) {
+            composable<DashboardScreen> {
+                DashboardScreen(
+                    onNavigate = {
+                        navController.navigate(it)
+                    },
+                    animatedVisibilityScope = this
+                )
+            }
+            composable<ProfileScreen> {
+                val viewModel = hiltViewModel<ProfileScreenViewModel>()
+                val state by viewModel.state.collectAsStateWithLifecycle()
+                ProfileScreen(
+                    state = state,
+                    onEvent = viewModel::onEvent,
+                    onNavigate = {
+                        if (it is SplashScreen) {
+                            onNavigate(it)
+                        } else {
+                            navController.navigate(it)
+                        }
+                    }
+                )
+            }
+            composable<ScheduleScreen> {
+                ScheduleScreen(
+                    onNavigate = {
                         navController.navigate(it)
                     }
+                )
+            }
+            navigation<DetailsGraph>(
+                startDestination = AttendanceScreen
+            ) {
+                composable<DetailSchedule> {
+                    DetailScheduleScreen(
+                        onNavigateBack = {
+                            navController.navigateUp()
+                        }
+                    )
                 }
-            )
-        }
-        composable<ScheduleScreen> {
-            ScheduleScreen(
-                onNavigate = {
-                    navController.navigate(it)
+                composable<EditUsernameScreen> {
+                    val viewModel = viewModel<EditUsernameScreenViewModel>()
+                    val state by viewModel.state.collectAsStateWithLifecycle()
+                    EditUsernameScreen(
+                        state = state,
+                        onEvent = viewModel::onEvent,
+                        onNavigate = {
+                            navController.navigateUp()
+                        }
+                    )
                 }
-            )
-        }
-        navigation<DetailsGraph>(
-            startDestination = AttendanceScreen
-        ) {
-            composable<DetailSchedule> {
-                DetailScheduleScreen(
-                    onNavigateBack = {
-                        navController.navigateUp()
-                    }
-                )
-            }
-            composable<EditUsernameScreen> {
-                val viewModel = viewModel<EditUsernameScreenViewModel>()
-                val state by viewModel.state.collectAsStateWithLifecycle()
-                EditUsernameScreen(
-                    state = state,
-                    onEvent = viewModel::onEvent,
-                    onNavigate = {
-                        navController.navigateUp()
-                    }
-                )
-            }
-            composable<EditPasswordScreen> {
-                val viewModel = viewModel<EditPasswordScreenViewModel>()
-                val state by viewModel.state.collectAsStateWithLifecycle()
-                EditPasswordScreen(
-                    state = state,
-                    onEvent = viewModel::onEvent,
-                    onNavigate = {
-                        navController.navigateUp()
-                    }
-                )
-            }
-            composable<AttendanceScreen> {
-                AttendanceScreen(
-                    onNavigateBack = {
-                        navController.navigateUp()
-                    }
-                )
-            }
-            composable<AnnouncementScreen> {
-                val viewModel = viewModel<AnnouncementViewModel>()
-                val state by viewModel.state.collectAsStateWithLifecycle()
-                AnnouncementScreen(
-                    state = state,
-                    onEvent = viewModel::onEvent,
-                    onNavigate = {
-                        if (it == null) {
+                composable<EditPasswordScreen> {
+                    val viewModel = viewModel<EditPasswordScreenViewModel>()
+                    val state by viewModel.state.collectAsStateWithLifecycle()
+                    EditPasswordScreen(
+                        state = state,
+                        onEvent = viewModel::onEvent,
+                        onNavigate = {
                             navController.navigateUp()
-                        } else navController.navigate(it)
-                    }
-                )
-            }
-            composable<ForumScreen> {
-                val viewModel = viewModel<ForumScreenViewModel>()
-                val state by viewModel.state.collectAsStateWithLifecycle()
-                ForumScreen(
-                    state = state,
-                    onEvent = viewModel::onEvent,
-                    onNavigate = {
-                        if (it == null) {
+                        }
+                    )
+                }
+                composable<AttendanceScreen> {
+                    AttendanceScreen(
+                        onNavigateBack = {
                             navController.navigateUp()
-                        } else navController.navigate(it)
-                    }
-                )
-            }
-            composable<BookmarkScreen> {
-                val viewModel = viewModel<BookmarkScreenViewModel>()
-                val state by viewModel.state.collectAsStateWithLifecycle()
-                BookmarkScreen(
-                    state = state,
-                    onEvent = viewModel::onEvent,
-                    onNavigate = {
-                        if (it == null) {
-                            navController.navigateUp()
-                        } else navController.navigate(it)
-                    }
-                )
+                        }
+                    )
+                }
+                composable<AnnouncementScreen> {
+                    val viewModel = viewModel<AnnouncementViewModel>()
+                    val state by viewModel.state.collectAsStateWithLifecycle()
+                    AnnouncementScreen(
+                        state = state,
+                        onEvent = viewModel::onEvent,
+                        onNavigate = {
+                            if (it == null) {
+                                navController.navigateUp()
+                            } else navController.navigate(it)
+                        }
+                    )
+                }
+                composable<ForumScreen> {
+                    val viewModel = viewModel<ForumScreenViewModel>()
+                    val state by viewModel.state.collectAsStateWithLifecycle()
+                    ForumScreen(
+                        state = state,
+                        onEvent = viewModel::onEvent,
+                        onNavigate = {
+                            if (it == null) {
+                                navController.navigateUp()
+                            } else navController.navigate(it)
+                        }
+                    )
+                }
+                composable<BookmarkScreen> {
+                    val viewModel = viewModel<BookmarkScreenViewModel>()
+                    val state by viewModel.state.collectAsStateWithLifecycle()
+                    BookmarkScreen(
+                        state = state,
+                        onEvent = viewModel::onEvent,
+                        onNavigate = {
+                            if (it == null) {
+                                navController.navigateUp()
+                            } else navController.navigate(it)
+                        }
+                    )
+                }
             }
         }
     }

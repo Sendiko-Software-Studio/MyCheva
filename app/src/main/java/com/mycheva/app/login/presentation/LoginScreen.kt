@@ -1,6 +1,9 @@
 package com.mycheva.app.login.presentation
 
 import android.annotation.SuppressLint
+import androidx.compose.animation.AnimatedVisibilityScope
+import androidx.compose.animation.ExperimentalSharedTransitionApi
+import androidx.compose.animation.SharedTransitionScope
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -29,7 +32,6 @@ import androidx.compose.ui.text.font.FontWeight.Companion.Bold
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextDecoration
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.mycheva.app.R
@@ -43,12 +45,14 @@ import com.mycheva.app.core.ui.theme.poppinsFamily
 import kotlinx.coroutines.delay
 import androidx.compose.ui.res.painterResource as painterResource1
 
+@OptIn(ExperimentalSharedTransitionApi::class)
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
-fun LoginScreen(
+fun SharedTransitionScope.LoginScreen(
     state: LoginScreenState,
     onEvent: (LoginScreenEvent) -> Unit,
-    onNavigate: (destination: Any) -> Unit
+    onNavigate: (destination: Any) -> Unit,
+    animatedVisibilityScope: AnimatedVisibilityScope
 ) {
 
     LaunchedEffect(key1 = state) {
@@ -76,11 +80,15 @@ fun LoginScreen(
                 ) {
                     Spacer(modifier = Modifier.height(64.dp))
                     Image(
-                        painter = painterResource1(id = R.drawable.chevalier_logo),
-                        contentDescription = "logo cheva",
                         modifier = Modifier
                             .padding(vertical = 8.dp)
                             .size(200.dp)
+                            .sharedElement(
+                                state = rememberSharedContentState(key = "chevalier_logo"),
+                                animatedVisibilityScope = animatedVisibilityScope
+                            ),
+                        painter = painterResource1(id = R.drawable.chevalier_logo),
+                        contentDescription = "logo cheva"
                     )
                     Text(
                         text = "Login",
@@ -164,15 +172,5 @@ fun LoginScreen(
                 }
             }
         }
-    )
-}
-
-@Preview
-@Composable
-private fun LoginScreenPrev() {
-    LoginScreen(
-        state = LoginScreenState(),
-        onEvent = { },
-        onNavigate = { }
     )
 }
