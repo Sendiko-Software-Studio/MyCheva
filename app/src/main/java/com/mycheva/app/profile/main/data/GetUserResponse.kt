@@ -4,48 +4,90 @@ import com.google.gson.annotations.SerializedName
 
 data class GetUserResponse(
 
-	@field:SerializedName("data")
-	val data: Data,
-
 	@field:SerializedName("message")
 	val message: String,
 
+	@field:SerializedName("user")
+	val user: User1,
+
 	@field:SerializedName("status")
-	val status: Boolean
+	val status: Int
 )
 
-data class Data(
+data class Division(
 
-	@field:SerializedName("fakultas")
-	val fakultas: String,
-
-	@field:SerializedName("nim")
-	val nim: String,
-
-	@field:SerializedName("nama")
-	val nama: String,
-
-	@field:SerializedName("updated_at")
-	val updatedAt: String,
-
-	@field:SerializedName("created_at")
+	@field:SerializedName("createdAt")
 	val createdAt: String,
+
+	@field:SerializedName("name")
+	val name: String,
 
 	@field:SerializedName("id")
 	val id: Int,
 
-	@field:SerializedName("divisi")
-	val divisi: String,
+	@field:SerializedName("updatedAt")
+	val updatedAt: String
+)
 
-	@field:SerializedName("prodi")
-	val prodi: String,
+data class UserDatum(
 
-	@field:SerializedName("url_foto_profile")
-	val urlFotoProfile: String,
+	@field:SerializedName("division")
+	val division: Division,
+
+	@field:SerializedName("createdAt")
+	val createdAt: String,
+
+	@field:SerializedName("nim")
+	val nim: String,
+
+	@field:SerializedName("major")
+	val major: String,
+
+	@field:SerializedName("imageUrl")
+	val imageUrl: String,
+
+	@field:SerializedName("fullName")
+	val fullName: String,
+
+	@field:SerializedName("id")
+	val id: Int,
+
+	@field:SerializedName("divisionId")
+	val divisionId: Int,
+
+	@field:SerializedName("userId")
+	val userId: Int,
 
 	@field:SerializedName("email")
 	val email: String,
 
-	@field:SerializedName("username")
-	val username: String
+	@field:SerializedName("faculty")
+	val faculty: String,
+
+	@field:SerializedName("updatedAt")
+	val updatedAt: String
+)
+
+data class User1(
+
+	@field:SerializedName("profileUrl")
+	val profileUrl: String,
+
+	@field:SerializedName("createdAt")
+	val createdAt: String,
+
+	@field:SerializedName("password")
+	val password: String,
+
+	@field:SerializedName("name")
+	val name: String,
+
+	@field:SerializedName("id")
+	val id: Int,
+
+	@field:SerializedName("user_datum")
+	val userDatum: UserDatum,
+
+	@field:SerializedName("updatedAt")
+	val updatedAt: String
 )

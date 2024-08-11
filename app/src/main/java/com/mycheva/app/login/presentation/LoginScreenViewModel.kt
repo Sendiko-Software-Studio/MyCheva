@@ -72,7 +72,7 @@ class LoginScreenViewModel @Inject constructor(
         _state.update { it.copy(isLoading = true) }
         val data =
             LoginRequest(
-                email = state.value.usernameText,
+                name = state.value.usernameText,
                 password = state.value.passwordText
             )
         val request = repository.login(data)
@@ -86,7 +86,10 @@ class LoginScreenViewModel @Inject constructor(
                     Log.i("DEBUG", "loginRepository, onResponse: run")
                     when (response.code()) {
                         200 -> {
-                            viewModelScope.launch { repository.saveToken(response.body()!!.token) }
+                            viewModelScope.launch {
+                                repository.saveToken(response.body()!!.token)
+                                repository.saveUserId(response.body()!!.user.id.toString())
+                            }
                             _state.update { it.copy(isSignInSuccessful = true) }
                         }
 
