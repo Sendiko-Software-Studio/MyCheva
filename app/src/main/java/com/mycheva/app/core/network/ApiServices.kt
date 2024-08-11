@@ -9,6 +9,7 @@ import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.Header
 import retrofit2.http.POST
+import retrofit2.http.Path
 
 interface ApiServices {
 
@@ -17,14 +18,15 @@ interface ApiServices {
         @Body loginRequest: LoginRequest
     ): Call<LoginResponse>
 
-    @GET("userdata")
+    @GET("userdata/{id}")
     fun getUser(
         @Header("Authorization") token: String,
+        @Path("id") id: String
     ): Call<GetUserResponse>
 
     @GET("logout")
     fun logout(
-        @Header("Authorization") token: String,
+        @Header("Authorization") token: String
     ): Call<LogoutResponse>
 
 }

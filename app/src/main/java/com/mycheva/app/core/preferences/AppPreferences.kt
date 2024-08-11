@@ -13,6 +13,19 @@ class AppPreferences @Inject constructor(
 ) {
 
     private val tokenKey = stringPreferencesKey("token")
+    private val userIdKey = stringPreferencesKey("userId")
+
+    suspend fun saveUserId(userId: String) {
+        dataStore.edit { preferences ->
+            preferences[userIdKey] = userId
+        }
+    }
+
+    fun getUserId(): Flow<String> {
+        return dataStore.data.map {
+            it[userIdKey]?:""
+        }
+    }
 
     suspend fun saveToken(token: String) {
         dataStore.edit { preferences ->
@@ -23,6 +36,7 @@ class AppPreferences @Inject constructor(
     suspend fun deleteToken() {
         dataStore.edit { preferences ->
             preferences[tokenKey] = ""
+            preferences[userIdKey] = ""
         }
     }
 

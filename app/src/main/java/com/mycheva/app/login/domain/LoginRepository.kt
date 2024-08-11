@@ -16,4 +16,8 @@ class LoginRepository @Inject constructor(
         appPreferences.saveToken(token)
     }
 
+    suspend fun saveUserId(userId: String) {
+        appPreferences.saveUserId(userId)
+    }
+
 }

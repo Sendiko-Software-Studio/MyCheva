@@ -10,11 +10,17 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
-import com.mycheva.app.profile.main.data.User
 
 
 @Composable
-fun ProfileDetails(user: User) {
+fun ProfileDetails(
+    username: String = "",
+    name: String = "",
+    nim: String = "",
+    faculty: String = "",
+    major: String = "",
+    division: String = "",
+) {
     Column(
         modifier = Modifier
             .fillMaxWidth()
@@ -22,11 +28,11 @@ fun ProfileDetails(user: User) {
             .background(Color.White, shape = MaterialTheme.shapes.medium),
         verticalArrangement = Arrangement.spacedBy(8.dp)
     ) {
-        ProfileDetailRow(label = "Username", value = user.username)
-        ProfileDetailRow(label = "Nama", value = user.name)
-        ProfileDetailRow(label = "NIM", value = user.nim)
-        ProfileDetailRow(label = "Fakultas", value = user.faculty)
-        ProfileDetailRow(label = "Jurusan", value = user.major)
-        ProfileDetailRow(label = "Divisi", value = user.division)
+        ProfileDetailRow(label = "Username", value = username)
+        ProfileDetailRow(label = "Nama", value = name)
+        ProfileDetailRow(label = "NIM", value = nim)
+        ProfileDetailRow(label = "Fakultas", value = faculty)
+        ProfileDetailRow(label = "Jurusan", value = major)
+        ProfileDetailRow(label = "Divisi", value = division)
     }
 }
