@@ -38,6 +38,7 @@ import com.mycheva.app.core.ui.theme.Primary50
 import com.mycheva.app.core.ui.theme.Primary500
 import com.mycheva.app.core.ui.theme.Primary900
 import com.mycheva.app.dashboard.presentation.DashboardScreen
+import com.mycheva.app.dashboard.presentation.DashboardScreenViewModel
 import com.mycheva.app.forum.main.presentation.ForumScreen
 import com.mycheva.app.forum.main.presentation.ForumScreenViewModel
 import com.mycheva.app.login.presentation.LoginScreen
@@ -163,7 +164,11 @@ fun RootNavGraph(
                     }
                 ) {
                     composable<DashboardScreen> {
+                        val viewModel = hiltViewModel<DashboardScreenViewModel>()
+                        val state by viewModel.state.collectAsStateWithLifecycle()
                         DashboardScreen(
+                            state = state,
+                            onEvent = viewModel::onEvent,
                             onNavigate = {
                                 navController.navigate(it)
                             },
