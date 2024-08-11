@@ -14,9 +14,13 @@ class ProfileRepository @Inject constructor(
         return appPreferences.getToken()
     }
 
+    fun getUserId(): Flow<String> {
+        return appPreferences.getUserId()
+    }
+
     suspend fun deleteToken() = appPreferences.deleteToken()
 
-    fun getUser(token: String) = apiServices.getUser(token)
+    fun getUser(token: String, userId: String) = apiServices.getUser(token, userId)
 
     fun logout(token: String) = apiServices.logout(token)
 

@@ -1,12 +1,13 @@
 package com.mycheva.app.profile.main.presentation
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.mycheva.app.profile.main.data.GetUserResponse
-import com.mycheva.app.profile.main.data.User
 import com.mycheva.app.profile.main.domain.ProfileRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.combine
@@ -24,50 +25,44 @@ class ProfileScreenViewModel @Inject constructor(
 ): ViewModel() {
 
     private val _token = repository.getToken()
+    private val _userId = repository.getUserId()
     private val _state = MutableStateFlow(ProfileScreenState())
-    val state = combine(_token, _state) { token, state ->
-        state.copy(token = token)
+    val state = combine(_token, _userId, _state) { token, userId, state ->
+        state.copy(
+            token = token,
+            id = userId
+        )
     }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), ProfileScreenState())
 
     fun onEvent(event: ProfileScreenEvent) {
         when (event) {
             ProfileScreenEvent.OnClearState -> clearState()
             ProfileScreenEvent.OnEditProfile -> TODO()
-            is ProfileScreenEvent.OnLogout -> logout(event.token)
-            is ProfileScreenEvent.OnGetProfile -> getProfile(event.token)
+            is ProfileScreenEvent.OnLogout -> logout()
+            is ProfileScreenEvent.OnGetProfile -> getProfile(event.token, event.userId)
             }
         }
 
-    private fun logout(token: String) {
+    private fun logout() {
         _state.update { it.copy(isLoading = true) }
-        val bearerToken = "Bearer $token"
-        val request = repository.logout(bearerToken)
         viewModelScope.launch(Dispatchers.IO) {
-            if (request.execute().isSuccessful){
-                repository.deleteToken()
-                _state.update {
-                    it.copy(
-                        isLoading = false,
-                        isError = false,
-                        notificationMessage = "Logout success.",
-                        isLogoutSuccess = true
-                    )
-                }
-            } else {
-                _state.update {
-                    it.copy(
-                        isError = true,
-                        notificationMessage = "Something went wrong."
-                    )
-                }
+            repository.deleteToken()
+            delay(1000)
+            _state.update {
+                it.copy(
+                    isLoading = false,
+                    isError = false,
+                    notificationMessage = "Logout success.",
+                    isLogoutSuccess = true
+                )
             }
         }
     }
 
-    private fun getProfile(token: String) {
+    private fun getProfile(token: String, userId: String) {
         _state.update { it.copy(isLoading = true) }
         val bearerToken = "Bearer $token"
-        val request = repository.getUser(bearerToken)
+        val request = repository.getUser(bearerToken, userId)
         request.enqueue(
             object : Callback<GetUserResponse> {
                 override fun onResponse(
@@ -76,18 +71,19 @@ class ProfileScreenViewModel @Inject constructor(
                 ) {
                     _state.update { it.copy(isLoading = false) }
                     when(response.code()) {
-                        200 -> _state.update {
-                            it.copy(
-                                user = User(
-                                    name = response.body()?.data?.nama ?: "",
-                                    username = response.body()?.data?.username ?: "",
-                                    nim = response.body()?.data?.nim ?: "",
-                                    faculty = response.body()?.data?.fakultas ?: "",
-                                    major = response.body()?.data?.prodi ?: "",
-                                    division = response.body()?.data?.divisi ?: "",
-                                    imageUrl = response.body()?.data?.urlFotoProfile ?: ""
+                        200 -> {
+                            Log.i("DEBUG", "onResponse: ${response.body()?.user?.userDatum}")
+                            _state.update {
+                                it.copy(
+                                    name = response.body()?.user?.name?:"",
+                                    username = response.body()?.user?.userDatum?.fullName ?: "",
+                                    nim = response.body()?.user?.userDatum?.nim?:"",
+                                    faculty = response.body()?.user?.userDatum?.faculty ?: "",
+                                    major = response.body()?.user?.userDatum?.major ?: "",
+                                    division = response.body()?.user?.userDatum?.division?.name ?:"",
+                                    imageUrl = response.body()?.user?.userDatum?.imageUrl ?: ""
                                 )
-                            )
+                            }
                         }
 
                         401 -> _state.update {

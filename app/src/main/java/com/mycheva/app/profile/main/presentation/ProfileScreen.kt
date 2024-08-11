@@ -45,7 +45,7 @@ fun ProfileScreen(
 
     LaunchedEffect(key1 = state.token) {
         if (state.token.isNotBlank())
-            onEvent(ProfileScreenEvent.OnGetProfile(state.token))
+            onEvent(ProfileScreenEvent.OnGetProfile(state.token, state.id))
     }
 
     LaunchedEffect(key1 = state.isLogoutSuccess) {
@@ -117,7 +117,7 @@ fun ProfileScreen(
                                 )
                             }
                             ProfileImage(
-                                imageUrl = state.user.imageUrl,
+                                imageUrl = state.imageUrl,
                                 onEditImage = {
                                     onEvent(ProfileScreenEvent.OnEditProfile)
                                 }
@@ -126,7 +126,12 @@ fun ProfileScreen(
                     }
                     item {
                         ProfileDetails(
-                            user = state.user
+                            name = state.name,
+                            username = state.username,
+                            nim = state.nim,
+                            faculty = state.faculty,
+                            major = state.major,
+                            division = state.division
                         )
                     }
                     item {
