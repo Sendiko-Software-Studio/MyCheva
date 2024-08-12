@@ -1,4 +1,4 @@
-package com.mycheva.app.profile.edit_username
+package com.mycheva.app.profile.edit_username.presentation
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize

@@ -1,4 +1,4 @@
-package com.mycheva.app.profile.edit_username
+package com.mycheva.app.profile.edit_username.presentation
 
 sealed class EditUsernameScreenEvent {
     data class OnUsernameChanged(val value: String): EditUsernameScreenEvent()
