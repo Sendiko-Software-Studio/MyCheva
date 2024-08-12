@@ -1,6 +1,8 @@
 package com.mycheva.app.core.navigation
 
 import android.annotation.SuppressLint
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.ExperimentalSharedTransitionApi
 import androidx.compose.animation.SharedTransitionLayout
@@ -54,9 +56,11 @@ import com.mycheva.app.reset_password.presentation.ResetPasswordScreen
 import com.mycheva.app.reset_password.presentation.ResetPasswordScreenViewModel
 import com.mycheva.app.schedule.detail.presentation.DetailScheduleScreen
 import com.mycheva.app.schedule.main.presentation.ScheduleScreen
+import com.mycheva.app.schedule.main.presentation.ScheduleScreenViewModel
 import com.mycheva.app.splashscreen.presentation.SplashScreen
 import com.mycheva.app.splashscreen.presentation.SplashScreenViewModel
 
+@RequiresApi(Build.VERSION_CODES.O)
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @OptIn(ExperimentalSharedTransitionApi::class)
 @Composable
@@ -192,8 +196,12 @@ fun RootNavGraph(
                         )
                     }
                     composable<ScheduleScreen> {
+                        val viewModel = hiltViewModel<ScheduleScreenViewModel>()
+                        val state by viewModel.state.collectAsStateWithLifecycle()
                         ScheduleScreen(
                             animatedVisibilityScope = this,
+                            state = state,
+                            onEvent = viewModel::onEvent,
                             onNavigate = {
                                 navController.navigate(it)
                             }
