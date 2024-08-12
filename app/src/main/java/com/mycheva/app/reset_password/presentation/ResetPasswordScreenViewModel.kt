@@ -1,21 +1,80 @@
 package com.mycheva.app.reset_password.presentation
 
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import com.mycheva.app.reset_password.data.ResetPasswordRequest
+import com.mycheva.app.reset_password.data.ResetPasswordResponse
+import com.mycheva.app.reset_password.domain.ResetPasswordRepository
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
+import javax.inject.Inject
 
-class ResetPasswordScreenViewModel: ViewModel() {
+@HiltViewModel
+class ResetPasswordScreenViewModel @Inject constructor(
+    private val repository: ResetPasswordRepository
+) : ViewModel() {
 
+    private val _token = repository.getToken()
     private val _state = MutableStateFlow(ResetPasswordScreenState())
-    val state = _state.asStateFlow()
+    val state = combine(_token, _state) { token, state ->
+        state.copy(token = token)
+    }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), ResetPasswordScreenState())
 
     fun onEvent(event: ResetPasswordScreenEvent) {
         when (event) {
             is ResetPasswordScreenEvent.OnEmailTextChange -> onEmailChanged(event)
+            is ResetPasswordScreenEvent.OnResetPassword -> resetPassword(event.token, event.email)
             ResetPasswordScreenEvent.OnEmailCleared -> onEmailCleared()
-            ResetPasswordScreenEvent.OnResetPassword -> TODO()
+            ResetPasswordScreenEvent.ClearState -> _state.update { ResetPasswordScreenState() }
         }
+    }
+
+    private fun resetPassword(token: String, email: String) {
+        _state.update { it.copy(isLoading = true) }
+        val data = ResetPasswordRequest(email = email)
+        val request = repository.resetPassword("Bearer $token", data)
+        request.enqueue(
+            object : Callback<ResetPasswordResponse> {
+                override fun onResponse(
+                    call: Call<ResetPasswordResponse>,
+                    response: Response<ResetPasswordResponse>
+                ) {
+                    _state.update { it.copy(isLoading = false) }
+                    when (response.code()) {
+                        200 -> _state.update {
+                            it.copy(
+                                isRequestSuccess = true,
+                                notificationMessage = response.body()!!.message
+                            )
+                        }
+
+                        else -> _state.update {
+                            it.copy(
+                                isRequestFailed = true,
+                                notificationMessage = "Server error."
+                            )
+                        }
+                    }
+                }
+
+                override fun onFailure(p0: Call<ResetPasswordResponse>, p1: Throwable) {
+                    _state.update {
+                        it.copy(
+                            isRequestFailed = true,
+                            notificationMessage = "Server error."
+                        )
+                    }
+                }
+
+            }
+        )
     }
 
     private fun onEmailCleared() {
