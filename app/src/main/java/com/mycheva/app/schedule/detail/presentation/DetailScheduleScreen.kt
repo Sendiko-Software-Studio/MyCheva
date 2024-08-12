@@ -1,8 +1,9 @@
 package com.mycheva.app.schedule.detail.presentation
 
-import androidx.compose.animation.AnimatedVisibilityScope
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.ExperimentalSharedTransitionApi
-import androidx.compose.animation.SharedTransitionScope
+import androidx.compose.animation.slideInHorizontally
+import androidx.compose.animation.slideOutHorizontally
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -14,56 +15,90 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.mycheva.app.core.ui.components.CenteredAppBar
+import com.mycheva.app.core.ui.components.NotificationBox
 import com.mycheva.app.core.ui.theme.poppinsFamily
+import com.mycheva.app.schedule.main.presentation.component.EventCard
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalSharedTransitionApi::class)
 @Composable
-fun SharedTransitionScope.DetailScheduleScreen(
-    onNavigateBack: () -> Unit,
-    animatedVisibilityScope: AnimatedVisibilityScope
+fun DetailScheduleScreen(
+    state: DetailScheduleState,
+    eventId: String,
+    onEvent: (DetailScheduleEvent) -> Unit,
+    onNavigateBack: () -> Unit
 ) {
-    Scaffold(
-        topBar = {
-            CenteredAppBar(
-                title = "Detail Jadwal",
-                navigationIcon = Icons.AutoMirrored.Rounded.ArrowBack,
-                navigationAction = { onNavigateBack() }
-            )
-        },
-        content = { paddingValues ->
-            LazyColumn(
-                contentPadding = paddingValues,
-                verticalArrangement = Arrangement.spacedBy(16.dp)
-            ) {
-                item {
-//                    EventCard(
-//                        modifier = Modifier.padding(16.dp).sharedElement(
-//                            state = rememberSharedContentState(key = "event_card"),
-//                            animatedVisibilityScope = animatedVisibilityScope
-//                        ),
-//                        onClick = { },
-//                        eventsItem =
-//                    )
-                }
-                item {
-                    DescriptionSection(
-                        description = "Pada pertemuan kali ini, kita akan membahas terkait dengan cara membuat user journey yang baik. Selain itu juga kita akan membahas apa itu use case dan user flow."
-                    )
-                }
-                item {
-                    LocationSection(
-                        type = "Online at Zoom",
-                        location = "https://zoom.us/mycheva"
-                    )
+
+    LaunchedEffect(key1 = eventId, key2 = state.token) {
+        if (eventId.isNotBlank() && state.token.isNotBlank()) {
+            onEvent(DetailScheduleEvent.OnLoadSchedule(state.token, eventId))
+        }
+    }
+
+    NotificationBox(
+        message = state.notificationMessage,
+        isLoading = state.isLoading,
+        isErrorNotification = state.isRequestFailed
+    ) {
+        Scaffold(
+            topBar = {
+                CenteredAppBar(
+                    title = "Detail Jadwal",
+                    navigationIcon = Icons.AutoMirrored.Rounded.ArrowBack,
+                    navigationAction = { onNavigateBack() }
+                )
+            },
+            content = { paddingValues ->
+                LazyColumn(
+                    contentPadding = paddingValues,
+                    verticalArrangement = Arrangement.spacedBy(16.dp)
+                ) {
+                    item {
+                        AnimatedVisibility(
+                            visible = state.eventsItem != null,
+                            enter = slideInHorizontally(),
+                            exit = slideOutHorizontally()
+
+                        ) {
+                            EventCard(
+                                modifier = Modifier.padding(16.dp),
+                                onClick = { },
+                                eventsItem = state.eventsItem!!
+                            )
+                        }
+                    }
+                    item {
+                        AnimatedVisibility(
+                            visible = state.eventsItem != null,
+                            enter = slideInHorizontally(),
+                            exit = slideOutHorizontally()
+                        ) {
+                            DescriptionSection(
+                                description = state.eventsItem!!.desc
+                            )
+                        }
+                    }
+                    item {
+                        AnimatedVisibility(
+                            visible = state.eventsItem != null,
+                            enter = slideInHorizontally(),
+                            exit = slideOutHorizontally()
+                        ) {
+                            LocationSection(
+                                type = state.eventsItem!!.type,
+                                location = state.eventsItem.details
+                            )
+                        }
+                    }
                 }
             }
-        }
-    )
+        )
+    }
 }
 
 @Composable
