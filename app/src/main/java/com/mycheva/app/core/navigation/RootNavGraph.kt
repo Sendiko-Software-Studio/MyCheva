@@ -226,7 +226,7 @@ fun RootNavGraph(
                             )
                         }
                         composable<EditUsernameScreen> {
-                            val viewModel = viewModel<EditUsernameScreenViewModel>()
+                            val viewModel = hiltViewModel<EditUsernameScreenViewModel>()
                             val state by viewModel.state.collectAsStateWithLifecycle()
                             EditUsernameScreen(
                                 state = state,
