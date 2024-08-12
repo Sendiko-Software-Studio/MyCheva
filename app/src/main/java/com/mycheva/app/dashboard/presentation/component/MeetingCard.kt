@@ -1,35 +1,32 @@
 package com.mycheva.app.dashboard.presentation.component
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ElevatedAssistChip
 import androidx.compose.material3.ElevatedCard
-import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.mycheva.app.R
 import com.mycheva.app.core.ui.theme.Primary500
 import com.mycheva.app.core.ui.theme.poppinsFamily
+import com.mycheva.app.dashboard.data.EventsItem
 
 @Composable
-fun MeetingCard(modifier: Modifier = Modifier) {
+fun MeetingCard(
+    modifier: Modifier = Modifier,
+    eventsItem: EventsItem
+) {
     ElevatedCard(
         modifier = modifier,
         colors = CardDefaults.elevatedCardColors(
@@ -42,42 +39,28 @@ fun MeetingCard(modifier: Modifier = Modifier) {
         ) {
             Row(
                 verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.SpaceBetween,
+                horizontalArrangement = Arrangement.spacedBy(8.dp),
                 modifier = Modifier.fillMaxWidth()
             ) {
-                Row(
-                    verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.spacedBy(4.dp)
-                ) {
-                    ElevatedAssistChip(
-                        onClick = { /*TODO*/ },
-                        label = { Text(text = "ONSITE", fontSize = 12.sp) },
-                    )
-                    Box(
-                        modifier = Modifier
-                            .clip(RoundedCornerShape(8.dp))
-                            .background(Color(0xFF3DDC84)),
-                        contentAlignment = Alignment.Center
-                    ){
-                        Icon(
-                            painter = painterResource(id = R.drawable.ic_android_24dp),
-                            contentDescription = "Android",
-                            modifier = Modifier.padding(4.dp)
-                        )
-                    }
-                }
-                Text(
-                    text = "Minggu 1",
-                    fontFamily = poppinsFamily,
-                    fontWeight = FontWeight.Bold,
+                ElevatedAssistChip(
+                    onClick = { /*TODO*/ },
+                    label = { Text(text = eventsItem.type.uppercase(), fontSize = 12.sp) },
                 )
+                when (eventsItem.divisionId) {
+                    1 -> StartUpAndCompeIcon()
+                    2 -> GameDevIcon()
+                    3 -> UiuxDevIcon()
+                    4 -> WebDevIcon()
+                    5 -> AndroDevIcon()
+                }
             }
             Spacer(modifier = Modifier.height(4.dp))
             Text(
-                text = "Pengenalan Android Studio",
+                text = eventsItem.name,
                 fontFamily = poppinsFamily,
                 fontSize = 20.sp,
-                fontWeight = FontWeight.Medium
+                fontWeight = FontWeight.Medium,
+                modifier = Modifier.fillMaxWidth()
             )
             Spacer(modifier = Modifier.height(4.dp))
             Row(
@@ -85,8 +68,8 @@ fun MeetingCard(modifier: Modifier = Modifier) {
                 horizontalArrangement = Arrangement.SpaceBetween,
                 modifier = Modifier.fillMaxWidth()
             ) {
-                Text(text = "Ruangan G9", fontFamily = poppinsFamily)
-                Text(text = "Selasa, 26 Juli. 10.00 AM", fontFamily = poppinsFamily)
+                Text(text = if (eventsItem.type == "online") "Klik untuk Link" else eventsItem.details, fontFamily = poppinsFamily)
+                Text(text = "${eventsItem.date.substring(0, 10)}, ${eventsItem.time.substring(0, 5)}", fontFamily = poppinsFamily)
             }
         }
     }
