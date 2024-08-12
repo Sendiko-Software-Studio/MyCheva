@@ -66,6 +66,11 @@ fun SharedTransitionScope.DashboardScreen(
             onEvent(DashboardScreenEvent.GetEventData(state.token))
     }
 
+    LaunchedEffect(key1 = state.notificationMessage) {
+        if (state.notificationMessage.isNotBlank())
+            onEvent(DashboardScreenEvent.OnClearState)
+    }
+
     NotificationBox(
         message = state.notificationMessage,
         isLoading = state.isLoading,
