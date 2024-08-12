@@ -1,4 +1,4 @@
-package com.mycheva.app.profile.edit_pass
+package com.mycheva.app.profile.edit_pass.presentation
 
 sealed class EditPasswordScreenEvent {
     data class OnOldPassChanged(val value: String): EditPasswordScreenEvent()

@@ -47,8 +47,8 @@ import com.mycheva.app.forum.main.presentation.ForumScreen
 import com.mycheva.app.forum.main.presentation.ForumScreenViewModel
 import com.mycheva.app.login.presentation.LoginScreen
 import com.mycheva.app.login.presentation.LoginScreenViewModel
-import com.mycheva.app.profile.edit_pass.EditPasswordScreen
-import com.mycheva.app.profile.edit_pass.EditPasswordScreenViewModel
+import com.mycheva.app.profile.edit_pass.presentation.EditPasswordScreen
+import com.mycheva.app.profile.edit_pass.presentation.EditPasswordScreenViewModel
 import com.mycheva.app.profile.edit_username.EditUsernameScreen
 import com.mycheva.app.profile.edit_username.EditUsernameScreenViewModel
 import com.mycheva.app.profile.main.presentation.ProfileScreen

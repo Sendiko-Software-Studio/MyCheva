@@ -1,4 +1,4 @@
-package com.mycheva.app.profile.edit_pass
+package com.mycheva.app.profile.edit_pass.presentation
 
 data class EditPasswordScreenState(
     val oldPassText: String = "",

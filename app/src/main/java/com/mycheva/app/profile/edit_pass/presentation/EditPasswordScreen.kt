@@ -1,4 +1,4 @@
-package com.mycheva.app.profile.edit_pass
+package com.mycheva.app.profile.edit_pass.presentation
 
 import android.annotation.SuppressLint
 import androidx.compose.foundation.layout.Arrangement

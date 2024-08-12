@@ -1,4 +1,4 @@
-package com.mycheva.app.profile.edit_pass
+package com.mycheva.app.profile.edit_pass.presentation
 
 import androidx.lifecycle.ViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
