@@ -149,7 +149,7 @@ fun RootNavGraph(
                         )
                     }
                     composable<ResetPasswordScreen> {
-                        val viewModel = viewModel<ResetPasswordScreenViewModel>()
+                        val viewModel = hiltViewModel<ResetPasswordScreenViewModel>()
                         val state by viewModel.state.collectAsStateWithLifecycle()
                         ResetPasswordScreen(
                             state = state,
