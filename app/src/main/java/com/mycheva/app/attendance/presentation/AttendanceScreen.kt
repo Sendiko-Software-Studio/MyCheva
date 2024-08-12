@@ -45,7 +45,9 @@ import com.google.accompanist.permissions.rememberPermissionState
 import com.google.common.util.concurrent.ListenableFuture
 import com.mycheva.app.R
 import com.mycheva.app.attendance.domain.BarcodeAnalyzer
+import com.mycheva.app.core.ui.components.NotificationBox
 import com.mycheva.app.core.ui.theme.poppinsFamily
+import kotlinx.coroutines.delay
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
 
@@ -53,6 +55,8 @@ import java.util.concurrent.Executors
 @Composable
 fun AttendanceScreen(
     modifier: Modifier = Modifier,
+    state: AttendanceScreenState,
+    onEvent: (AttendanceScreenEvent) -> Unit,
     onNavigateBack: () -> Unit
 ) {
     val context = LocalContext.current
@@ -68,128 +72,149 @@ fun AttendanceScreen(
         }
     )
 
-    Scaffold(
-        topBar = {
-            CenterAlignedTopAppBar(
-                title = {
-                    Text(
-                        text = "Absensi",
-                        fontFamily = poppinsFamily,
+    LaunchedEffect(key1 = state.notificationMessage) {
+        if (state.notificationMessage.isNotEmpty()) {
+            delay(2000)
+            onEvent(AttendanceScreenEvent.OnClearState)
+        }
+    }
+
+    LaunchedEffect(key1 = state.isRequestSuccess) {
+        if (state.isRequestSuccess) {
+            delay(2000)
+            onNavigateBack()
+        }
+    }
+
+    NotificationBox(
+        message = state.notificationMessage,
+        isLoading = state.isLoading,
+        isErrorNotification = state.isRequestFailed
+    ) {
+        Scaffold(
+            topBar = {
+                CenterAlignedTopAppBar(
+                    title = {
+                        Text(
+                            text = "Absensi",
+                            fontFamily = poppinsFamily,
+                        )
+                    },
+                    navigationIcon = {
+                        IconButton(onClick = onNavigateBack) {
+                            Icon(
+                                imageVector = Icons.AutoMirrored.Rounded.ArrowBack,
+                                contentDescription = "Back"
+                            )
+                        }
+                    },
+                    colors = TopAppBarDefaults.centerAlignedTopAppBarColors(
+                        containerColor = Color.Transparent,
+                        titleContentColor = Color.Black,
+                        navigationIconContentColor = Color.Black
                     )
-                },
-                navigationIcon = {
-                    IconButton(onClick = onNavigateBack) {
-                        Icon(
-                            imageVector = Icons.AutoMirrored.Rounded.ArrowBack,
-                            contentDescription = "Back"
-                        )
-                    }
-                },
-                colors = TopAppBarDefaults.centerAlignedTopAppBarColors(
-                    containerColor = Color.Transparent,
-                    titleContentColor = Color.Black,
-                    navigationIconContentColor = Color.Black
                 )
-            )
-        },
-        containerColor = Color.Transparent
-    ) { it ->
-        Box(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(top = it.calculateTopPadding()),
-        ) {
-            AndroidView(
-                modifier = Modifier.fillMaxSize(),
-                factory = { androidViewContext ->
-                    PreviewView(androidViewContext).apply {
-                        this.scaleType = PreviewView.ScaleType.FILL_CENTER
-                        layoutParams = ViewGroup.LayoutParams(
-                            ViewGroup.LayoutParams.MATCH_PARENT,
-                            ViewGroup.LayoutParams.MATCH_PARENT,
-                        )
-                        implementationMode =
-                            PreviewView.ImplementationMode.COMPATIBLE
-                    }
-                },
-                update = { previewView ->
-                    val cameraSelector: CameraSelector = CameraSelector.Builder()
-                        .requireLensFacing(CameraSelector.LENS_FACING_BACK)
-                        .build()
-                    val cameraExecutor: ExecutorService =
-                        Executors.newSingleThreadExecutor()
-                    val cameraProviderFuture: ListenableFuture<ProcessCameraProvider> =
-                        ProcessCameraProvider.getInstance(context)
+            },
+            containerColor = Color.Transparent
+        ) { it ->
+            Box(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(top = it.calculateTopPadding()),
+            ) {
+                AndroidView(
+                    modifier = Modifier.fillMaxSize(),
+                    factory = { androidViewContext ->
+                        PreviewView(androidViewContext).apply {
+                            this.scaleType = PreviewView.ScaleType.FILL_CENTER
+                            layoutParams = ViewGroup.LayoutParams(
+                                ViewGroup.LayoutParams.MATCH_PARENT,
+                                ViewGroup.LayoutParams.MATCH_PARENT,
+                            )
+                            implementationMode =
+                                PreviewView.ImplementationMode.COMPATIBLE
+                        }
+                    },
+                    update = { previewView ->
+                        val cameraSelector: CameraSelector = CameraSelector.Builder()
+                            .requireLensFacing(CameraSelector.LENS_FACING_BACK)
+                            .build()
+                        val cameraExecutor: ExecutorService =
+                            Executors.newSingleThreadExecutor()
+                        val cameraProviderFuture: ListenableFuture<ProcessCameraProvider> =
+                            ProcessCameraProvider.getInstance(context)
 
-                    cameraProviderFuture.addListener(
-                        {
-                            preview = Preview.Builder().build().also {
-                                it.setSurfaceProvider(previewView.surfaceProvider)
-                            }
-                            val cameraProvider: ProcessCameraProvider =
-                                cameraProviderFuture.get()
-                            val barcodeAnalyser = BarcodeAnalyzer { barcodes ->
-                                barcodes.forEach { barcode ->
-                                    barcode.rawValue?.let { barcodeValue ->
-
+                        cameraProviderFuture.addListener(
+                            {
+                                preview = Preview.Builder().build().also {
+                                    it.setSurfaceProvider(previewView.surfaceProvider)
+                                }
+                                val cameraProvider: ProcessCameraProvider =
+                                    cameraProviderFuture.get()
+                                val barcodeAnalyser = BarcodeAnalyzer { barcodes ->
+                                    barcodes.forEach { barcode ->
+                                        barcode.rawValue?.let { barcodeValue ->
+                                            if (state.eventId.isBlank())
+                                                onEvent(AttendanceScreenEvent.OnEventIdRead(state.token, barcodeValue, state.userId))
+                                        }
                                     }
                                 }
-                            }
-                            val imageAnalysis: ImageAnalysis =
-                                ImageAnalysis.Builder()
-                                    .setBackpressureStrategy(ImageAnalysis.STRATEGY_KEEP_ONLY_LATEST)
-                                    .build()
-                                    .also {
-                                        it.setAnalyzer(
-                                            cameraExecutor,
-                                            barcodeAnalyser
-                                        )
-                                    }
+                                val imageAnalysis: ImageAnalysis =
+                                    ImageAnalysis.Builder()
+                                        .setBackpressureStrategy(ImageAnalysis.STRATEGY_KEEP_ONLY_LATEST)
+                                        .build()
+                                        .also {
+                                            it.setAnalyzer(
+                                                cameraExecutor,
+                                                barcodeAnalyser
+                                            )
+                                        }
 
-                            try {
-                                cameraProvider.unbindAll()
-                                val camera = cameraProvider.bindToLifecycle(
-                                    lifecycleOwner,
-                                    cameraSelector,
-                                    preview,
-                                    imageAnalysis
-                                )
+                                try {
+                                    cameraProvider.unbindAll()
+                                    val camera = cameraProvider.bindToLifecycle(
+                                        lifecycleOwner,
+                                        cameraSelector,
+                                        preview,
+                                        imageAnalysis
+                                    )
 //                                isFlashOn.observe(lifecycleOwner) {
 //                                    Log.i("DEBUG", "FlashState: $it")
 //                                    toggleFash(camera, it)
 //                                }
-                            } catch (e: Exception) {
-                                Log.d("TAG", "CameraPreview: ${e.localizedMessage}")
-                            }
-                        }, ContextCompat.getMainExecutor(context)
-                    )
-                }
-            )
-            Column(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .padding(16.dp),
-                horizontalAlignment = Alignment.CenterHorizontally
-            ) {
-                Text(
-                    text = "Silakan scan kode QR untuk absensi",
-                    fontFamily = poppinsFamily,
+                                } catch (e: Exception) {
+                                    Log.d("TAG", "CameraPreview: ${e.localizedMessage}")
+                                }
+                            }, ContextCompat.getMainExecutor(context)
+                        )
+                    }
                 )
-                Spacer(modifier = Modifier.height(16.dp))
-                Image(
-                    painter = painterResource(R.drawable.code_scan_square),
-                    contentDescription = "QRCODE SCAN",
-                    modifier = Modifier.size(256.dp)
-                )
-                Spacer(modifier = Modifier.height(16.dp))
-                IconButton(
-                    onClick = { /*TODO*/ },
+                Column(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(16.dp),
+                    horizontalAlignment = Alignment.CenterHorizontally
                 ) {
-                    Icon(
-                        imageVector = Icons.Rounded.FlashlightOn,
-                        contentDescription = "FlashLight",
-                        modifier = Modifier.size(128.dp)
+                    Text(
+                        text = "Silakan scan kode QR untuk absensi",
+                        fontFamily = poppinsFamily,
                     )
+                    Spacer(modifier = Modifier.height(16.dp))
+                    Image(
+                        painter = painterResource(R.drawable.code_scan_square),
+                        contentDescription = "QRCODE SCAN",
+                        modifier = Modifier.size(256.dp)
+                    )
+                    Spacer(modifier = Modifier.height(16.dp))
+                    IconButton(
+                        onClick = { /*TODO*/ },
+                    ) {
+                        Icon(
+                            imageVector = Icons.Rounded.FlashlightOn,
+                            contentDescription = "FlashLight",
+                            modifier = Modifier.size(128.dp)
+                        )
+                    }
                 }
             }
         }

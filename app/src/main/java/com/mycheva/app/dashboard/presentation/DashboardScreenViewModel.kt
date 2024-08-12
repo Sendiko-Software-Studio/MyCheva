@@ -33,7 +33,7 @@ class DashboardScreenViewModel @Inject constructor(
 
     fun onEvent(event: DashboardScreenEvent) {
         when (event) {
-            DashboardScreenEvent.OnClearState -> TODO()
+            DashboardScreenEvent.OnClearState -> _state.update { it.copy(isLoading = false, isRequestFailed = false, notificationMessage = "") }
             is DashboardScreenEvent.GetUserData -> getUserData(event.token, event.userId)
             is DashboardScreenEvent.GetEventData -> getEventData(event.token)
         }
