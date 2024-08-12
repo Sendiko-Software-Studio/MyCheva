@@ -31,6 +31,7 @@ import androidx.navigation.compose.navigation
 import com.mycheva.app.announcement.presentation.AnnouncementScreen
 import com.mycheva.app.announcement.presentation.AnnouncementViewModel
 import com.mycheva.app.attendance.presentation.AttendanceScreen
+import com.mycheva.app.attendance.presentation.AttendanceScreenViewModel
 import com.mycheva.app.bookmark.presentation.BookmarkScreen
 import com.mycheva.app.bookmark.presentation.BookmarkScreenViewModel
 import com.mycheva.app.core.navigation.bottom_nav.bottomNavItems
@@ -232,7 +233,11 @@ fun RootNavGraph(
                             )
                         }
                         composable<AttendanceScreen> {
+                            val viewModel = hiltViewModel<AttendanceScreenViewModel>()
+                            val state by viewModel.state.collectAsStateWithLifecycle()
                             AttendanceScreen(
+                                state = state,
+                                onEvent = viewModel::onEvent,
                                 onNavigateBack = {
                                     navController.navigateUp()
                                 }
