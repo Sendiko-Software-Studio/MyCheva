@@ -20,4 +20,6 @@ class DashboardRepository @Inject constructor(
 
     fun getUser(token: String, userId: String) = apiService.getUser(token, userId)
 
+    fun getEvents(token: String) = apiService.getEvents(token)
+
 }

@@ -1,8 +1,11 @@
 package com.mycheva.app.dashboard.presentation
 
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.AnimatedVisibilityScope
 import androidx.compose.animation.ExperimentalSharedTransitionApi
 import androidx.compose.animation.SharedTransitionScope
+import androidx.compose.animation.slideInHorizontally
+import androidx.compose.animation.slideOutHorizontally
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -55,7 +58,12 @@ fun SharedTransitionScope.DashboardScreen(
 
     LaunchedEffect(key1 = state.userId) {
         if (state.userId.isNotBlank())
-            onEvent(DashboardScreenEvent.OnGetDashboardData(state.token, state.userId))
+            onEvent(DashboardScreenEvent.GetUserData(state.token, state.userId))
+    }
+
+    LaunchedEffect(key1 = state.divisionId) {
+        if (state.divisionId.isNotBlank())
+            onEvent(DashboardScreenEvent.GetEventData(state.token))
     }
 
     NotificationBox(
@@ -128,9 +136,16 @@ fun SharedTransitionScope.DashboardScreen(
                         fontFamily = poppinsFamily
                     )
                     Spacer(modifier = Modifier.height(8.dp))
-                    MeetingCard(
-                        modifier = Modifier.fillMaxWidth()
-                    )
+                    AnimatedVisibility(
+                        visible = state.latestEvent != null,
+                        enter = slideInHorizontally(),
+                        exit = slideOutHorizontally()
+                    ) {
+                        MeetingCard(
+                            modifier = Modifier.fillMaxWidth(),
+                            eventsItem = state.latestEvent!!
+                        )
+                    }
                 }
                 item {
                     Text(

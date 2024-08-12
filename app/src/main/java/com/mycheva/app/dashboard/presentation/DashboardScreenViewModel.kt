@@ -2,6 +2,7 @@ package com.mycheva.app.dashboard.presentation
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.mycheva.app.dashboard.data.GetEventsResponse
 import com.mycheva.app.dashboard.domain.DashboardRepository
 import com.mycheva.app.profile.main.data.GetUserResponse
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -17,11 +18,11 @@ import javax.inject.Inject
 
 @HiltViewModel
 class DashboardScreenViewModel @Inject constructor(
-    private val dashboardRepository: DashboardRepository
+    private val repo: DashboardRepository
 ): ViewModel() {
 
-    private val _token = dashboardRepository.getToken()
-    private val _userId = dashboardRepository.getUserId()
+    private val _token = repo.getToken()
+    private val _userId = repo.getUserId()
     private val _state = MutableStateFlow(DashboardScreenState())
     val state = combine(_token, _userId, _state) { token, userId, state ->
         state.copy(
@@ -33,13 +34,51 @@ class DashboardScreenViewModel @Inject constructor(
     fun onEvent(event: DashboardScreenEvent) {
         when (event) {
             DashboardScreenEvent.OnClearState -> TODO()
-            is DashboardScreenEvent.OnGetDashboardData -> getUserData(event.token, event.userId)
+            is DashboardScreenEvent.GetUserData -> getUserData(event.token, event.userId)
+            is DashboardScreenEvent.GetEventData -> getEventData(event.token)
         }
+    }
+
+    private fun getEventData(token: String) {
+        _state.update { it.copy(isLoading = true) }
+        val request = repo.getEvents("Bearer $token")
+        request.enqueue(
+            object : Callback<GetEventsResponse> {
+                override fun onResponse(
+                    call: Call<GetEventsResponse>,
+                    response: Response<GetEventsResponse>
+                ) {
+                    _state.update { it.copy(isLoading = false) }
+                    when (response.code()) {
+                        200 -> {
+                            _state.update { it.copy(
+                                latestEvent = response.body()!!.events.first { event ->
+                                    event.divisionId == state.value.divisionId.toInt()
+                                }
+                            ) }
+                        }
+
+                        else -> _state.update { it.copy(
+                            isRequestFailed = true,
+                            notificationMessage = "Server error."
+                        ) }
+                    }
+                }
+
+                override fun onFailure(call: Call<GetEventsResponse>, throwable: Throwable) {
+                    _state.update { it.copy(
+                        isRequestFailed = true,
+                        notificationMessage = "Server error."
+                    ) }
+                }
+
+            }
+        )
     }
 
     private fun getUserData(token: String, userId: String) {
         _state.update { it.copy(isLoading = true) }
-        val request = dashboardRepository.getUser(token = "Bearer $token", userId = userId)
+        val request = repo.getUser(token = "Bearer $token", userId = userId)
         request.enqueue(
             object : Callback<GetUserResponse> {
                 override fun onResponse(
@@ -49,7 +88,10 @@ class DashboardScreenViewModel @Inject constructor(
                     _state.update { it.copy(isLoading = false) }
                     when (response.code()) {
                         200 -> {
-                            _state.update { it.copy(name = response.body()!!.user.name) }
+                            _state.update { it.copy(
+                                name = response.body()!!.user.name,
+                                divisionId = response.body()!!.user.userDatum.divisionId.toString()
+                            ) }
                         }
 
                         else -> {
