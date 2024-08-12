@@ -244,7 +244,7 @@ fun RootNavGraph(
                             )
                         }
                         composable<AnnouncementScreen> {
-                            val viewModel = viewModel<AnnouncementViewModel>()
+                            val viewModel = hiltViewModel<AnnouncementViewModel>()
                             val state by viewModel.state.collectAsStateWithLifecycle()
                             AnnouncementScreen(
                                 state = state,

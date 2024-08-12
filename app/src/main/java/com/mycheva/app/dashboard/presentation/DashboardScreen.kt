@@ -45,6 +45,7 @@ import com.mycheva.app.core.ui.components.NotificationBox
 import com.mycheva.app.core.ui.theme.poppinsFamily
 import com.mycheva.app.dashboard.presentation.component.MeetingCard
 import com.mycheva.app.dashboard.presentation.component.MenuCard
+import java.time.LocalTime
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalSharedTransitionApi::class)
 @Composable
@@ -55,7 +56,13 @@ fun SharedTransitionScope.DashboardScreen(
     animatedVisibilityScope: AnimatedVisibilityScope
 ) {
     val topAppBarScrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior()
+    val currentHour = LocalTime.now().hour
 
+    val greeting: String = when (currentHour) {
+        in 0..11 -> "Selamat pagi,"
+        in 12..17 -> "Selamat siang,"
+        else -> "Selamat malam,"
+    }
     LaunchedEffect(key1 = state.userId) {
         if (state.userId.isNotBlank())
             onEvent(DashboardScreenEvent.GetUserData(state.token, state.userId))
@@ -122,7 +129,7 @@ fun SharedTransitionScope.DashboardScreen(
                         modifier = Modifier.padding(top = 8.dp)
                     ) {
                         Text(
-                            text = "Selamat pagi, ",
+                            text = greeting,
                             fontWeight = FontWeight.SemiBold,
                             fontSize = 18.sp,
                             fontFamily = poppinsFamily,
