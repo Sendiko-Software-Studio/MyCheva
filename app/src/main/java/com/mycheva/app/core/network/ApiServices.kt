@@ -8,6 +8,7 @@ import com.mycheva.app.login.data.LoginRequest
 import com.mycheva.app.login.data.LoginResponse
 import com.mycheva.app.profile.main.data.GetUserResponse
 import com.mycheva.app.profile.main.data.LogoutResponse
+import com.mycheva.app.schedule.detail.data.GetEventResponse
 import retrofit2.Call
 import retrofit2.http.Body
 import retrofit2.http.GET
@@ -32,6 +33,12 @@ interface ApiServices {
     fun getEvents(
         @Header("Authorization") token: String,
     ): Call<GetEventsResponse>
+
+    @GET("event/{id}")
+    fun getEvent(
+        @Header("Authorization") token: String,
+        @Path("id") eventId: String
+    ): Call<GetEventResponse>
 
     @POST("attendance")
     fun postAttendance(
