@@ -4,8 +4,8 @@ import android.os.Build
 import androidx.annotation.RequiresApi
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.mycheva.app.dashboard.data.EventsItem
 import com.mycheva.app.dashboard.data.GetEventsResponse
+import com.mycheva.app.schedule.core.EventsItem
 import com.mycheva.app.schedule.main.domain.ScheduleScreenRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
