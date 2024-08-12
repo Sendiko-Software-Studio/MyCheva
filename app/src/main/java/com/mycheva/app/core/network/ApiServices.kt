@@ -1,5 +1,7 @@
 package com.mycheva.app.core.network
 
+import com.mycheva.app.attendance.data.AttendanceRequest
+import com.mycheva.app.attendance.data.AttendanceResponse
 import com.mycheva.app.dashboard.data.GetEventsResponse
 import com.mycheva.app.login.data.LoginRequest
 import com.mycheva.app.login.data.LoginResponse
@@ -29,6 +31,12 @@ interface ApiServices {
     fun getEvents(
         @Header("Authorization") token: String,
     ): Call<GetEventsResponse>
+
+    @POST("attendance")
+    fun postAttendance(
+        @Header("Authorization") token: String,
+        @Body attendanceRequest: AttendanceRequest
+    ): Call<AttendanceResponse>
 
     @GET("logout")
     fun logout(
