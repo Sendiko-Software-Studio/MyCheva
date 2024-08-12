@@ -8,6 +8,8 @@ import com.mycheva.app.login.data.LoginRequest
 import com.mycheva.app.login.data.LoginResponse
 import com.mycheva.app.profile.main.data.GetUserResponse
 import com.mycheva.app.profile.main.data.LogoutResponse
+import com.mycheva.app.reset_password.data.ResetPasswordRequest
+import com.mycheva.app.reset_password.data.ResetPasswordResponse
 import com.mycheva.app.schedule.detail.data.GetEventResponse
 import retrofit2.Call
 import retrofit2.http.Body
@@ -45,6 +47,12 @@ interface ApiServices {
         @Header("Authorization") token: String,
         @Body attendanceRequest: AttendanceRequest
     ): Call<AttendanceResponse>
+
+    @POST("reset_password")
+    fun resetPassword(
+        @Header("Authorization") token: String,
+        @Body request: ResetPasswordRequest
+    ): Call<ResetPasswordResponse>
 
     @GET("announcement")
     fun getAnnouncements(
