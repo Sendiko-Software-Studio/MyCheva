@@ -5,5 +5,6 @@ sealed class EditPasswordScreenEvent {
     data object OnOldPassCleared: EditPasswordScreenEvent()
     data class OnNewPassChanged(val value: String): EditPasswordScreenEvent()
     data object OnNewPassCleared: EditPasswordScreenEvent()
-    data object OnSave: EditPasswordScreenEvent()
+    data class OnSave(val token: String, val userId: String, val newPass: String): EditPasswordScreenEvent()
+    data object OnClearState: EditPasswordScreenEvent()
 }

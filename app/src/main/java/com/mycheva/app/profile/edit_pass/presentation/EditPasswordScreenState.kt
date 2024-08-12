@@ -4,5 +4,9 @@ data class EditPasswordScreenState(
     val oldPassText: String = "",
     val newPassText: String = "",
     val isLoading: Boolean = false,
-    val notificationMessage: String = ""
+    val notificationMessage: String = "",
+    val isRequestError: Boolean = false,
+    val isRequestSuccess: Boolean = false,
+    val token: String = "",
+    val userId: String = "",
 )
