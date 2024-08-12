@@ -117,7 +117,7 @@ fun SharedTransitionScope.ResetPasswordScreen(
                     onEvent(ResetPasswordScreenEvent.OnResetPassword(state.token, state.emailText))
                 },
                 content = {
-                    Text(text = "Reset Password")
+                    Text(text = "Reset Password", fontFamily = poppinsFamily)
                 },
                 shape = RoundedCornerShape(8.dp)
             )
