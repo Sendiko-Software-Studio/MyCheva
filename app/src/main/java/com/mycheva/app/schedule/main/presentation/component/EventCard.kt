@@ -18,11 +18,13 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.mycheva.app.core.ui.theme.Primary300
 import com.mycheva.app.core.ui.theme.poppinsFamily
+import com.mycheva.app.dashboard.data.EventsItem
 
 @Composable
 fun EventCard(
     modifier: Modifier = Modifier,
     onClick: () -> Unit,
+    eventsItem: EventsItem
 ) {
     Card(
         modifier = modifier,
@@ -38,7 +40,7 @@ fun EventCard(
             verticalArrangement = Arrangement.spacedBy(4.dp)
         ) {
             Text(
-                text = "Study group ke-3",
+                text = eventsItem.name,
                 fontSize = 16.sp,
                 fontFamily = poppinsFamily
             )
@@ -51,7 +53,7 @@ fun EventCard(
                     contentDescription = "Jam"
                 )
                 Text(
-                    text = "18.30 - 19.30",
+                    text = eventsItem.time,
                     fontSize = 16.sp,
                     fontFamily = poppinsFamily
                 )

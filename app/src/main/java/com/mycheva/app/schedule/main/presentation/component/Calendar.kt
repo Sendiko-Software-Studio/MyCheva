@@ -1,5 +1,7 @@
 package com.mycheva.app.schedule.main.presentation.component
 
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -19,9 +21,11 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.mycheva.app.core.ui.theme.poppinsFamily
+import java.time.LocalDate
 import java.util.Calendar
 import java.util.Locale
 
+@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun Calendar(paddingValues: PaddingValues) {
     val calendar = Calendar.getInstance()
@@ -30,6 +34,7 @@ fun Calendar(paddingValues: PaddingValues) {
     calendar.set(Calendar.MINUTE, 0)
     calendar.set(Calendar.SECOND, 0)
     calendar.set(Calendar.MILLISECOND, 0)
+    val month = LocalDate.now().month
 
 
     val dates = mutableListOf<Calendar>()
@@ -46,7 +51,7 @@ fun Calendar(paddingValues: PaddingValues) {
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Text(
-            text = "Juli",
+            text = month.name,
             fontSize = 32.sp,
             fontWeight = FontWeight.Bold,
             fontFamily = poppinsFamily
