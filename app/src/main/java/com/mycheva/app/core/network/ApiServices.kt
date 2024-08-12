@@ -6,6 +6,8 @@ import com.mycheva.app.attendance.data.AttendanceResponse
 import com.mycheva.app.dashboard.data.GetEventsResponse
 import com.mycheva.app.login.data.LoginRequest
 import com.mycheva.app.login.data.LoginResponse
+import com.mycheva.app.profile.edit_pass.data.ChangePasswordRequest
+import com.mycheva.app.profile.edit_pass.data.ChangePasswordResponse
 import com.mycheva.app.profile.main.data.GetUserResponse
 import com.mycheva.app.profile.main.data.LogoutResponse
 import com.mycheva.app.reset_password.data.ResetPasswordRequest
@@ -53,6 +55,13 @@ interface ApiServices {
         @Header("Authorization") token: String,
         @Body request: ResetPasswordRequest
     ): Call<ResetPasswordResponse>
+
+    @POST("change_password/{id}")
+    fun changePassword(
+        @Header("Authorization") token: String,
+        @Path("id") userId: String,
+        @Body request: ChangePasswordRequest
+    ): Call<ChangePasswordResponse>
 
     @GET("announcement")
     fun getAnnouncements(
