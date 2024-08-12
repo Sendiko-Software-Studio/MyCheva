@@ -55,3 +55,6 @@ data object BookmarkScreen
 
 @Serializable
 data object ForumScreen
+
+@Serializable
+data object RoadmapScreen

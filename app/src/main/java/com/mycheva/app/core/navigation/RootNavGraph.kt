@@ -55,6 +55,7 @@ import com.mycheva.app.profile.main.presentation.ProfileScreen
 import com.mycheva.app.profile.main.presentation.ProfileScreenViewModel
 import com.mycheva.app.reset_password.presentation.ResetPasswordScreen
 import com.mycheva.app.reset_password.presentation.ResetPasswordScreenViewModel
+import com.mycheva.app.roadmap.presentation.RoadmapScreen
 import com.mycheva.app.schedule.detail.presentation.DetailScheduleScreen
 import com.mycheva.app.schedule.detail.presentation.DetailScheduleViewModel
 import com.mycheva.app.schedule.main.presentation.ScheduleScreen
@@ -294,6 +295,13 @@ fun RootNavGraph(
                                     if (it == null) {
                                         navController.navigateUp()
                                     } else navController.navigate(it)
+                                }
+                            )
+                        }
+                        composable<RoadmapScreen> {
+                            RoadmapScreen(
+                                onNavigateBack = {
+                                    navController.navigateUp()
                                 }
                             )
                         }
