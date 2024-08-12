@@ -1,6 +1,6 @@
 package com.mycheva.app.dashboard.presentation
 
-import com.mycheva.app.dashboard.data.EventsItem
+import com.mycheva.app.schedule.core.EventsItem
 
 data class DashboardScreenState(
     val name: String = "",
