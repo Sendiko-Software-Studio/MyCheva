@@ -75,8 +75,8 @@ class ProfileScreenViewModel @Inject constructor(
                             Log.i("DEBUG", "onResponse: ${response.body()?.user?.userDatum}")
                             _state.update {
                                 it.copy(
-                                    name = response.body()?.user?.name?:"",
-                                    username = response.body()?.user?.userDatum?.fullName ?: "",
+                                    name = response.body()?.user?.userDatum?.fullName ?: "",
+                                    username = response.body()?.user?.name ?:"",
                                     nim = response.body()?.user?.userDatum?.nim?:"",
                                     faculty = response.body()?.user?.userDatum?.faculty ?: "",
                                     major = response.body()?.user?.userDatum?.major ?: "",
