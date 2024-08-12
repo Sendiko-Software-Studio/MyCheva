@@ -47,10 +47,10 @@ import com.mycheva.app.forum.main.presentation.ForumScreen
 import com.mycheva.app.forum.main.presentation.ForumScreenViewModel
 import com.mycheva.app.login.presentation.LoginScreen
 import com.mycheva.app.login.presentation.LoginScreenViewModel
-import com.mycheva.app.profile.edit_pass.EditPasswordScreen
-import com.mycheva.app.profile.edit_pass.EditPasswordScreenViewModel
-import com.mycheva.app.profile.edit_username.EditUsernameScreen
-import com.mycheva.app.profile.edit_username.EditUsernameScreenViewModel
+import com.mycheva.app.profile.edit_pass.presentation.EditPasswordScreen
+import com.mycheva.app.profile.edit_pass.presentation.EditPasswordScreenViewModel
+import com.mycheva.app.profile.edit_username.presentation.EditUsernameScreen
+import com.mycheva.app.profile.edit_username.presentation.EditUsernameScreenViewModel
 import com.mycheva.app.profile.main.presentation.ProfileScreen
 import com.mycheva.app.profile.main.presentation.ProfileScreenViewModel
 import com.mycheva.app.reset_password.presentation.ResetPasswordScreen
@@ -149,7 +149,7 @@ fun RootNavGraph(
                         )
                     }
                     composable<ResetPasswordScreen> {
-                        val viewModel = viewModel<ResetPasswordScreenViewModel>()
+                        val viewModel = hiltViewModel<ResetPasswordScreenViewModel>()
                         val state by viewModel.state.collectAsStateWithLifecycle()
                         ResetPasswordScreen(
                             state = state,
@@ -226,7 +226,7 @@ fun RootNavGraph(
                             )
                         }
                         composable<EditUsernameScreen> {
-                            val viewModel = viewModel<EditUsernameScreenViewModel>()
+                            val viewModel = hiltViewModel<EditUsernameScreenViewModel>()
                             val state by viewModel.state.collectAsStateWithLifecycle()
                             EditUsernameScreen(
                                 state = state,
@@ -237,7 +237,7 @@ fun RootNavGraph(
                             )
                         }
                         composable<EditPasswordScreen> {
-                            val viewModel = viewModel<EditPasswordScreenViewModel>()
+                            val viewModel = hiltViewModel<EditPasswordScreenViewModel>()
                             val state by viewModel.state.collectAsStateWithLifecycle()
                             EditPasswordScreen(
                                 state = state,

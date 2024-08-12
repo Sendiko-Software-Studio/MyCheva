@@ -6,8 +6,14 @@ import com.mycheva.app.attendance.data.AttendanceResponse
 import com.mycheva.app.dashboard.data.GetEventsResponse
 import com.mycheva.app.login.data.LoginRequest
 import com.mycheva.app.login.data.LoginResponse
+import com.mycheva.app.profile.edit_pass.data.ChangePasswordRequest
+import com.mycheva.app.profile.edit_pass.data.ChangePasswordResponse
+import com.mycheva.app.profile.edit_username.data.ChangeUsernameRequest
+import com.mycheva.app.profile.edit_username.data.ChangeUsernameResponse
 import com.mycheva.app.profile.main.data.GetUserResponse
 import com.mycheva.app.profile.main.data.LogoutResponse
+import com.mycheva.app.reset_password.data.ResetPasswordRequest
+import com.mycheva.app.reset_password.data.ResetPasswordResponse
 import com.mycheva.app.schedule.detail.data.GetEventResponse
 import retrofit2.Call
 import retrofit2.http.Body
@@ -45,6 +51,26 @@ interface ApiServices {
         @Header("Authorization") token: String,
         @Body attendanceRequest: AttendanceRequest
     ): Call<AttendanceResponse>
+
+    @POST("reset_password")
+    fun resetPassword(
+        @Header("Authorization") token: String,
+        @Body request: ResetPasswordRequest
+    ): Call<ResetPasswordResponse>
+
+    @POST("change_password/{id}")
+    fun changePassword(
+        @Header("Authorization") token: String,
+        @Path("id") userId: String,
+        @Body request: ChangePasswordRequest
+    ): Call<ChangePasswordResponse>
+
+    @POST("change_username/{id}")
+    fun changeUsername(
+        @Header("Authorization") token: String,
+        @Path("id") userId: String,
+        @Body request: ChangeUsernameRequest
+    ): Call<ChangeUsernameResponse>
 
     @GET("announcement")
     fun getAnnouncements(
