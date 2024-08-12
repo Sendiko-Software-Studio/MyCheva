@@ -24,7 +24,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.mycheva.app.core.navigation.DetailSchedule
 import com.mycheva.app.core.ui.theme.Primary50
 import com.mycheva.app.core.ui.theme.Primary500
 import com.mycheva.app.core.ui.theme.poppinsFamily
@@ -38,7 +37,7 @@ import kotlinx.coroutines.delay
 fun SharedTransitionScope.ScheduleScreen(
     state: ScheduleScreenState,
     onEvent: (ScheduleScreenEvent) -> Unit,
-    onNavigate: (destination: Any) -> Unit,
+    onNavigate: (eventId: String    ) -> Unit,
     animatedVisibilityScope: AnimatedVisibilityScope
 ) {
 
@@ -94,7 +93,7 @@ fun SharedTransitionScope.ScheduleScreen(
                     events.forEach { event ->
                         EventCard(
                             eventsItem = event,
-                            onClick = { onNavigate(DetailSchedule) },
+                            onClick = { onNavigate(event.id.toString()) },
                             modifier = Modifier
                                 .padding(horizontal = 16.dp)
                         )

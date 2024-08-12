@@ -43,7 +43,9 @@ data object EditPasswordScreen
 data object ScheduleScreen
 
 @Serializable
-data object DetailSchedule
+data class DetailSchedule(
+    val eventId: String,
+)
 
 @Serializable
 data object AnnouncementScreen

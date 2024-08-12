@@ -30,6 +30,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.navigation
+import androidx.navigation.toRoute
 import com.mycheva.app.announcement.presentation.AnnouncementScreen
 import com.mycheva.app.announcement.presentation.AnnouncementViewModel
 import com.mycheva.app.attendance.presentation.AttendanceScreen
@@ -55,6 +56,7 @@ import com.mycheva.app.profile.main.presentation.ProfileScreenViewModel
 import com.mycheva.app.reset_password.presentation.ResetPasswordScreen
 import com.mycheva.app.reset_password.presentation.ResetPasswordScreenViewModel
 import com.mycheva.app.schedule.detail.presentation.DetailScheduleScreen
+import com.mycheva.app.schedule.detail.presentation.DetailScheduleViewModel
 import com.mycheva.app.schedule.main.presentation.ScheduleScreen
 import com.mycheva.app.schedule.main.presentation.ScheduleScreenViewModel
 import com.mycheva.app.splashscreen.presentation.SplashScreen
@@ -203,7 +205,7 @@ fun RootNavGraph(
                             state = state,
                             onEvent = viewModel::onEvent,
                             onNavigate = {
-                                navController.navigate(it)
+                                navController.navigate(DetailSchedule(it))
                             }
                         )
                     }
@@ -211,8 +213,13 @@ fun RootNavGraph(
                         startDestination = AttendanceScreen
                     ) {
                         composable<DetailSchedule> {
+                            val args = it.toRoute<DetailSchedule>()
+                            val viewModel = hiltViewModel<DetailScheduleViewModel>()
+                            val state by viewModel.state.collectAsStateWithLifecycle()
                             DetailScheduleScreen(
-                                animatedVisibilityScope = this,
+                                eventId = args.eventId,
+                                state = state,
+                                onEvent = viewModel::onEvent,
                                 onNavigateBack = {
                                     navController.navigateUp()
                                 }

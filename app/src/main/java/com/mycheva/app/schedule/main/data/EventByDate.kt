@@ -1,6 +1,6 @@
 package com.mycheva.app.schedule.main.data
 
-import com.mycheva.app.dashboard.data.EventsItem
+import com.mycheva.app.schedule.core.EventsItem
 import java.time.LocalDate
 
 data class EventByDate(
