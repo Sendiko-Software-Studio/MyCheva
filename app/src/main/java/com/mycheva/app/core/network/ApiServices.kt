@@ -1,5 +1,6 @@
 package com.mycheva.app.core.network
 
+import com.mycheva.app.dashboard.data.GetEventsResponse
 import com.mycheva.app.login.data.LoginRequest
 import com.mycheva.app.login.data.LoginResponse
 import com.mycheva.app.profile.main.data.GetUserResponse
@@ -23,6 +24,11 @@ interface ApiServices {
         @Header("Authorization") token: String,
         @Path("id") id: String
     ): Call<GetUserResponse>
+
+    @GET("event")
+    fun getEvents(
+        @Header("Authorization") token: String,
+    ): Call<GetEventsResponse>
 
     @GET("logout")
     fun logout(
