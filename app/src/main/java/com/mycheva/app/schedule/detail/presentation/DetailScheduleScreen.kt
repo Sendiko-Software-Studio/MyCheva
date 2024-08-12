@@ -20,7 +20,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.mycheva.app.core.ui.components.CenteredAppBar
 import com.mycheva.app.core.ui.theme.poppinsFamily
-import com.mycheva.app.schedule.main.presentation.component.EventCard
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalSharedTransitionApi::class)
 @Composable
@@ -42,13 +41,14 @@ fun SharedTransitionScope.DetailScheduleScreen(
                 verticalArrangement = Arrangement.spacedBy(16.dp)
             ) {
                 item {
-                    EventCard(
-                        modifier = Modifier.padding(16.dp).sharedElement(
-                            state = rememberSharedContentState(key = "event_card"),
-                            animatedVisibilityScope = animatedVisibilityScope
-                        ),
-                        onClick = { }
-                    )
+//                    EventCard(
+//                        modifier = Modifier.padding(16.dp).sharedElement(
+//                            state = rememberSharedContentState(key = "event_card"),
+//                            animatedVisibilityScope = animatedVisibilityScope
+//                        ),
+//                        onClick = { },
+//                        eventsItem =
+//                    )
                 }
                 item {
                     DescriptionSection(
