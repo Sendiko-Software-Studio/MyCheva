@@ -30,7 +30,6 @@ import com.mycheva.app.core.ui.components.PlainTextField
 import com.mycheva.app.core.ui.theme.Primary50
 import com.mycheva.app.core.ui.theme.Primary500
 import com.mycheva.app.forum.comment.presentation.component.CommentCard
-import com.mycheva.app.forum.main.presentation.component.ForumPostCard
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -88,7 +87,7 @@ fun CommentScreen(
                 contentPadding = paddingValues
             ) {
                 item {
-                    ForumPostCard(forum = state.post)
+//                    ForumPostCard(forum = state.post)
                 }
                 item {
                     Text(
