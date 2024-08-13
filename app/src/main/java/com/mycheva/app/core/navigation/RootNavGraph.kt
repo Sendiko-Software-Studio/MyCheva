@@ -43,6 +43,8 @@ import com.mycheva.app.core.ui.theme.Primary500
 import com.mycheva.app.core.ui.theme.Primary900
 import com.mycheva.app.dashboard.presentation.DashboardScreen
 import com.mycheva.app.dashboard.presentation.DashboardScreenViewModel
+import com.mycheva.app.forum.comment.presentation.CommentScreen
+import com.mycheva.app.forum.comment.presentation.CommentViewModel
 import com.mycheva.app.forum.main.presentation.ForumScreen
 import com.mycheva.app.forum.main.presentation.ForumScreenViewModel
 import com.mycheva.app.login.presentation.LoginScreen
@@ -55,6 +57,7 @@ import com.mycheva.app.profile.main.presentation.ProfileScreen
 import com.mycheva.app.profile.main.presentation.ProfileScreenViewModel
 import com.mycheva.app.reset_password.presentation.ResetPasswordScreen
 import com.mycheva.app.reset_password.presentation.ResetPasswordScreenViewModel
+import com.mycheva.app.roadmap.presentation.RoadmapScreen
 import com.mycheva.app.schedule.detail.presentation.DetailScheduleScreen
 import com.mycheva.app.schedule.detail.presentation.DetailScheduleViewModel
 import com.mycheva.app.schedule.main.presentation.ScheduleScreen
@@ -272,15 +275,30 @@ fun RootNavGraph(
                             )
                         }
                         composable<ForumScreen> {
-                            val viewModel = viewModel<ForumScreenViewModel>()
+                            val viewModel = hiltViewModel<ForumScreenViewModel>()
                             val state by viewModel.state.collectAsStateWithLifecycle()
                             ForumScreen(
                                 state = state,
                                 onEvent = viewModel::onEvent,
                                 onNavigate = {
-                                    if (it == null) {
-                                        navController.navigateUp()
-                                    } else navController.navigate(it)
+                                    when (it) {
+                                        is CommentScreen -> navController.navigate(CommentScreen(forumId = it.forumId))
+                                        null -> navController.navigateUp()
+                                        else -> navController.navigate(it)
+                                    }
+                                }
+                            )
+                        }
+                        composable<CommentScreen> {
+                            val args = it.toRoute<CommentScreen>()
+                            val viewModel = hiltViewModel<CommentViewModel>()
+                            val state by viewModel.state.collectAsStateWithLifecycle()
+                            CommentScreen(
+                                state = state,
+                                onEvent = viewModel::onEvent,
+                                forumId = args.forumId,
+                                onNavigateBack = {
+                                    navController.navigateUp()
                                 }
                             )
                         }
@@ -294,6 +312,13 @@ fun RootNavGraph(
                                     if (it == null) {
                                         navController.navigateUp()
                                     } else navController.navigate(it)
+                                }
+                            )
+                        }
+                        composable<RoadmapScreen> {
+                            RoadmapScreen(
+                                onNavigateBack = {
+                                    navController.navigateUp()
                                 }
                             )
                         }

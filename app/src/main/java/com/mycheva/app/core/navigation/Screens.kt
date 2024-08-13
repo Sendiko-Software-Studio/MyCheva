@@ -55,3 +55,11 @@ data object BookmarkScreen
 
 @Serializable
 data object ForumScreen
+
+@Serializable
+data class CommentScreen(
+    val forumId: String,
+)
+
+@Serializable
+data object RoadmapScreen

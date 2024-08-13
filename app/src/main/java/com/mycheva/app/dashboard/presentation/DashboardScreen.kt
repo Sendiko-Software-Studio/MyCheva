@@ -1,5 +1,7 @@
 package com.mycheva.app.dashboard.presentation
 
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.AnimatedVisibilityScope
 import androidx.compose.animation.ExperimentalSharedTransitionApi
@@ -41,12 +43,14 @@ import com.mycheva.app.R
 import com.mycheva.app.core.navigation.AnnouncementScreen
 import com.mycheva.app.core.navigation.AttendanceScreen
 import com.mycheva.app.core.navigation.ForumScreen
+import com.mycheva.app.core.navigation.RoadmapScreen
 import com.mycheva.app.core.ui.components.NotificationBox
 import com.mycheva.app.core.ui.theme.poppinsFamily
 import com.mycheva.app.dashboard.presentation.component.MeetingCard
 import com.mycheva.app.dashboard.presentation.component.MenuCard
 import java.time.LocalTime
 
+@RequiresApi(Build.VERSION_CODES.O)
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalSharedTransitionApi::class)
 @Composable
 fun SharedTransitionScope.DashboardScreen(
@@ -182,7 +186,7 @@ fun SharedTransitionScope.DashboardScreen(
                             modifier = Modifier.weight(1f),
                             icon = Icons.Rounded.Map,
                             label = "Lihat Roadmap",
-                            onClick = { }
+                            onClick = { onNavigate(RoadmapScreen) }
                         )
                     }
                     Spacer(modifier = Modifier.height(8.dp))

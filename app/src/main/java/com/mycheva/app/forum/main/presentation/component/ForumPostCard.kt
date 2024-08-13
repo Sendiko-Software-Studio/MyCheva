@@ -6,16 +6,13 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.rounded.Comment
-import androidx.compose.material.icons.rounded.Comment
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
-import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -24,53 +21,43 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
-import com.mycheva.app.forum.main.data.Forum
-import kotlinx.serialization.json.JsonNull.content
+import com.mycheva.app.forum.core.data.ForumsItem
 
 @Composable
 fun ForumPostCard(
     modifier: Modifier = Modifier,
-    forum: Forum
+    forum: ForumsItem,
+    onNavigate: (String) -> Unit,
 ) {
     Column(
         modifier = modifier
-            .padding(horizontal = 16.dp),
     ) {
         Row(
             verticalAlignment = Alignment.CenterVertically,
         ) {
             AsyncImage(
-                model = forum.profileUrl,
+                model = forum.user.profileUrl,
                 modifier = Modifier
                     .size(48.dp)
                     .clip(CircleShape),
                 contentDescription = null,
-                contentScale = ContentScale.Fit
+                contentScale = ContentScale.Crop
             )
             Spacer(modifier = Modifier.width(8.dp))
             Column {
                 Text(
-                    text = forum.name,
+                    text = forum.user.name,
                     fontSize = 20.sp,
                     fontWeight = FontWeight.Bold
                 )
                 Text(
-                    text = forum.timeStamp,
+                    text = forum.createdAt.substring(0, 10),
                     color = Color.Gray
                 )
             }
-        }
-        if (forum.imageUrl.isNotBlank()) {
-            AsyncImage(
-                model = forum.imageUrl,
-                contentDescription = null,
-                modifier = Modifier.fillMaxWidth(),
-                contentScale = ContentScale.Fit
-            )
         }
         Spacer(modifier = Modifier.height(8.dp))
         Text(
@@ -81,25 +68,10 @@ fun ForumPostCard(
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.Start
         ) {
-            IconButton(onClick = { /*TODO*/ }) {
+            IconButton(onClick = { onNavigate(forum.id.toString()) }) {
                 Icon(imageVector = Icons.AutoMirrored.Rounded.Comment, contentDescription = "comments")
             }
-            Text(text = forum.totalComment.toString())
+            Text(text = forum.replies.size.toString())
         }
-    }
-}
-
-@Preview
-@Composable
-private fun ForumPostCardPrev() {
-    Surface {
-        val data = Forum(
-            profileUrl = "",
-            name = "Sendiko",
-            timeStamp = "1 jam yang lalu",
-            content = "Lorem ipsum dolor sit amet suknedy ndsourtun gnasdjsfy sdjrosufdn.",
-            totalComment = 69
-        )
-        ForumPostCard(forum = data)
     }
 }
