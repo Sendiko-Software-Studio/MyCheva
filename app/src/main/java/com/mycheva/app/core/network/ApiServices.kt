@@ -4,6 +4,8 @@ import com.mycheva.app.announcement.data.AnnouncementResponse
 import com.mycheva.app.attendance.data.AttendanceRequest
 import com.mycheva.app.attendance.data.AttendanceResponse
 import com.mycheva.app.dashboard.data.GetEventsResponse
+import com.mycheva.app.forum.add.data.ForumPostRequest
+import com.mycheva.app.forum.add.data.ForumPostResponse
 import com.mycheva.app.forum.comment.data.GetForumResponse
 import com.mycheva.app.forum.comment.data.PostReplyRequest
 import com.mycheva.app.forum.comment.data.PostReplyResponse
@@ -85,6 +87,12 @@ interface ApiServices {
     fun getForums(
         @Header("Authorization") token: String,
     ): Call<GetForumsResponse>
+
+    @POST("forum")
+    fun postForum(
+        @Header("Authorization") token: String,
+        @Body request: ForumPostRequest
+    ): Call<ForumPostResponse>
 
     @GET("forum/{id}")
     fun getForum(
