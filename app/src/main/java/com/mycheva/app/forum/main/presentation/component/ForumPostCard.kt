@@ -24,12 +24,14 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
-import com.mycheva.app.forum.main.data.ForumsItem
+import com.mycheva.app.forum.comment.data.Forum
+import com.mycheva.app.forum.core.data.ForumsItem
 
 @Composable
 fun ForumPostCard(
     modifier: Modifier = Modifier,
-    forum: ForumsItem
+    forum: ForumsItem,
+    onNavigate: (String) -> Unit,
 ) {
     Column(
         modifier = modifier
@@ -67,7 +69,7 @@ fun ForumPostCard(
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.Start
         ) {
-            IconButton(onClick = { /*TODO*/ }) {
+            IconButton(onClick = { onNavigate(forum.id.toString()) }) {
                 Icon(imageVector = Icons.AutoMirrored.Rounded.Comment, contentDescription = "comments")
             }
             Text(text = forum.replies.size.toString())

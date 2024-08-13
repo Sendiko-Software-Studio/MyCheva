@@ -1,6 +1,6 @@
 package com.mycheva.app.forum.main.presentation
 
-import com.mycheva.app.forum.main.data.ForumsItem
+import com.mycheva.app.forum.core.data.ForumsItem
 
 data class ForumScreenState(
     val posts: List<ForumsItem> = emptyList(),

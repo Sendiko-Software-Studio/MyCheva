@@ -16,6 +16,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.mycheva.app.core.navigation.CommentScreen
 import com.mycheva.app.core.ui.components.CenteredAppBar
 import com.mycheva.app.core.ui.components.NotificationBox
 import com.mycheva.app.core.ui.theme.Primary50
@@ -59,7 +60,7 @@ fun ForumScreen(
             },
             floatingActionButton = {
                 FloatingActionButton(
-                    onClick = { /*TODO*/ },
+                    onClick = {  },
                     containerColor = Primary500,
                     contentColor = Primary50,
                     shape = CircleShape
@@ -78,7 +79,12 @@ fun ForumScreen(
                     verticalArrangement = Arrangement.spacedBy(16.dp)
                 ) {
                     items(state.posts) { post ->
-                        ForumPostCard(forum = post)
+                        ForumPostCard(
+                            forum = post,
+                            onNavigate = {
+                                onNavigate(CommentScreen(forumId = it))
+                            }
+                        )
                     }
                 }
             }
