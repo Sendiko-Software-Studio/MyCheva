@@ -43,6 +43,8 @@ import com.mycheva.app.core.ui.theme.Primary500
 import com.mycheva.app.core.ui.theme.Primary900
 import com.mycheva.app.dashboard.presentation.DashboardScreen
 import com.mycheva.app.dashboard.presentation.DashboardScreenViewModel
+import com.mycheva.app.forum.add.presentation.AddPostScreen
+import com.mycheva.app.forum.add.presentation.AddPostScreenViewModel
 import com.mycheva.app.forum.comment.presentation.CommentScreen
 import com.mycheva.app.forum.comment.presentation.CommentViewModel
 import com.mycheva.app.forum.main.presentation.ForumScreen
@@ -283,9 +285,22 @@ fun RootNavGraph(
                                 onNavigate = {
                                     when (it) {
                                         is CommentScreen -> navController.navigate(CommentScreen(forumId = it.forumId))
+                                        is PostScreen -> navController.navigate(PostScreen(imageUrl = it.imageUrl))
                                         null -> navController.navigateUp()
                                         else -> navController.navigate(it)
                                     }
+                                }
+                            )
+                        }
+                        composable<PostScreen> {
+                            val args = it.toRoute<PostScreen>()
+                            val viewModel = hiltViewModel<AddPostScreenViewModel>()
+                            val state by viewModel.state.collectAsStateWithLifecycle()
+                            AddPostScreen(
+                                state = state,
+                                onEvent = viewModel::onEvent,
+                                onNavigateBack = {
+                                    navController.navigateUp()
                                 }
                             )
                         }

@@ -62,4 +62,9 @@ data class CommentScreen(
 )
 
 @Serializable
+data class PostScreen(
+    val imageUrl: String
+)
+
+@Serializable
 data object RoadmapScreen
