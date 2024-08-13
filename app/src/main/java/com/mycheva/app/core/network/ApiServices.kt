@@ -5,6 +5,8 @@ import com.mycheva.app.attendance.data.AttendanceRequest
 import com.mycheva.app.attendance.data.AttendanceResponse
 import com.mycheva.app.dashboard.data.GetEventsResponse
 import com.mycheva.app.forum.comment.data.GetForumResponse
+import com.mycheva.app.forum.comment.data.PostReplyRequest
+import com.mycheva.app.forum.comment.data.PostReplyResponse
 import com.mycheva.app.forum.main.data.GetForumsResponse
 import com.mycheva.app.login.data.LoginRequest
 import com.mycheva.app.login.data.LoginResponse
@@ -89,6 +91,12 @@ interface ApiServices {
         @Header("Authorization") token: String,
         @Path("id") forumId: String
     ): Call<GetForumResponse>
+
+    @POST("replies")
+    fun postReply(
+        @Header("Authorization") token: String,
+        @Body request: PostReplyRequest
+    ): Call<PostReplyResponse>
 
     @GET("logout")
     fun logout(
