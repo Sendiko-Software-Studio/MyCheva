@@ -273,7 +273,7 @@ fun RootNavGraph(
                             )
                         }
                         composable<ForumScreen> {
-                            val viewModel = viewModel<ForumScreenViewModel>()
+                            val viewModel = hiltViewModel<ForumScreenViewModel>()
                             val state by viewModel.state.collectAsStateWithLifecycle()
                             ForumScreen(
                                 state = state,
