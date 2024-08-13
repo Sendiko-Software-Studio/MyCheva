@@ -1,4 +1,4 @@
-package com.mycheva.app.forum.add
+package com.mycheva.app.forum.add.presentation
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
