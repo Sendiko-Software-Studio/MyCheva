@@ -8,6 +8,7 @@
 /.idea/workspace.xml
 /.idea/navEditor.xml
 /.idea/assetWizardSettings.xml
+/app/main/java/com/mycheva/app/core/network/baseUrl.kt
 .DS_Store
 /build
 /captures
