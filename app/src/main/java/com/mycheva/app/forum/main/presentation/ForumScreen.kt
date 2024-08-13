@@ -17,6 +17,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.mycheva.app.core.navigation.CommentScreen
+import com.mycheva.app.core.navigation.PostScreen
 import com.mycheva.app.core.ui.components.CenteredAppBar
 import com.mycheva.app.core.ui.components.NotificationBox
 import com.mycheva.app.core.ui.theme.Primary50
@@ -60,7 +61,7 @@ fun ForumScreen(
             },
             floatingActionButton = {
                 FloatingActionButton(
-                    onClick = {  },
+                    onClick = { onNavigate(PostScreen("")) },
                     containerColor = Primary500,
                     contentColor = Primary50,
                     shape = CircleShape
