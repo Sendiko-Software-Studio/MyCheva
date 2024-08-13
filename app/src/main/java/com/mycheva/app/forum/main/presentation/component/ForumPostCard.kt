@@ -24,7 +24,6 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
-import com.mycheva.app.forum.comment.data.Forum
 import com.mycheva.app.forum.core.data.ForumsItem
 
 @Composable
