@@ -2,6 +2,7 @@ package com.mycheva.app.forum.comment.domain
 
 import com.mycheva.app.core.network.ApiServices
 import com.mycheva.app.core.preferences.AppPreferences
+import com.mycheva.app.forum.comment.data.PostReplyRequest
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
@@ -19,5 +20,7 @@ class CommentRepository @Inject constructor(
     }
 
     fun loadData(token: String, forumId: String) = apiServices.getForum(token, forumId)
+
+    fun postReply(token: String, request: PostReplyRequest) = apiServices.postReply(token, request)
 
 }

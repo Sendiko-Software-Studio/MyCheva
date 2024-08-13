@@ -14,4 +14,5 @@ data class CommentScreenState(
     val commentText: String = "",
     val userId: String = "",
     val token: String = "",
+    val isCommentPosted: Boolean = false,
 )

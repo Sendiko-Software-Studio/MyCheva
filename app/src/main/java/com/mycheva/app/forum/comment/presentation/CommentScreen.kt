@@ -54,6 +54,12 @@ fun CommentScreen(
         }
     }
 
+    LaunchedEffect(key1 = state.isCommentPosted) {
+        if (state.isCommentPosted) {
+            onEvent(CommentEvent.OnLoadData(state.token, forumId))
+        }
+    }
+
     LaunchedEffect(key1 = state.notificationMessage) {
         if (state.notificationMessage.isNotBlank()) {
             delay(2000)
@@ -109,7 +115,7 @@ fun CommentScreen(
                         },
                         placeholder = "Berikan komentar anda"
                     )
-                    IconButton(onClick = { /*TODO*/ }) {
+                    IconButton(onClick = { onEvent(CommentEvent.OnPostComment(state.token, state.userId, forumId)) }) {
                         Icon(
                             imageVector = Icons.AutoMirrored.Rounded.Send,
                             contentDescription = "send comment"
