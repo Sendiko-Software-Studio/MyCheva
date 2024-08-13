@@ -2,7 +2,7 @@ package com.mycheva.app.core.di
 
 import android.content.Context
 import com.mycheva.app.core.network.ApiServices
-import com.mycheva.app.core.network.pix4300
+import com.mycheva.app.core.network.sdraf3000
 import com.mycheva.app.core.preferences.AppPreferences
 import com.mycheva.app.core.preferences.dataStore
 import dagger.Module
@@ -49,7 +49,7 @@ object AppModule {
     @Provides
     fun provideRetrofit(okHttpClient: OkHttpClient): Retrofit {
         return Retrofit.Builder()
-            .baseUrl(pix4300)
+            .baseUrl(sdraf3000)
             .client(okHttpClient)
             .addConverterFactory(GsonConverterFactory.create())
             .build()
