@@ -54,7 +54,7 @@ fun ForumPostCard(
                     fontWeight = FontWeight.Bold
                 )
                 Text(
-                    text = forum.createdAt,
+                    text = forum.createdAt.substring(0, 10),
                     color = Color.Gray
                 )
             }
