@@ -2,7 +2,6 @@ package com.mycheva.app.core.di
 
 import android.content.Context
 import com.mycheva.app.core.network.ApiServices
-import com.mycheva.app.core.network.sdraf3000
 import com.mycheva.app.core.preferences.AppPreferences
 import com.mycheva.app.core.preferences.dataStore
 import dagger.Module
@@ -14,6 +13,7 @@ import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import sdraf3000
 import java.util.concurrent.TimeUnit
 import javax.inject.Singleton
 
