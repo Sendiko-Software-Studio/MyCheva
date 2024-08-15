@@ -42,6 +42,7 @@ import com.mycheva.app.core.navigation.bottom_nav.bottomNavItems
 import com.mycheva.app.core.ui.theme.Primary50
 import com.mycheva.app.core.ui.theme.Primary500
 import com.mycheva.app.core.ui.theme.Primary900
+import com.mycheva.app.core.ui.theme.poppinsFamily
 import com.mycheva.app.dashboard.presentation.DashboardScreen
 import com.mycheva.app.dashboard.presentation.DashboardScreenViewModel
 import com.mycheva.app.forum.add.presentation.AddPostScreen
@@ -108,7 +109,7 @@ fun RootNavGraph(
                                 )
                             },
                             label = {
-                                Text(text = item.label)
+                                Text(text = item.label, fontFamily = poppinsFamily)
                             },
                             colors = NavigationBarItemDefaults.colors(
                                 indicatorColor = Color.Transparent,
