@@ -47,6 +47,10 @@ class EditUsernameScreenViewModel @Inject constructor(
     }
 
     private fun changeUsername(token: String, userId: String, name: String) {
+        if (name.isBlank()){
+            _state.update { it.copy(isRequestFailed = true, notificationMessage = "Username can't be empty.") }
+            return
+        }
         _state.update { it.copy(isLoading = true) }
         val data = ChangeUsernameRequest(name = name)
         val request = repository.changeUsername("Bearer $token", userId, data)
