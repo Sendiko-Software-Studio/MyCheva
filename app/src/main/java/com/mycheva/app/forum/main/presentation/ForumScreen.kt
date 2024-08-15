@@ -15,9 +15,11 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.unit.dp
 import com.mycheva.app.core.navigation.CommentScreen
 import com.mycheva.app.core.navigation.PostScreen
@@ -36,6 +38,7 @@ fun SharedTransitionScope.ForumScreen(
     onNavigate: (destination: Any?) -> Unit,
     animatedContentScope: AnimatedContentScope
 ) {
+    val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior()
 
     LaunchedEffect(key1 = state.token) {
         if (state.token.isNotBlank()) {
@@ -66,7 +69,8 @@ fun SharedTransitionScope.ForumScreen(
                 CenteredAppBar(
                     title = "Forum",
                     navigationIcon = Icons.AutoMirrored.Rounded.ArrowBack,
-                    navigationAction = { onNavigate(null) }
+                    navigationAction = { onNavigate(null) },
+                    scrollBehavior = scrollBehavior
                 )
             },
             floatingActionButton = {
@@ -87,7 +91,8 @@ fun SharedTransitionScope.ForumScreen(
                 )
                 LazyColumn(
                     contentPadding = padding,
-                    verticalArrangement = Arrangement.spacedBy(16.dp)
+                    verticalArrangement = Arrangement.spacedBy(16.dp),
+                    modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection)
                 ) {
                     items(state.posts) { post ->
                         ForumPostCard(

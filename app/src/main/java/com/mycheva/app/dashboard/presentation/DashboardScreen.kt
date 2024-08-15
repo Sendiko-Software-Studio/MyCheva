@@ -48,6 +48,7 @@ import com.mycheva.app.core.ui.components.NotificationBox
 import com.mycheva.app.core.ui.theme.poppinsFamily
 import com.mycheva.app.dashboard.presentation.component.MeetingCard
 import com.mycheva.app.dashboard.presentation.component.MenuCard
+import kotlinx.coroutines.delay
 import java.time.LocalTime
 
 @RequiresApi(Build.VERSION_CODES.O)
@@ -68,8 +69,10 @@ fun SharedTransitionScope.DashboardScreen(
         else -> "Selamat malam,"
     }
     LaunchedEffect(key1 = state.userId) {
-        if (state.userId.isNotBlank())
+        if (state.userId.isNotBlank()){
+            delay(300)
             onEvent(DashboardScreenEvent.GetUserData(state.token, state.userId))
+        }
     }
 
     LaunchedEffect(key1 = state.divisionId) {

@@ -13,9 +13,11 @@ import androidx.compose.material.icons.automirrored.rounded.ArrowBack
 import androidx.compose.material.icons.rounded.Bookmark
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.unit.dp
 import com.mycheva.app.announcement.presentation.component.AnnouncementCard
 import com.mycheva.app.core.navigation.BookmarkScreen
@@ -31,6 +33,7 @@ fun SharedTransitionScope.AnnouncementScreen(
     onNavigate: (destination: Any?) -> Unit,
     animatedContentScope: AnimatedContentScope
 ) {
+    val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior()
 
     LaunchedEffect(key1 = state.token) {
         if (state.token.isNotBlank()) {
@@ -66,12 +69,14 @@ fun SharedTransitionScope.AnnouncementScreen(
                     actionIcon = Icons.Rounded.Bookmark,
                     actionAction = {
                         onNavigate(BookmarkScreen)
-                    }
+                    },
+                    scrollBehavior = scrollBehavior
                 )
             },
             content = { paddingValues ->
                 LazyColumn(
-                    contentPadding = paddingValues
+                    contentPadding = paddingValues,
+                    modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection)
                 ) {
                     item {
                         Spacer(modifier = Modifier.height(16.dp))

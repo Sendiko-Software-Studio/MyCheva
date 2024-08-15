@@ -6,6 +6,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults
+import androidx.compose.material3.TopAppBarScrollBehavior
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
@@ -22,7 +23,8 @@ fun CenteredAppBar(
     navigationIcon: ImageVector,
     navigationAction: (any: Any?) -> Unit,
     actionIcon: ImageVector? = null,
-    actionAction: (any: Any?) -> Unit = {}
+    actionAction: (any: Any?) -> Unit = {},
+    scrollBehavior: TopAppBarScrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior()
 ) {
     CenterAlignedTopAppBar(
         modifier = modifier,
@@ -50,6 +52,7 @@ fun CenteredAppBar(
                     )
                 }
             }
-        }
+        },
+        scrollBehavior = scrollBehavior
     )
 }
