@@ -7,6 +7,9 @@ import androidx.camera.core.ImageAnalysis
 import androidx.camera.core.Preview
 import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.camera.view.PreviewView
+import androidx.compose.animation.AnimatedContentScope
+import androidx.compose.animation.ExperimentalSharedTransitionApi
+import androidx.compose.animation.SharedTransitionScope
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -51,13 +54,16 @@ import kotlinx.coroutines.delay
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
 
-@OptIn(ExperimentalMaterial3Api::class, ExperimentalPermissionsApi::class)
+@OptIn(ExperimentalMaterial3Api::class, ExperimentalPermissionsApi::class,
+    ExperimentalSharedTransitionApi::class
+)
 @Composable
-fun AttendanceScreen(
+fun SharedTransitionScope.AttendanceScreen(
     modifier: Modifier = Modifier,
     state: AttendanceScreenState,
     onEvent: (AttendanceScreenEvent) -> Unit,
-    onNavigateBack: () -> Unit
+    onNavigateBack: () -> Unit,
+    animatedContentScope: AnimatedContentScope
 ) {
     val context = LocalContext.current
     val lifecycleOwner = LocalLifecycleOwner.current
@@ -92,6 +98,11 @@ fun AttendanceScreen(
         isErrorNotification = state.isRequestFailed
     ) {
         Scaffold(
+            modifier = Modifier
+                .sharedBounds(
+                    sharedContentState = rememberSharedContentState(key = "presensi"),
+                    animatedVisibilityScope = animatedContentScope
+                ),
             topBar = {
                 CenterAlignedTopAppBar(
                     title = {

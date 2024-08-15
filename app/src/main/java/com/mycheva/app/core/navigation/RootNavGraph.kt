@@ -15,6 +15,7 @@ import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.NavigationBarItemDefaults
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -106,6 +107,9 @@ fun RootNavGraph(
                                     contentDescription = item.label
                                 )
                             },
+                            label = {
+                                Text(text = item.label)
+                            },
                             colors = NavigationBarItemDefaults.colors(
                                 indicatorColor = Color.Transparent,
                                 unselectedIconColor = Primary900,
@@ -168,12 +172,6 @@ fun RootNavGraph(
                 }
                 navigation<MainGraph>(
                     startDestination = DashboardScreen,
-                    enterTransition = {
-                        fadeIn()
-                    },
-                    exitTransition = {
-                        fadeOut()
-                    }
                 ) {
                     composable<DashboardScreen> {
                         val viewModel = hiltViewModel<DashboardScreenViewModel>()
@@ -184,7 +182,7 @@ fun RootNavGraph(
                             onNavigate = {
                                 navController.navigate(it)
                             },
-                            animatedVisibilityScope = this
+                            animatedContentScope = this
                         )
                     }
                     composable<ProfileScreen> {
@@ -260,7 +258,8 @@ fun RootNavGraph(
                                 onEvent = viewModel::onEvent,
                                 onNavigateBack = {
                                     navController.navigateUp()
-                                }
+                                },
+                                animatedContentScope = this
                             )
                         }
                         composable<AnnouncementScreen> {
@@ -273,7 +272,8 @@ fun RootNavGraph(
                                     if (it == null) {
                                         navController.navigateUp()
                                     } else navController.navigate(it)
-                                }
+                                },
+                                animatedContentScope = this
                             )
                         }
                         composable<ForumScreen> {
@@ -289,7 +289,8 @@ fun RootNavGraph(
                                         null -> navController.navigateUp()
                                         else -> navController.navigate(it)
                                     }
-                                }
+                                },
+                                animatedContentScope = this
                             )
                         }
                         composable<PostScreen> {
@@ -334,7 +335,8 @@ fun RootNavGraph(
                             RoadmapScreen(
                                 onNavigateBack = {
                                     navController.navigateUp()
-                                }
+                                },
+                                animatedContentScope = this
                             )
                         }
                     }

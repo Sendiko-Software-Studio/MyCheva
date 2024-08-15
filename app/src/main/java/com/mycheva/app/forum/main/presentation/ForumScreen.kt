@@ -1,5 +1,8 @@
 package com.mycheva.app.forum.main.presentation
 
+import androidx.compose.animation.AnimatedContentScope
+import androidx.compose.animation.ExperimentalSharedTransitionApi
+import androidx.compose.animation.SharedTransitionScope
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.lazy.LazyColumn
@@ -14,7 +17,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.mycheva.app.core.navigation.CommentScreen
 import com.mycheva.app.core.navigation.PostScreen
@@ -25,16 +28,18 @@ import com.mycheva.app.core.ui.theme.Primary500
 import com.mycheva.app.forum.main.presentation.component.ForumPostCard
 import kotlinx.coroutines.delay
 
-@OptIn(ExperimentalMaterial3Api::class)
+@OptIn(ExperimentalMaterial3Api::class, ExperimentalSharedTransitionApi::class)
 @Composable
-fun ForumScreen(
+fun SharedTransitionScope.ForumScreen(
     state: ForumScreenState,
     onEvent: (ForumScreenEvent) -> Unit,
     onNavigate: (destination: Any?) -> Unit,
+    animatedContentScope: AnimatedContentScope
 ) {
 
     LaunchedEffect(key1 = state.token) {
         if (state.token.isNotBlank()) {
+            delay(300)
             onEvent(ForumScreenEvent.OnLoadForums(state.token))
         }
     }
@@ -52,6 +57,11 @@ fun ForumScreen(
         isErrorNotification = state.isRequestError
     ) {
         Scaffold(
+            modifier = Modifier
+                .sharedBounds(
+                    sharedContentState = rememberSharedContentState(key = "forum"),
+                    animatedVisibilityScope = animatedContentScope
+                ),
             topBar = {
                 CenteredAppBar(
                     title = "Forum",
@@ -91,15 +101,4 @@ fun ForumScreen(
             }
         )
     }
-}
-
-
-@Preview
-@Composable
-private fun ForumScreenPrev() {
-    ForumScreen(
-        state = ForumScreenState(),
-        onEvent = { },
-        onNavigate = { }
-    )
 }

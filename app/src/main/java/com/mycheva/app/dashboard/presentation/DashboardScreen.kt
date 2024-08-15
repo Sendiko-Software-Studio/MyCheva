@@ -2,8 +2,8 @@ package com.mycheva.app.dashboard.presentation
 
 import android.os.Build
 import androidx.annotation.RequiresApi
+import androidx.compose.animation.AnimatedContentScope
 import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.animation.AnimatedVisibilityScope
 import androidx.compose.animation.ExperimentalSharedTransitionApi
 import androidx.compose.animation.SharedTransitionScope
 import androidx.compose.animation.slideInHorizontally
@@ -57,7 +57,7 @@ fun SharedTransitionScope.DashboardScreen(
     state: DashboardScreenState,
     onEvent: (DashboardScreenEvent) -> Unit,
     onNavigate: (route: Any) -> Unit,
-    animatedVisibilityScope: AnimatedVisibilityScope
+    animatedContentScope: AnimatedContentScope
 ) {
     val topAppBarScrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior()
     val currentHour = LocalTime.now().hour
@@ -104,7 +104,7 @@ fun SharedTransitionScope.DashboardScreen(
                                     .size(48.dp)
                                     .sharedElement(
                                         state = rememberSharedContentState(key = "chevalier_logo"),
-                                        animatedVisibilityScope = animatedVisibilityScope
+                                        animatedVisibilityScope = animatedContentScope
                                     ),
                             )
                             Text(
@@ -175,7 +175,12 @@ fun SharedTransitionScope.DashboardScreen(
                         horizontalArrangement = Arrangement.spacedBy(8.dp)
                     ) {
                         MenuCard(
-                            modifier = Modifier.weight(1f),
+                            modifier = Modifier
+                                .weight(1f)
+                                .sharedBounds(
+                                    sharedContentState = rememberSharedContentState(key = "presensi"),
+                                    animatedVisibilityScope = animatedContentScope
+                                ),
                             icon = Icons.Rounded.QrCode,
                             label = "Presensi QR",
                             onClick = {
@@ -183,7 +188,12 @@ fun SharedTransitionScope.DashboardScreen(
                             }
                         )
                         MenuCard(
-                            modifier = Modifier.weight(1f),
+                            modifier = Modifier
+                                .weight(1f)
+                                .sharedBounds(
+                                    sharedContentState = rememberSharedContentState(key = "roadmap"),
+                                    animatedVisibilityScope = animatedContentScope
+                                ),
                             icon = Icons.Rounded.Map,
                             label = "Lihat Roadmap",
                             onClick = { onNavigate(RoadmapScreen) }
@@ -195,7 +205,12 @@ fun SharedTransitionScope.DashboardScreen(
                         horizontalArrangement = Arrangement.spacedBy(8.dp)
                     ) {
                         MenuCard(
-                            modifier = Modifier.weight(1f),
+                            modifier = Modifier
+                                .weight(1f)
+                                .sharedBounds(
+                                    sharedContentState = rememberSharedContentState(key = "announcement"),
+                                    animatedVisibilityScope = animatedContentScope
+                                ),
                             icon = Icons.AutoMirrored.Rounded.Announcement,
                             label = "Announcement",
                             onClick = {
@@ -203,7 +218,12 @@ fun SharedTransitionScope.DashboardScreen(
                             }
                         )
                         MenuCard(
-                            modifier = Modifier.weight(1f),
+                            modifier = Modifier
+                                .weight(1f)
+                                .sharedBounds(
+                                    sharedContentState = rememberSharedContentState(key = "forum"),
+                                    animatedVisibilityScope = animatedContentScope,
+                                ),
                             icon = Icons.Rounded.Forum,
                             label = "Forum",
                             onClick = {

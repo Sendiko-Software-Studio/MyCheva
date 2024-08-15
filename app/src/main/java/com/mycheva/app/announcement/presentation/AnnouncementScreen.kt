@@ -1,7 +1,8 @@
 package com.mycheva.app.announcement.presentation
 
-import android.os.Build
-import androidx.annotation.RequiresApi
+import androidx.compose.animation.AnimatedContentScope
+import androidx.compose.animation.ExperimentalSharedTransitionApi
+import androidx.compose.animation.SharedTransitionScope
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -15,31 +16,31 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.mycheva.app.announcement.presentation.component.AnnouncementCard
 import com.mycheva.app.core.navigation.BookmarkScreen
 import com.mycheva.app.core.ui.components.CenteredAppBar
 import com.mycheva.app.core.ui.components.NotificationBox
 import kotlinx.coroutines.delay
-import java.time.LocalTime
 
-@OptIn(ExperimentalMaterial3Api::class)
+@OptIn(ExperimentalMaterial3Api::class, ExperimentalSharedTransitionApi::class)
 @Composable
-fun AnnouncementScreen(
+fun SharedTransitionScope.AnnouncementScreen(
     state: AnnouncementScreenState,
     onEvent: (AnnouncementScreenEvent) -> Unit,
     onNavigate: (destination: Any?) -> Unit,
+    animatedContentScope: AnimatedContentScope
 ) {
 
     LaunchedEffect(key1 = state.token) {
         if (state.token.isNotBlank()) {
+            delay(300)
             onEvent(AnnouncementScreenEvent.OnLoadAnnouncements(state.token))
         }
     }
 
     LaunchedEffect(key1 = state.notificationMessage) {
-        if (state.notificationMessage.isNotBlank()){
+        if (state.notificationMessage.isNotBlank()) {
             delay(2000)
             onEvent(AnnouncementScreenEvent.OnClearState)
         }
@@ -52,6 +53,11 @@ fun AnnouncementScreen(
         isErrorNotification = state.isRequestError
     ) {
         Scaffold(
+            modifier = Modifier
+                .sharedBounds(
+                    sharedContentState = rememberSharedContentState(key = "announcement"),
+                    animatedVisibilityScope = animatedContentScope
+                ),
             topBar = {
                 CenteredAppBar(
                     title = "Announcement",
@@ -83,14 +89,4 @@ fun AnnouncementScreen(
             }
         )
     }
-}
-
-@Preview
-@Composable
-private fun AnnouncementScreenPrev() {
-    AnnouncementScreen(
-        state = AnnouncementScreenState(),
-        onEvent = {  },
-        onNavigate = {  }
-    )
 }
