@@ -33,7 +33,8 @@ fun CenteredAppBar(
             containerColor = Primary500,
             navigationIconContentColor = Neutral50,
             actionIconContentColor = Neutral50,
-            titleContentColor = Neutral50
+            titleContentColor = Neutral50,
+            scrolledContainerColor = Primary500
         ),
         navigationIcon = {
             IconButton(onClick = { navigationAction(null) }) {
