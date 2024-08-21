@@ -90,7 +90,7 @@ class LoginScreenViewModel @Inject constructor(
                                 repository.saveToken(response.body()!!.token)
                                 repository.saveUserId(response.body()!!.user.id.toString())
                             }
-                            _state.update { it.copy(isSignInSuccessful = true) }
+                            _state.update { it.copy(isSignInSuccessful = true, notificationMessage = "Selamat datang, ${response.body()!!.user.name}") }
                         }
 
                         401 -> _state.update {

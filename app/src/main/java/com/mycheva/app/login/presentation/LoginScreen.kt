@@ -55,13 +55,17 @@ fun SharedTransitionScope.LoginScreen(
     animatedVisibilityScope: AnimatedVisibilityScope
 ) {
 
-    LaunchedEffect(key1 = state) {
-        if (state.isSignInSuccessful)
-            onNavigate(MainGraph)
-
+    LaunchedEffect(key1 = state.isSignInFailed) {
         if (state.isSignInFailed) {
             delay(1000)
             onEvent(LoginScreenEvent.OnClearState)
+        }
+    }
+
+    LaunchedEffect(key1 = state.isSignInSuccessful) {
+        if (state.isSignInSuccessful){
+            delay(1000)
+            onNavigate(MainGraph)
         }
     }
 
