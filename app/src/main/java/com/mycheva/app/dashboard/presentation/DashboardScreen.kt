@@ -231,7 +231,7 @@ fun SharedTransitionScope.DashboardScreen(
                                     animatedVisibilityScope = animatedContentScope
                                 ),
                             icon = Icons.Rounded.Map,
-                            label = "Lihat Roadmap",
+                            label = "Roadmap",
                             enabled = !state.isLoading,
                             onClick = { onNavigate(RoadmapScreen) }
                         )
