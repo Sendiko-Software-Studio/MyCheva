@@ -81,7 +81,7 @@ class ProfileScreenViewModel @Inject constructor(
                                     faculty = response.body()?.user?.userDatum?.faculty ?: "",
                                     major = response.body()?.user?.userDatum?.major ?: "",
                                     division = response.body()?.user?.userDatum?.division?.name ?:"",
-                                    imageUrl = response.body()?.user?.userDatum?.imageUrl ?: ""
+                                    imageUrl = response.body()?.user?.profileUrl ?: ""
                                 )
                             }
                         }

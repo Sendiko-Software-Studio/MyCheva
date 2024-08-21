@@ -9,12 +9,12 @@ plugins {
 
 android {
     namespace = "com.mycheva.app"
-    compileSdk = 34
+    compileSdk = 35
 
     defaultConfig {
         applicationId = "com.mycheva.app"
         minSdk = 24
-        targetSdk = 34
+        targetSdk = 35
         versionCode = 1
         versionName = "1.0"
 
@@ -82,6 +82,7 @@ dependencies {
     implementation(libs.com.squareup.retrofit2.converter.gson)
     implementation(libs.com.squareup.okhttp3.okhttp)
     implementation(libs.com.squareup.okhttp3.logging.interceptor)
+    implementation(libs.various.cards)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)

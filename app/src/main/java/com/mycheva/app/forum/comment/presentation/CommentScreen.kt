@@ -13,9 +13,8 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.rounded.ArrowBack
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.automirrored.rounded.Send
-import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -27,14 +26,14 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
+import com.mycheva.app.core.ui.components.CenteredAppBar
 import com.mycheva.app.core.ui.components.NotificationBox
 import com.mycheva.app.core.ui.components.PlainTextField
-import com.mycheva.app.core.ui.theme.Primary50
-import com.mycheva.app.core.ui.theme.Primary500
 import com.mycheva.app.forum.comment.presentation.component.CommentCard
 import com.mycheva.app.forum.main.presentation.component.ForumPostCard
 import kotlinx.coroutines.delay
@@ -47,6 +46,7 @@ fun CommentScreen(
     onNavigateBack: () -> Unit,
     forumId: String
 ) {
+    val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior()
 
     LaunchedEffect(key1 = state.token) {
         if (state.token.isNotBlank()) {
@@ -74,23 +74,11 @@ fun CommentScreen(
     ) {
         Scaffold(
             topBar = {
-                CenterAlignedTopAppBar(
-                    title = {
-                        Text(text = "Forum")
-                    },
-                    navigationIcon = {
-                        IconButton(onClick = onNavigateBack) {
-                            Icon(
-                                imageVector = Icons.AutoMirrored.Rounded.ArrowBack,
-                                contentDescription = "back"
-                            )
-                        }
-                    },
-                    colors = TopAppBarDefaults.centerAlignedTopAppBarColors(
-                        containerColor = Primary500,
-                        titleContentColor = Primary50,
-                        navigationIconContentColor = Primary50,
-                    )
+                CenteredAppBar(
+                    title = "Forum",
+                    navigationIcon = Icons.AutoMirrored.Default.ArrowBack,
+                    navigationAction = { onNavigateBack() },
+                    scrollBehavior = scrollBehavior
                 )
             },
             bottomBar = {
@@ -125,7 +113,9 @@ fun CommentScreen(
             },
             content = { paddingValues ->
                 LazyColumn(
-                    contentPadding = paddingValues
+                    contentPadding = paddingValues,
+                    modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
+                    verticalArrangement = Arrangement.spacedBy(8.dp)
                 ) {
                     item {
                         Spacer(modifier = Modifier.height(16.dp))

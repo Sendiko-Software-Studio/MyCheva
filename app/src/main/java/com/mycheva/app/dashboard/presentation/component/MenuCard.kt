@@ -18,11 +18,13 @@ fun MenuCard(
     modifier: Modifier = Modifier,
     icon: ImageVector,
     label: String,
-    onClick: () -> Unit
+    onClick: () -> Unit,
+    enabled: Boolean = true,
 ) {
     OutlinedCard(
         onClick = onClick,
-        modifier = modifier
+        modifier = modifier,
+        enabled = enabled
     ) {
         Column(
             Modifier.padding(16.dp)

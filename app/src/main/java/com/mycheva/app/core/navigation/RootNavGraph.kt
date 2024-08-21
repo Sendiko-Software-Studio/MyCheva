@@ -15,6 +15,7 @@ import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.NavigationBarItemDefaults
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -41,8 +42,9 @@ import com.mycheva.app.core.navigation.bottom_nav.bottomNavItems
 import com.mycheva.app.core.ui.theme.Primary50
 import com.mycheva.app.core.ui.theme.Primary500
 import com.mycheva.app.core.ui.theme.Primary900
+import com.mycheva.app.core.ui.theme.poppinsFamily
 import com.mycheva.app.dashboard.presentation.DashboardScreen
-import com.mycheva.app.dashboard.presentation.DashboardScreenViewModel
+import com.mycheva.app.dashboard.presentation.DashboardViewModel
 import com.mycheva.app.forum.add.presentation.AddPostScreen
 import com.mycheva.app.forum.add.presentation.AddPostScreenViewModel
 import com.mycheva.app.forum.comment.presentation.CommentScreen
@@ -106,6 +108,9 @@ fun RootNavGraph(
                                     contentDescription = item.label
                                 )
                             },
+                            label = {
+                                Text(text = item.label, fontFamily = poppinsFamily)
+                            },
                             colors = NavigationBarItemDefaults.colors(
                                 indicatorColor = Color.Transparent,
                                 unselectedIconColor = Primary900,
@@ -168,15 +173,9 @@ fun RootNavGraph(
                 }
                 navigation<MainGraph>(
                     startDestination = DashboardScreen,
-                    enterTransition = {
-                        fadeIn()
-                    },
-                    exitTransition = {
-                        fadeOut()
-                    }
                 ) {
                     composable<DashboardScreen> {
-                        val viewModel = hiltViewModel<DashboardScreenViewModel>()
+                        val viewModel = hiltViewModel<DashboardViewModel>()
                         val state by viewModel.state.collectAsStateWithLifecycle()
                         DashboardScreen(
                             state = state,
@@ -184,7 +183,7 @@ fun RootNavGraph(
                             onNavigate = {
                                 navController.navigate(it)
                             },
-                            animatedVisibilityScope = this
+                            animatedContentScope = this
                         )
                     }
                     composable<ProfileScreen> {
@@ -260,7 +259,8 @@ fun RootNavGraph(
                                 onEvent = viewModel::onEvent,
                                 onNavigateBack = {
                                     navController.navigateUp()
-                                }
+                                },
+                                animatedContentScope = this
                             )
                         }
                         composable<AnnouncementScreen> {
@@ -273,7 +273,8 @@ fun RootNavGraph(
                                     if (it == null) {
                                         navController.navigateUp()
                                     } else navController.navigate(it)
-                                }
+                                },
+                                animatedContentScope = this
                             )
                         }
                         composable<ForumScreen> {
@@ -289,7 +290,8 @@ fun RootNavGraph(
                                         null -> navController.navigateUp()
                                         else -> navController.navigate(it)
                                     }
-                                }
+                                },
+                                animatedContentScope = this
                             )
                         }
                         composable<PostScreen> {
@@ -334,7 +336,8 @@ fun RootNavGraph(
                             RoadmapScreen(
                                 onNavigateBack = {
                                     navController.navigateUp()
-                                }
+                                },
+                                animatedContentScope = this
                             )
                         }
                     }

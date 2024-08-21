@@ -9,11 +9,11 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
+import ngrokserver
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
-import sdraf3000
 import java.util.concurrent.TimeUnit
 import javax.inject.Singleton
 
@@ -49,7 +49,7 @@ object AppModule {
     @Provides
     fun provideRetrofit(okHttpClient: OkHttpClient): Retrofit {
         return Retrofit.Builder()
-            .baseUrl(sdraf3000)
+            .baseUrl(ngrokserver)
             .client(okHttpClient)
             .addConverterFactory(GsonConverterFactory.create())
             .build()

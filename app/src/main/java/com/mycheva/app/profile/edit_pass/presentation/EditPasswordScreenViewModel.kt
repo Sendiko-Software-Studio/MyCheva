@@ -45,6 +45,10 @@ class EditPasswordScreenViewModel @Inject constructor(
     }
 
     private fun changePassword(token: String, userId: String, newPass: String) {
+        if (newPass.isBlank()){
+            _state.update { it.copy(isRequestError = true, notificationMessage = "Password can't be empty.") }
+            return
+        }
         _state.update { it.copy(isLoading = true) }
         val data = ChangePasswordRequest(password = newPass)
         val request = repository.changePassword(
