@@ -2,7 +2,7 @@ package com.mycheva.app.dashboard.presentation
 
 import com.mycheva.app.schedule.core.EventsItem
 
-data class DashboardScreenState(
+data class DashboardState(
     val name: String = "",
     val latestEvent: EventsItem? = null,
     val token: String = "",
