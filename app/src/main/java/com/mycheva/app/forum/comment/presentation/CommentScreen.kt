@@ -114,7 +114,8 @@ fun CommentScreen(
             content = { paddingValues ->
                 LazyColumn(
                     contentPadding = paddingValues,
-                    modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection)
+                    modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
+                    verticalArrangement = Arrangement.spacedBy(8.dp)
                 ) {
                     item {
                         Spacer(modifier = Modifier.height(16.dp))
