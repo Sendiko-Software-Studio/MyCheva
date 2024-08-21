@@ -72,7 +72,8 @@ fun SharedTransitionScope.ScheduleScreen(
                     },
                     colors = TopAppBarDefaults.centerAlignedTopAppBarColors(
                         containerColor = Primary500,
-                        titleContentColor = Primary50
+                        titleContentColor = Primary50,
+                        scrolledContainerColor = Primary50
                     ),
                     scrollBehavior = scrollBehavior
                 )
