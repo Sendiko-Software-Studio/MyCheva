@@ -31,6 +31,10 @@ class DashboardScreenViewModel @Inject constructor(
         )
     }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), DashboardScreenState())
 
+    init {
+        _state.update { it.copy(isLoading = true) }
+    }
+
     fun onEvent(event: DashboardScreenEvent) {
         when (event) {
             DashboardScreenEvent.OnClearState -> _state.update { it.copy(isLoading = false, isRequestFailed = false, notificationMessage = "") }
