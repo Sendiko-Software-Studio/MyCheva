@@ -1,25 +1,17 @@
 package com.mycheva.app.dashboard.domain
 
-import com.mycheva.app.core.network.ApiServices
-import com.mycheva.app.core.preferences.AppPreferences
+import com.mycheva.app.profile.main.data.User1
+import com.mycheva.app.schedule.core.EventsItem
 import kotlinx.coroutines.flow.Flow
-import javax.inject.Inject
 
-class DashboardRepository @Inject constructor(
-    private val apiService: ApiServices,
-    private val appPreferences: AppPreferences
-) {
+interface DashboardRepository {
 
-    fun getToken(): Flow<String> {
-        return appPreferences.getToken()
-    }
+    fun getToken(): Flow<String>
 
-    fun getUserId(): Flow<String> {
-        return appPreferences.getUserId()
-    }
+    fun getUserId(): Flow<String>
 
-    fun getUser(token: String, userId: String) = apiService.getUser(token, userId)
+    suspend fun getUser(token: String, userId: String): Result<User1>
 
-    fun getEvents(token: String) = apiService.getEvents(token)
+    suspend fun getEvents(token: String): Result<List<EventsItem>>
 
 }

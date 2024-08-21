@@ -58,8 +58,8 @@ import java.time.LocalTime
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalSharedTransitionApi::class)
 @Composable
 fun SharedTransitionScope.DashboardScreen(
-    state: DashboardScreenState,
-    onEvent: (DashboardScreenEvent) -> Unit,
+    state: DashboardState,
+    onEvent: (DashboardEvent) -> Unit,
     onNavigate: (route: Any) -> Unit,
     animatedContentScope: AnimatedContentScope
 ) {
@@ -71,22 +71,23 @@ fun SharedTransitionScope.DashboardScreen(
         in 12..17 -> "Selamat siang,"
         else -> "Selamat malam,"
     }
+
     LaunchedEffect(key1 = state.userId) {
         if (state.userId.isNotBlank()) {
             delay(300)
-            onEvent(DashboardScreenEvent.GetUserData(state.token, state.userId))
+            onEvent(DashboardEvent.GetUserData(state.token, state.userId))
         }
     }
 
     LaunchedEffect(key1 = state.divisionId) {
         if (state.divisionId.isNotBlank())
-            onEvent(DashboardScreenEvent.GetEventData(state.token))
+            onEvent(DashboardEvent.GetEventData(state.token))
     }
 
     LaunchedEffect(key1 = state.notificationMessage) {
         if (state.notificationMessage.isNotBlank()) {
             delay(2000)
-            onEvent(DashboardScreenEvent.OnClearState)
+            onEvent(DashboardEvent.OnClearState)
         }
     }
 
