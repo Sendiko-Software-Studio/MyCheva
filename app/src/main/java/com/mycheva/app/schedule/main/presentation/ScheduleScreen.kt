@@ -21,9 +21,11 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.mycheva.app.core.ui.components.NotificationBox
 import com.mycheva.app.core.ui.theme.Primary50
 import com.mycheva.app.core.ui.theme.Primary500
 import com.mycheva.app.core.ui.theme.poppinsFamily
@@ -40,6 +42,7 @@ fun SharedTransitionScope.ScheduleScreen(
     onNavigate: (eventId: String    ) -> Unit,
     animatedVisibilityScope: AnimatedVisibilityScope
 ) {
+    val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior()
 
     LaunchedEffect(key1 = state.token) {
         if (state.token.isNotBlank())
@@ -53,56 +56,64 @@ fun SharedTransitionScope.ScheduleScreen(
         }
     }
 
-    Scaffold(
-        topBar = {
-            CenterAlignedTopAppBar(
-                title = {
-                    Text(
-                        text = "Jadwal",
-                        fontFamily = poppinsFamily
-                    )
-                },
-                colors = TopAppBarDefaults.centerAlignedTopAppBarColors(
-                    containerColor = Primary500,
-                    titleContentColor = Primary50
+    NotificationBox(
+        message = state.notificationMessage,
+        isLoading = state.isLoading,
+        isErrorNotification = state.isRequestFailed
+    ) {
+        Scaffold(
+            topBar = {
+                CenterAlignedTopAppBar(
+                    title = {
+                        Text(
+                            text = "Jadwal",
+                            fontFamily = poppinsFamily
+                        )
+                    },
+                    colors = TopAppBarDefaults.centerAlignedTopAppBarColors(
+                        containerColor = Primary500,
+                        titleContentColor = Primary50
+                    ),
+                    scrollBehavior = scrollBehavior
                 )
-            )
-        },
-        content = { paddingValues ->
-            LazyColumn(
-                contentPadding = paddingValues,
-                verticalArrangement = Arrangement.spacedBy(16.dp)
-            ) {
-                item {
-                    Calendar(paddingValues)
-                    HorizontalDivider(
-                        color = Color.Gray,
-                        thickness = 2.dp,
-                        modifier = Modifier.padding(vertical = 8.dp)
-                    )
-                }
-                items(state.events.entries.toList()) { (date, events) ->
-                    Text(
-                        text = date.toString(),
-                        fontSize = 18.sp,
-                        fontWeight = FontWeight.SemiBold,
-                        fontFamily = poppinsFamily,
-                        modifier = Modifier.padding(horizontal = 16.dp)
-                    )
-                    Spacer(modifier = Modifier.height(8.dp))
-                    events.forEach { event ->
-                        EventCard(
-                            eventsItem = event,
-                            onClick = { onNavigate(event.id.toString()) },
-                            modifier = Modifier
-                                .padding(horizontal = 16.dp)
+            },
+            content = { paddingValues ->
+                LazyColumn(
+                    contentPadding = paddingValues,
+                    verticalArrangement = Arrangement.spacedBy(16.dp),
+                    modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection)
+                ) {
+                    item {
+                        Calendar(paddingValues)
+                        HorizontalDivider(
+                            color = Color.Gray,
+                            thickness = 2.dp,
+                            modifier = Modifier.padding(vertical = 8.dp)
+                        )
+                    }
+                    items(state.events.entries.toList()) { (date, events) ->
+                        Text(
+                            text = date.toString(),
+                            fontSize = 18.sp,
+                            fontWeight = FontWeight.SemiBold,
+                            fontFamily = poppinsFamily,
+                            modifier = Modifier.padding(horizontal = 16.dp)
                         )
                         Spacer(modifier = Modifier.height(8.dp))
+                        events.forEach { event ->
+                            EventCard(
+                                eventsItem = event,
+                                onClick = { onNavigate(event.id.toString()) },
+                                modifier = Modifier
+                                    .padding(horizontal = 16.dp)
+                            )
+                            Spacer(modifier = Modifier.height(8.dp))
+                        }
                     }
+
                 }
 
             }
-
-        }
-    )
+        )
+    }
 }
