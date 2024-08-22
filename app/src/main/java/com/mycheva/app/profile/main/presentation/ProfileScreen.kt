@@ -49,14 +49,17 @@ fun ProfileScreen(
     }
 
     LaunchedEffect(key1 = state.isLogoutSuccess) {
-        if (state.isLogoutSuccess)
+        if (state.isLogoutSuccess){
+            delay(1000)
             onNavigate(SplashScreen)
+        }
     }
 
     LaunchedEffect(key1 = state.notificationMessage) {
-        if (state.notificationMessage.isNotBlank())
+        if (state.notificationMessage.isNotBlank()){
             delay(2000)
             onEvent(ProfileScreenEvent.OnClearState)
+        }
     }
 
     NotificationBox(
