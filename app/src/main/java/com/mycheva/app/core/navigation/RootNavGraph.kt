@@ -194,7 +194,8 @@ fun RootNavGraph(
                             onEvent = viewModel::onEvent,
                             onNavigate = {
                                 if (it is SplashScreen) {
-                                    navController.navigate(it) { popUpTo(it) { inclusive = true } }
+                                    currentRoute = DashboardScreen.toString()
+                                    navController.navigate(it) { popUpTo(it) { inclusive = false } }
                                 } else {
                                     navController.navigate(it)
                                 }
