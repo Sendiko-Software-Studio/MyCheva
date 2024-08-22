@@ -1,6 +1,5 @@
 package com.mycheva.app.dashboard.presentation
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.mycheva.app.dashboard.domain.DashboardRepositoryImpl
@@ -50,13 +49,10 @@ class DashboardViewModel @Inject constructor(
 
     private fun getEventData(token: String) {
         _state.update { it.copy(isLoading = true) }
-        Log.i("GET_EVENT", "isLoading, outside viewModelScope: ${state.value.isLoading}")
         viewModelScope.launch {
             repo.getEvents(token)
                 .onSuccess { result ->
-                    Log.i("GET_EVENT", "getEventData: $result")
-                    Log.i("GET_EVENT", "isLoading: ${state.value.isLoading}")
-                    val event = result.first {
+                    val event = result.firstOrNull {
                         it.divisionId.toString() == state.value.divisionId
                     }
                     _state.update {
@@ -83,8 +79,6 @@ class DashboardViewModel @Inject constructor(
         viewModelScope.launch(Dispatchers.IO) {
             repo.getUser(token, userId)
                 .onSuccess { user ->
-                    Log.i("GET_USER", "getUserData: $user")
-                    Log.i("GET_USER", "isLoading: ${state.value.isLoading}")
                     _state.update {
                         it.copy(
                             name = user.name,
