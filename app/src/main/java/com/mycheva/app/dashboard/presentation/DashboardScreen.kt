@@ -49,6 +49,7 @@ import com.mycheva.app.core.navigation.RoadmapScreen
 import com.mycheva.app.core.ui.components.NotificationBox
 import com.mycheva.app.core.ui.theme.Neutral400
 import com.mycheva.app.core.ui.theme.poppinsFamily
+import com.mycheva.app.dashboard.presentation.component.EmptyMeetingCard
 import com.mycheva.app.dashboard.presentation.component.MeetingCard
 import com.mycheva.app.dashboard.presentation.component.MenuCard
 import kotlinx.coroutines.delay
@@ -188,6 +189,8 @@ fun SharedTransitionScope.DashboardScreen(
                                         eventsItem = state.latestEvent
                                     )
                                 }
+                                if (state.latestEvent == null && !state.isLoading)
+                                    EmptyMeetingCard(modifier = Modifier.fillMaxWidth())
                             }
                             true ->
                                 Box(
