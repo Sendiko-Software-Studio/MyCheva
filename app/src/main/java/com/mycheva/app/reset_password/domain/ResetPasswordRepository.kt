@@ -1,24 +1,15 @@
 package com.mycheva.app.reset_password.domain
 
-import com.mycheva.app.core.network.ApiServices
-import com.mycheva.app.core.preferences.AppPreferences
 import com.mycheva.app.reset_password.data.ResetPasswordRequest
+import com.mycheva.app.reset_password.data.ResetPasswordResponse
 import kotlinx.coroutines.flow.Flow
-import javax.inject.Inject
 
-class ResetPasswordRepository @Inject constructor(
-    private val apiServices: ApiServices,
-    private val appPreferences: AppPreferences
-) {
+interface ResetPasswordRepository {
 
-    fun getToken(): Flow<String> {
-        return appPreferences.getToken()
-    }
+    fun getToken(): Flow<String>
 
-    fun getUserId(): Flow<String> {
-        return appPreferences.getUserId()
-    }
+    fun getUserId(): Flow<String>
 
-    fun resetPassword(token: String, request: ResetPasswordRequest) = apiServices.resetPassword(token, request)
+    suspend fun resetPassword(token: String, request: ResetPasswordRequest): Result<ResetPasswordResponse>
 
 }
