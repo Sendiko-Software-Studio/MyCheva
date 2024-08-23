@@ -1,25 +1,24 @@
 package com.mycheva.app.login.presentation
 
-import android.util.Log
+import NOT_FOUND
+import SERVER_ERROR
+import UNAUTHORIZED
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.mycheva.app.core.ui.data.TextFieldError
 import com.mycheva.app.login.data.LoginRequest
-import com.mycheva.app.login.data.LoginResponse
-import com.mycheva.app.login.domain.LoginRepository
+import com.mycheva.app.login.domain.LoginRepositoryImpl
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
 import javax.inject.Inject
 
 @HiltViewModel
 class LoginScreenViewModel @Inject constructor(
-    private val repository: LoginRepository
+    private val repository: LoginRepositoryImpl
 ) : ViewModel() {
 
     private val _state = MutableStateFlow(LoginScreenState())
@@ -70,60 +69,49 @@ class LoginScreenViewModel @Inject constructor(
             return
         }
         _state.update { it.copy(isLoading = true) }
-        val data =
-            LoginRequest(
+        val data = LoginRequest(
                 name = state.value.usernameText,
                 password = state.value.passwordText
             )
-        val request = repository.login(data)
-        request.enqueue(
-            object : Callback<LoginResponse> {
-                override fun onResponse(
-                    call: Call<LoginResponse>,
-                    response: Response<LoginResponse>
-                ) {
-                    _state.update { it.copy(isLoading = false) }
-                    Log.i("DEBUG", "loginRepository, onResponse: run")
-                    when (response.code()) {
-                        200 -> {
-                            viewModelScope.launch {
-                                repository.saveToken(response.body()!!.token)
-                                repository.saveUserId(response.body()!!.user.id.toString())
-                            }
-                            _state.update { it.copy(isSignInSuccessful = true, notificationMessage = "Selamat datang, ${response.body()!!.user.name}") }
-                        }
-
-                        401 -> _state.update {
-                            it.copy(
-                                isSignInFailed = true,
-                                notificationMessage = "Username atau password salah.",
-                            )
-                        }
-
-                        else -> _state.update {
-                            it.copy(
-                                isSignInFailed = true,
-                                notificationMessage = "Server error.",
-                            )
-                        }
-                    }
-                }
-
-                override fun onFailure(
-                    call: Call<LoginResponse>,
-                    throwable: Throwable
-                ) {
+        viewModelScope.launch(Dispatchers.IO) {
+            repository.login(data)
+                .onSuccess { result ->
+                    repository.saveToken(result.token)
+                    repository.saveUserId(result.user.name)
                     _state.update {
                         it.copy(
-                            isSignInFailed = true,
-                            notificationMessage = "Server error.",
+                            isLoading = false,
+                            isSignInSuccessful = true,
+                            notificationMessage = "Selamat datang, ${result.user.name}"
                         )
                     }
                 }
-
-            }
-        )
-        Log.i("DEBUG", "viewModel, isLoading: ${state.value.isLoading}")
+                .onFailure { code ->
+                    when (code.message) {
+                        UNAUTHORIZED -> _state.update {
+                            it.copy(
+                                isLoading = false,
+                                isSignInFailed = true,
+                                notificationMessage = "Password didn't match."
+                            )
+                        }
+                        NOT_FOUND -> _state.update {
+                            it.copy(
+                                isLoading = false,
+                                isSignInFailed = true,
+                                notificationMessage = "Account not found"
+                            )
+                        }
+                        SERVER_ERROR -> _state.update {
+                            it.copy(
+                                isLoading = false,
+                                isSignInFailed = true,
+                                notificationMessage = "Server error."
+                            )
+                        }
+                    }
+                }
+        }
     }
 
     private fun onUsernameClear() {

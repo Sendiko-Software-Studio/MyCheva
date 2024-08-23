@@ -1,23 +1,14 @@
 package com.mycheva.app.login.domain
 
-import com.mycheva.app.core.network.ApiServices
-import com.mycheva.app.core.preferences.AppPreferences
 import com.mycheva.app.login.data.LoginRequest
-import javax.inject.Inject
+import com.mycheva.app.login.data.LoginResponse
 
-class LoginRepository @Inject constructor(
-    private val appPreferences: AppPreferences,
-    private val apiServices: ApiServices
-) {
+interface LoginRepository {
 
-    fun login(loginRequest: LoginRequest) = apiServices.login(loginRequest)
+    suspend fun login(loginRequest: LoginRequest): Result<LoginResponse>
 
-    suspend fun saveToken(token: String) {
-        appPreferences.saveToken(token)
-    }
+    suspend fun saveToken(token: String)
 
-    suspend fun saveUserId(userId: String) {
-        appPreferences.saveUserId(userId)
-    }
+    suspend fun saveUserId(userId: String)
 
 }
