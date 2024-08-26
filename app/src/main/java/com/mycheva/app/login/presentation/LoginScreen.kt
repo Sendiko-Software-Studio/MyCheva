@@ -1,17 +1,13 @@
 package com.mycheva.app.login.presentation
 
 import android.annotation.SuppressLint
-import androidx.compose.animation.AnimatedVisibilityScope
 import androidx.compose.animation.ExperimentalSharedTransitionApi
-import androidx.compose.animation.SharedTransitionScope
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -48,11 +44,10 @@ import androidx.compose.ui.res.painterResource as painterResource1
 @OptIn(ExperimentalSharedTransitionApi::class)
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
-fun SharedTransitionScope.LoginScreen(
+fun LoginScreen(
     state: LoginScreenState,
     onEvent: (LoginScreenEvent) -> Unit,
     onNavigate: (destination: Any) -> Unit,
-    animatedVisibilityScope: AnimatedVisibilityScope
 ) {
 
     LaunchedEffect(key1 = state.isSignInFailed) {
@@ -82,25 +77,31 @@ fun SharedTransitionScope.LoginScreen(
                         .padding(16.dp),
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
-                    Spacer(modifier = Modifier.height(64.dp))
                     Image(
                         modifier = Modifier
-                            .padding(vertical = 8.dp)
-                            .size(200.dp)
-                            .sharedElement(
-                                state = rememberSharedContentState(key = "chevalier_logo"),
-                                animatedVisibilityScope = animatedVisibilityScope
-                            ),
-                        painter = painterResource1(id = R.drawable.chevalier_logo),
+                            .size(256.dp),
+                        painter = painterResource1(id = R.drawable.chv),
                         contentDescription = "logo cheva"
                     )
-                    Text(
-                        text = "Login",
-                        fontSize = 32.sp,
-                        modifier = Modifier.padding(vertical = 16.dp),
-                        fontFamily = poppinsFamily
-                    )
+                    Column(
+                        modifier = Modifier.padding(bottom = 16.dp)
+                    ) {
+                        Text(
+                            text = "Login",
+                            fontSize = 24.sp,
+                            modifier = Modifier.fillMaxWidth(),
+                            fontFamily = poppinsFamily,
+                            fontWeight = Bold
+                        )
+                        Text(
+                            text = "Silahkan login dengan username dan password",
+                            fontSize = 16.sp,
+                            modifier = Modifier.fillMaxWidth(),
+                            fontFamily = poppinsFamily,
+                        )
+                    }
                     CustomTextField(
+                        modifier = Modifier.fillMaxWidth(),
                         value = state.usernameText,
                         label = "Username",
                         isError = state.usernameTextState.isError,
@@ -121,8 +122,8 @@ fun SharedTransitionScope.LoginScreen(
                             keyboardType = KeyboardType.Text
                         )
                     )
-                    Spacer(modifier = Modifier.height(16.dp))
                     CustomPasswordTextField(
+                        modifier = Modifier.fillMaxWidth(),
                         value = state.passwordText,
                         label = "Password",
                         isVisible = state.isPasswordVisible,
@@ -144,7 +145,6 @@ fun SharedTransitionScope.LoginScreen(
                     Text(
                         modifier = Modifier
                             .fillMaxWidth()
-                            .padding(vertical = 16.dp)
                             .clickable {
                                 onNavigate(ResetPasswordScreen)
                             },

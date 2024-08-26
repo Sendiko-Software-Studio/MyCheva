@@ -1,8 +1,6 @@
 package com.mycheva.app.reset_password.presentation
 
-import androidx.compose.animation.AnimatedContentScope
 import androidx.compose.animation.ExperimentalSharedTransitionApi
-import androidx.compose.animation.SharedTransitionScope
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -24,6 +22,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.font.FontWeight.Companion.Bold
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -37,12 +36,10 @@ import kotlinx.coroutines.delay
 import androidx.compose.ui.res.painterResource as painterResource1
 
 
-@OptIn(ExperimentalSharedTransitionApi::class)
 @Composable
-fun SharedTransitionScope.ResetPasswordScreen(
+fun ResetPasswordScreen(
     state: ResetPasswordScreenState,
     onEvent: (ResetPasswordScreenEvent) -> Unit,
-    animatedVisibilityScope: AnimatedContentScope,
     onNavigateBack: () -> Unit,
 ) {
 
@@ -70,29 +67,30 @@ fun SharedTransitionScope.ResetPasswordScreen(
             horizontalAlignment = Alignment.CenterHorizontally,
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(top = 64.dp)
         ) {
             Image(
-                painter = painterResource1(id = R.drawable.chevalier_logo),
-                contentDescription = "logo cheva",
                 modifier = Modifier
-                    .size(128.dp)
-                    .sharedElement(
-                        state = rememberSharedContentState(key = "chevalier_logo"),
-                        animatedVisibilityScope = animatedVisibilityScope
-                    )
+                    .size(256.dp),
+                painter = painterResource1(id = R.drawable.chv),
+                contentDescription = "logo cheva"
             )
-            Spacer(modifier = Modifier.height(16.dp))
-            Text(
-                text = "Lupa password anda?",
-                fontSize = 20.sp,
-                fontWeight = FontWeight.Normal,
-                modifier = Modifier
-                    .fillMaxWidth(),
-                textAlign = TextAlign.Center,
-                fontFamily = poppinsFamily
-            )
-            Spacer(modifier = Modifier.height(64.dp))
+            Column(
+                modifier = Modifier.padding(horizontal = 16.dp)
+            ) {
+                Text(
+                    text = "Reset Password",
+                    fontSize = 24.sp,
+                    modifier = Modifier.fillMaxWidth(),
+                    fontFamily = poppinsFamily,
+                    fontWeight = Bold
+                )
+                Text(
+                    text = "Gunakan email anda untuk reset password",
+                    fontSize = 16.sp,
+                    modifier = Modifier.fillMaxWidth(),
+                    fontFamily = poppinsFamily,
+                )
+            }
             CustomTextField(
                 label = "Masukkan email anda",
                 value = state.emailText,
