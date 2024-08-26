@@ -5,6 +5,7 @@ data class ProfileScreenState(
     val imageUrl: String = "",
     val username: String = "",
     val name: String = "",
+    val email: String = "",
     val nim: String = "",
     val faculty: String = "",
     val major: String = "",

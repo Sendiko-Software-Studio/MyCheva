@@ -9,7 +9,7 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import com.mycheva.app.core.ui.components.CenteredAppBar
+import com.mycheva.app.core.ui.components.LargeTopBar
 import com.mycheva.app.roadmap.presentation.component.RoadmapContent
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalSharedTransitionApi::class)
@@ -25,10 +25,10 @@ fun SharedTransitionScope.RoadmapScreen(
                 animatedVisibilityScope = animatedContentScope
             ),
         topBar = {
-            CenteredAppBar(
+            LargeTopBar(
                 title = "RoadMap",
                 navigationIcon = Icons.AutoMirrored.Rounded.ArrowBack,
-                navigationAction = { onNavigateBack() }
+                navigationAction = { onNavigateBack() },
             )
         },
         content = { paddingValues ->

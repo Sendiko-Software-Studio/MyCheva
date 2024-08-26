@@ -16,7 +16,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.mycheva.app.core.ui.theme.Primary300
+import com.mycheva.app.core.ui.theme.Neutral200
+import com.mycheva.app.core.ui.theme.Primary500
 import com.mycheva.app.core.ui.theme.poppinsFamily
 import com.mycheva.app.schedule.core.EventsItem
 
@@ -30,7 +31,8 @@ fun EventCard(
         modifier = modifier,
         onClick = onClick,
         colors = CardDefaults.cardColors(
-            containerColor = Primary300
+            containerColor = Primary500,
+            contentColor = Neutral200
         )
     ) {
         Column(

@@ -4,7 +4,6 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
@@ -23,11 +22,7 @@ import com.mycheva.app.core.ui.theme.poppinsFamily
 fun ProfileButtons(
     onNavigate: (destination: Any) -> Unit,
 ) {
-    Column(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(horizontal = 16.dp, vertical = 8.dp)
-    ) {
+    Column {
         Button(
             onClick = { onNavigate(EditUsernameScreen) },
             modifier = Modifier.fillMaxWidth(),
@@ -41,7 +36,7 @@ fun ProfileButtons(
                 fontFamily = poppinsFamily
             )
         }
-        Spacer(modifier = Modifier.height(8.dp))
+        Spacer(modifier = Modifier.height(16.dp))
         Button(
             onClick = { onNavigate(EditPasswordScreen) },
             modifier = Modifier.fillMaxWidth(),

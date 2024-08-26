@@ -23,7 +23,7 @@ import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.unit.dp
 import com.mycheva.app.core.navigation.CommentScreen
 import com.mycheva.app.core.navigation.PostScreen
-import com.mycheva.app.core.ui.components.CenteredAppBar
+import com.mycheva.app.core.ui.components.LargeTopBar
 import com.mycheva.app.core.ui.components.NotificationBox
 import com.mycheva.app.core.ui.theme.Primary50
 import com.mycheva.app.core.ui.theme.Primary500
@@ -66,11 +66,12 @@ fun SharedTransitionScope.ForumScreen(
                     animatedVisibilityScope = animatedContentScope
                 ),
             topBar = {
-                CenteredAppBar(
+                LargeTopBar(
                     title = "Forum",
                     navigationIcon = Icons.AutoMirrored.Rounded.ArrowBack,
                     navigationAction = { onNavigate(null) },
-                    scrollBehavior = scrollBehavior
+                    scrollBehavior = scrollBehavior,
+                    modifier = Modifier
                 )
             },
             floatingActionButton = {

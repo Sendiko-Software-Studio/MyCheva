@@ -19,7 +19,7 @@ import com.mycheva.app.R
 @Composable
 fun AndroDevIcon(modifier: Modifier = Modifier) {
     Box(
-        modifier = Modifier
+        modifier = modifier
             .clip(RoundedCornerShape(8.dp))
             .background(Color(0xFF3DDC84)),
         contentAlignment = Alignment.Center
@@ -27,7 +27,7 @@ fun AndroDevIcon(modifier: Modifier = Modifier) {
         Icon(
             painter = painterResource(id = R.drawable.ic_android_24dp),
             contentDescription = "Android",
-            modifier = Modifier.padding(4.dp)
+            modifier = modifier.padding(4.dp)
         )
     }
 }
@@ -35,7 +35,7 @@ fun AndroDevIcon(modifier: Modifier = Modifier) {
 @Composable
 fun UiuxDevIcon(modifier: Modifier = Modifier) {
     Box(
-        modifier = Modifier
+        modifier = modifier
             .clip(RoundedCornerShape(8.dp))
             .background(Color(0xFF2D2D35)),
         contentAlignment = Alignment.Center
@@ -43,7 +43,7 @@ fun UiuxDevIcon(modifier: Modifier = Modifier) {
         Icon(
             painter = painterResource(id = R.drawable.devicon_figma),
             contentDescription = "UI/UX",
-            modifier = Modifier.padding(4.dp)
+            modifier = modifier.padding(4.dp)
         )
     }
 }
@@ -51,7 +51,7 @@ fun UiuxDevIcon(modifier: Modifier = Modifier) {
 @Composable
 fun WebDevIcon(modifier: Modifier = Modifier) {
     Box(
-        modifier = Modifier
+        modifier = modifier
             .clip(RoundedCornerShape(8.dp))
             .background(Color(0xFFF16529)),
         contentAlignment = Alignment.Center
@@ -59,7 +59,7 @@ fun WebDevIcon(modifier: Modifier = Modifier) {
         Icon(
             painter = painterResource(id = R.drawable.mdi_web__1_),
             contentDescription = "Web",
-            modifier = Modifier.padding(4.dp)
+            modifier = modifier.padding(4.dp)
         )
     }
 }
@@ -67,7 +67,7 @@ fun WebDevIcon(modifier: Modifier = Modifier) {
 @Composable
 fun GameDevIcon(modifier: Modifier = Modifier) {
     Box(
-        modifier = Modifier
+        modifier = modifier
             .clip(RoundedCornerShape(8.dp))
             .background(Color(0xFFCD2828)),
         contentAlignment = Alignment.Center
@@ -75,7 +75,7 @@ fun GameDevIcon(modifier: Modifier = Modifier) {
         Icon(
             imageVector = Icons.Rounded.Gamepad,
             contentDescription = "Web",
-            modifier = Modifier.padding(4.dp)
+            modifier = modifier.padding(4.dp)
         )
     }
 }
@@ -83,7 +83,7 @@ fun GameDevIcon(modifier: Modifier = Modifier) {
 @Composable
 fun StartUpAndCompeIcon(modifier: Modifier = Modifier) {
     Box(
-        modifier = Modifier
+        modifier = modifier
             .clip(RoundedCornerShape(8.dp))
             .background(Color(0xFF147DD9)),
         contentAlignment = Alignment.Center
@@ -91,7 +91,7 @@ fun StartUpAndCompeIcon(modifier: Modifier = Modifier) {
         Icon(
             painter = painterResource(id = R.drawable.streamline_startup_solid),
             contentDescription = "Web",
-            modifier = Modifier.padding(4.dp)
+            modifier = modifier.padding(4.dp)
         )
     }
 }

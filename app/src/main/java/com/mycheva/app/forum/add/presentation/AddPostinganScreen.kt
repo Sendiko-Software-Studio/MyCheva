@@ -1,11 +1,9 @@
 package com.mycheva.app.forum.add.presentation
 
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -19,12 +17,9 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
-import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.font.FontWeight.Companion.Bold
 import androidx.compose.ui.unit.dp
-import coil.compose.AsyncImage
-import com.mycheva.app.core.ui.components.CenteredAppBar
+import com.mycheva.app.core.ui.components.LargeTopBar
 import com.mycheva.app.core.ui.components.NotificationBox
 import com.mycheva.app.core.ui.components.PlainTextField
 import com.mycheva.app.core.ui.theme.Primary500
@@ -60,7 +55,7 @@ fun AddPostScreen(
     ) {
         Scaffold(
             topBar = {
-                CenteredAppBar(
+                LargeTopBar(
                     title = "Buat Postingan",
                     navigationIcon = Icons.AutoMirrored.Rounded.ArrowBack,
                     navigationAction = { onNavigateBack() }
@@ -76,28 +71,15 @@ fun AddPostScreen(
                     contentPadding = padding
                 ) {
                     item {
-                        Row(
+                        PlainTextField(
                             modifier = Modifier.fillMaxWidth(),
-                            horizontalArrangement = Arrangement.spacedBy(8.dp)
-                        ) {
-                            AsyncImage(
-                                model = state.userProfileUrl,
-                                modifier = Modifier
-                                    .size(48.dp)
-                                    .clip(RoundedCornerShape(8.dp)),
-                                contentDescription = null,
-                                contentScale = ContentScale.Fit
-                            )
-                            PlainTextField(
-                                value = state.postText,
-                                placeholder = "Apa yang ingin ditanyakan?",
-                                onValueChange = {
-                                    onEvent(AddPostScreenEvent.OnPostTextChanged(it))
-                                }
-                            )
-                        }
+                            value = state.postText,
+                            placeholder = "Apa yang ingin ditanyakan?",
+                            onValueChange = {
+                                onEvent(AddPostScreenEvent.OnPostTextChanged(it))
+                            }
+                        )
                     }
-
                     item {
                         Row(
                             modifier = Modifier.fillMaxWidth()

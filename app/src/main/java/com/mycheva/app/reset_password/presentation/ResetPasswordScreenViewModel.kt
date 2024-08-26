@@ -1,24 +1,24 @@
 package com.mycheva.app.reset_password.presentation
 
+import NOT_FOUND
+import SERVER_ERROR
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.mycheva.app.reset_password.data.ResetPasswordRequest
-import com.mycheva.app.reset_password.data.ResetPasswordResponse
-import com.mycheva.app.reset_password.domain.ResetPasswordRepository
+import com.mycheva.app.reset_password.domain.ResetPasswordRepositoryImpl
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class ResetPasswordScreenViewModel @Inject constructor(
-    private val repository: ResetPasswordRepository
+    private val repository: ResetPasswordRepositoryImpl
 ) : ViewModel() {
 
     private val _token = repository.getToken()
@@ -39,42 +39,29 @@ class ResetPasswordScreenViewModel @Inject constructor(
     private fun resetPassword(token: String, email: String) {
         _state.update { it.copy(isLoading = true) }
         val data = ResetPasswordRequest(email = email)
-        val request = repository.resetPassword("Bearer $token", data)
-        request.enqueue(
-            object : Callback<ResetPasswordResponse> {
-                override fun onResponse(
-                    call: Call<ResetPasswordResponse>,
-                    response: Response<ResetPasswordResponse>
-                ) {
-                    _state.update { it.copy(isLoading = false) }
-                    when (response.code()) {
-                        200 -> _state.update {
-                            it.copy(
-                                isRequestSuccess = true,
-                                notificationMessage = response.body()!!.message
-                            )
-                        }
-
-                        else -> _state.update {
-                            it.copy(
-                                isRequestFailed = true,
-                                notificationMessage = "Server error."
-                            )
-                        }
-                    }
-                }
-
-                override fun onFailure(p0: Call<ResetPasswordResponse>, p1: Throwable) {
+        viewModelScope.launch(Dispatchers.IO) {
+            repository.resetPassword(token, data)
+                .onSuccess { result ->
                     _state.update {
                         it.copy(
-                            isRequestFailed = true,
-                            notificationMessage = "Server error."
+                            isRequestSuccess = true,
+                            isLoading = false,
+                            notificationMessage = result.message
                         )
                     }
                 }
-
-            }
-        )
+                .onFailure { error ->
+                    _state.update { it.copy(isLoading = false) }
+                    when (error.message) {
+                        NOT_FOUND -> _state.update {
+                            it.copy(isRequestFailed = true, notificationMessage = "User not found.")
+                        }
+                        SERVER_ERROR -> _state.update {
+                            it.copy(isRequestFailed = true, notificationMessage = "Server error.")
+                        }
+                    }
+                }
+        }
     }
 
     private fun onEmailCleared() {

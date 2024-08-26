@@ -1,8 +1,5 @@
 package com.mycheva.app.forum.comment.presentation
 
-import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.animation.slideInVertically
-import androidx.compose.animation.slideOutHorizontally
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -31,7 +28,7 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
-import com.mycheva.app.core.ui.components.CenteredAppBar
+import com.mycheva.app.core.ui.components.LargeTopBar
 import com.mycheva.app.core.ui.components.NotificationBox
 import com.mycheva.app.core.ui.components.PlainTextField
 import com.mycheva.app.forum.comment.presentation.component.CommentCard
@@ -74,7 +71,7 @@ fun CommentScreen(
     ) {
         Scaffold(
             topBar = {
-                CenteredAppBar(
+                LargeTopBar(
                     title = "Forum",
                     navigationIcon = Icons.AutoMirrored.Default.ArrowBack,
                     navigationAction = { onNavigateBack() },
@@ -121,16 +118,10 @@ fun CommentScreen(
                         Spacer(modifier = Modifier.height(16.dp))
                     }
                     item {
-                        AnimatedVisibility(
-                            visible = state.post != null,
-                            enter = slideInVertically(),
-                            exit = slideOutHorizontally()
-                        ) {
-                            ForumPostCard(
-                                forum = state.post!!, onNavigate = {},
-                                modifier = Modifier.padding(horizontal = 16.dp)
-                            )
-                        }
+                        ForumPostCard(
+                            forum = state.post, onNavigate = {},
+                            modifier = Modifier.padding(horizontal = 16.dp)
+                        )
                     }
                     item {
                         Text(

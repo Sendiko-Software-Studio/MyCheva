@@ -6,6 +6,9 @@ import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.AnimatedContentScope
 import androidx.compose.animation.ExperimentalSharedTransitionApi
 import androidx.compose.animation.SharedTransitionScope
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.togetherWith
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -149,7 +152,10 @@ fun SharedTransitionScope.DashboardScreen(
                         )
                         AnimatedContent(
                             targetState = state.isLoading,
-                            label = ""
+                            label = "",
+                            transitionSpec = {
+                                fadeIn().togetherWith(fadeOut())
+                            }
                         ) { isLoading ->
                             when (isLoading) {
                                 false ->
@@ -179,7 +185,10 @@ fun SharedTransitionScope.DashboardScreen(
                     Spacer(modifier = Modifier.height(8.dp))
                     AnimatedContent(
                         targetState = state.isLoading,
-                        label = ""
+                        label = "",
+                        transitionSpec = {
+                            fadeIn().togetherWith(fadeOut())
+                        },
                     ) { isLoading ->
                         when (isLoading) {
                             false -> {
