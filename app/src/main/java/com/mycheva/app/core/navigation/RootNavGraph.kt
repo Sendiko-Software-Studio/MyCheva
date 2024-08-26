@@ -3,6 +3,7 @@ package com.mycheva.app.core.navigation
 import android.annotation.SuppressLint
 import android.os.Build
 import androidx.annotation.RequiresApi
+import androidx.compose.animation.AnimatedContentTransitionScope
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.ExperimentalSharedTransitionApi
 import androidx.compose.animation.SharedTransitionLayout
@@ -131,6 +132,14 @@ fun RootNavGraph(
                 modifier = Modifier
                     .padding()
                     .fillMaxSize(),
+                enterTransition = {
+                    slideIntoContainer(
+                        towards = AnimatedContentTransitionScope.SlideDirection.Left,
+                    )
+                },
+                exitTransition = {
+                    fadeOut()
+                }
             ) {
                 navigation<AuthGraph>(
                     startDestination = SplashScreen
@@ -152,7 +161,6 @@ fun RootNavGraph(
                         LoginScreen(
                             state = state,
                             onEvent = viewModel::onEvent,
-                            animatedVisibilityScope = this,
                             onNavigate = {
                                 navController.navigate(it) { popUpTo(it) { inclusive = true } }
                             }
@@ -164,7 +172,6 @@ fun RootNavGraph(
                         ResetPasswordScreen(
                             state = state,
                             onEvent = viewModel::onEvent,
-                            animatedVisibilityScope = this,
                             onNavigateBack = {
                                 navController.navigateUp()
                             }
