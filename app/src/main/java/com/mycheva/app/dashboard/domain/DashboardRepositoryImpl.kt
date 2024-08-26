@@ -5,7 +5,7 @@ import com.mycheva.app.core.network.ApiServices
 import com.mycheva.app.core.preferences.AppPreferences
 import com.mycheva.app.dashboard.data.GetEventsResponse
 import com.mycheva.app.profile.main.data.GetUserResponse
-import com.mycheva.app.profile.main.data.User1
+import com.mycheva.app.profile.main.data.User
 import com.mycheva.app.schedule.core.EventsItem
 import kotlinx.coroutines.flow.Flow
 import retrofit2.Call
@@ -28,7 +28,7 @@ class DashboardRepositoryImpl @Inject constructor(
         return appPreferences.getUserId()
     }
 
-    override suspend fun getUser(token: String, userId: String): Result<User1> {
+    override suspend fun getUser(token: String, userId: String): Result<User> {
         return suspendCoroutine {
             apiService.getUser("Bearer $token", id = userId).enqueue(
                 object : Callback<GetUserResponse> {

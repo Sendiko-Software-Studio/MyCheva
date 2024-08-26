@@ -8,16 +8,19 @@ data class GetUserResponse(
 	val message: String,
 
 	@field:SerializedName("user")
-	val user: User1,
+	val user: User,
 
 	@field:SerializedName("status")
 	val status: Int
 )
 
-data class Division(
+data class User(
 
-	@field:SerializedName("createdAt")
-	val createdAt: String,
+	@field:SerializedName("profileUrl")
+	val profileUrl: String,
+
+	@field:SerializedName("password")
+	val password: String,
 
 	@field:SerializedName("name")
 	val name: String,
@@ -25,17 +28,11 @@ data class Division(
 	@field:SerializedName("id")
 	val id: Int,
 
-	@field:SerializedName("updatedAt")
-	val updatedAt: String
+	@field:SerializedName("UserDatum")
+	val userDatum: UserDatum
 )
 
 data class UserDatum(
-
-	@field:SerializedName("division")
-	val division: Division,
-
-	@field:SerializedName("createdAt")
-	val createdAt: String,
 
 	@field:SerializedName("nim")
 	val nim: String,
@@ -44,10 +41,13 @@ data class UserDatum(
 	val major: String,
 
 	@field:SerializedName("imageUrl")
-	val imageUrl: String,
+	val imageUrl: Any,
 
 	@field:SerializedName("fullName")
 	val fullName: String,
+
+	@field:SerializedName("Division")
+	val division: Division,
 
 	@field:SerializedName("id")
 	val id: Int,
@@ -62,32 +62,14 @@ data class UserDatum(
 	val email: String,
 
 	@field:SerializedName("faculty")
-	val faculty: String,
-
-	@field:SerializedName("updatedAt")
-	val updatedAt: String
+	val faculty: String
 )
 
-data class User1(
-
-	@field:SerializedName("profileUrl")
-	val profileUrl: String,
-
-	@field:SerializedName("createdAt")
-	val createdAt: String,
-
-	@field:SerializedName("password")
-	val password: String,
+data class Division(
 
 	@field:SerializedName("name")
 	val name: String,
 
 	@field:SerializedName("id")
-	val id: Int,
-
-	@field:SerializedName("user_datum")
-	val userDatum: UserDatum,
-
-	@field:SerializedName("updatedAt")
-	val updatedAt: String
+	val id: Int
 )
