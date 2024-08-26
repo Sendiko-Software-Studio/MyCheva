@@ -9,7 +9,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.Preview
 import com.mycheva.app.announcement.presentation.component.AnnouncementCard
-import com.mycheva.app.core.ui.components.CenteredAppBar
+import com.mycheva.app.core.ui.components.LargeTopBar
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -20,7 +20,7 @@ fun BookmarkScreen(
 ) {
     Scaffold(
         topBar = {
-            CenteredAppBar(
+            LargeTopBar(
                 title = "Bookmark",
                 navigationIcon = Icons.AutoMirrored.Rounded.ArrowBack,
                 navigationAction = { onNavigate(null) },

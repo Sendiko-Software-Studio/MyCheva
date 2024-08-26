@@ -21,7 +21,7 @@ import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.unit.dp
 import com.mycheva.app.announcement.presentation.component.AnnouncementCard
 import com.mycheva.app.core.navigation.BookmarkScreen
-import com.mycheva.app.core.ui.components.CenteredAppBar
+import com.mycheva.app.core.ui.components.LargeTopBar
 import com.mycheva.app.core.ui.components.NotificationBox
 import kotlinx.coroutines.delay
 
@@ -62,7 +62,7 @@ fun SharedTransitionScope.AnnouncementScreen(
                     animatedVisibilityScope = animatedContentScope
                 ),
             topBar = {
-                CenteredAppBar(
+                LargeTopBar(
                     title = "Announcement",
                     navigationIcon = Icons.AutoMirrored.Rounded.ArrowBack,
                     navigationAction = { onNavigate(null) },
@@ -70,7 +70,7 @@ fun SharedTransitionScope.AnnouncementScreen(
                     actionAction = {
                         onNavigate(BookmarkScreen)
                     },
-                    scrollBehavior = scrollBehavior
+                    scrollBehavior = scrollBehavior,
                 )
             },
             content = { paddingValues ->

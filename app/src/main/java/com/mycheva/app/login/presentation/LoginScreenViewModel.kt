@@ -77,7 +77,7 @@ class LoginScreenViewModel @Inject constructor(
             repository.login(data)
                 .onSuccess { result ->
                     repository.saveToken(result.token)
-                    repository.saveUserId(result.user.name)
+                    repository.saveUserId(result.user.id.toString())
                     _state.update {
                         it.copy(
                             isLoading = false,

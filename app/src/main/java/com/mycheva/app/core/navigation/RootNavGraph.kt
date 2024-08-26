@@ -206,7 +206,6 @@ fun RootNavGraph(
                         val viewModel = hiltViewModel<ScheduleScreenViewModel>()
                         val state by viewModel.state.collectAsStateWithLifecycle()
                         ScheduleScreen(
-                            animatedVisibilityScope = this,
                             state = state,
                             onEvent = viewModel::onEvent,
                             onNavigate = {

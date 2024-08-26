@@ -29,7 +29,7 @@ import com.mycheva.app.forum.core.data.ForumsItem
 @Composable
 fun ForumPostCard(
     modifier: Modifier = Modifier,
-    forum: ForumsItem,
+    forum: ForumsItem?,
     onNavigate: (String) -> Unit,
 ) {
     Column(
@@ -39,7 +39,7 @@ fun ForumPostCard(
             verticalAlignment = Alignment.CenterVertically,
         ) {
             AsyncImage(
-                model = forum.user.profileUrl,
+                model = forum?.user?.profileUrl ?: "",
                 modifier = Modifier
                     .size(48.dp)
                     .clip(CircleShape),
@@ -49,29 +49,29 @@ fun ForumPostCard(
             Spacer(modifier = Modifier.width(8.dp))
             Column {
                 Text(
-                    text = forum.user.name,
+                    text = forum?.user?.name ?: "",
                     fontSize = 20.sp,
                     fontWeight = FontWeight.Bold
                 )
                 Text(
-                    text = forum.createdAt.substring(0, 10),
+                    text = forum?.createdAt?.substring(0, 10) ?: "",
                     color = Color.Gray
                 )
             }
         }
         Spacer(modifier = Modifier.height(8.dp))
         Text(
-            text = forum.content,
+            text = forum?.content ?: "",
             modifier = Modifier.fillMaxWidth(),
         )
         Row(
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.Start
         ) {
-            IconButton(onClick = { onNavigate(forum.id.toString()) }) {
+            IconButton(onClick = { onNavigate(forum?.id.toString()) }) {
                 Icon(imageVector = Icons.AutoMirrored.Rounded.Comment, contentDescription = "comments")
             }
-            Text(text = forum.replies.size.toString())
+            Text(text = forum?.replies?.size.toString())
         }
     }
 }

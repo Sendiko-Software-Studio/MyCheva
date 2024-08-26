@@ -1,32 +1,34 @@
 package com.mycheva.app.profile.main.presentation
 
 import android.annotation.SuppressLint
-import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.rounded.Logout
-import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.MediumTopAppBar
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.mycheva.app.core.navigation.SplashScreen
 import com.mycheva.app.core.ui.components.NotificationBox
-import com.mycheva.app.core.ui.theme.Primary50
-import com.mycheva.app.core.ui.theme.Primary500
+import com.mycheva.app.core.ui.theme.Neutral200
 import com.mycheva.app.core.ui.theme.poppinsFamily
 import com.mycheva.app.profile.main.presentation.component.ProfileButtons
 import com.mycheva.app.profile.main.presentation.component.ProfileDetails
@@ -69,14 +71,17 @@ fun ProfileScreen(
         content = {
             Scaffold(
                 topBar = {
-                    CenterAlignedTopAppBar(
+                    MediumTopAppBar(
                         title = {
                             Text(
                                 text = "Profile",
-                                color = Primary50,
-                                fontFamily = poppinsFamily
+                                fontFamily = poppinsFamily,
                             )
                         },
+                        scrollBehavior = scrollBehavior,
+                        colors = TopAppBarDefaults.largeTopAppBarColors(
+                            scrolledContainerColor = Neutral200
+                        ),
                         actions = {
                             IconButton(
                                 onClick = {
@@ -86,50 +91,55 @@ fun ProfileScreen(
                                 Icon(
                                     imageVector = Icons.AutoMirrored.Rounded.Logout,
                                     contentDescription = "logout",
-                                    tint = Primary50
                                 )
                             }
                         },
-                        colors = TopAppBarDefaults.centerAlignedTopAppBarColors(
-                            containerColor = Primary500
-                        ),
-                        scrollBehavior = scrollBehavior
                     )
                 }
             ) {
+                val padding = PaddingValues(
+                    top = it.calculateTopPadding() + 16.dp,
+                    start = 16.dp,
+                    end = 16.dp,
+                    bottom = it.calculateBottomPadding()
+                )
                 LazyColumn(
                     modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
-                    contentPadding = it
+                    contentPadding = padding,
+                    verticalArrangement = Arrangement.spacedBy(16.dp)
                 ) {
                     item {
-                        Box(
-                            modifier = Modifier.height(156.dp),
-                            contentAlignment = Alignment.Center
+                        Row(
+                            modifier = Modifier.fillMaxWidth()
                         ) {
-                            Column {
-                                Box(
-                                    modifier = Modifier
-                                        .fillMaxWidth()
-                                        .background(Primary500)
-                                        .weight(1f)
-                                )
-                                Box(
-                                    modifier = Modifier
-                                        .fillMaxWidth()
-                                        .weight(1f)
-                                )
-                            }
                             ProfileImage(
                                 imageUrl = state.imageUrl,
                                 onEditImage = {
                                     onEvent(ProfileScreenEvent.OnEditProfile)
                                 }
                             )
+                            Spacer(modifier = Modifier.width(8.dp))
+                            Column(
+                                modifier = Modifier.height(76.dp),
+                                verticalArrangement = Arrangement.SpaceEvenly
+                            ) {
+                                Text(
+                                    text = state.username,
+                                    style = MaterialTheme.typography.headlineSmall,
+                                    fontFamily = poppinsFamily
+                                )
+                                Text(
+                                    text = state.nim,
+                                    style = MaterialTheme.typography.bodyLarge,
+                                    fontFamily = poppinsFamily
+                                )
+                            }
                         }
                     }
                     item {
                         ProfileDetails(
                             name = state.name,
+                            email = state.email,
                             username = state.username,
                             nim = state.nim,
                             faculty = state.faculty,

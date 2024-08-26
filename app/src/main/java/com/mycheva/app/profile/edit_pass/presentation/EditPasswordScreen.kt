@@ -20,7 +20,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.mycheva.app.core.navigation.ProfileScreen
-import com.mycheva.app.core.ui.components.CenteredAppBar
+import com.mycheva.app.core.ui.components.LargeTopBar
 import com.mycheva.app.core.ui.components.CustomTextField
 import com.mycheva.app.core.ui.components.NotificationBox
 import kotlinx.coroutines.delay
@@ -55,7 +55,7 @@ fun EditPasswordScreen(
     ) {
         Scaffold(
             topBar = {
-                CenteredAppBar(
+                LargeTopBar(
                     title = "Ubah Password",
                     navigationIcon = Icons.AutoMirrored.Rounded.ArrowBack,
                     navigationAction = {
