@@ -31,9 +31,6 @@ data class User(
 	@field:SerializedName("profileUrl")
 	val profileUrl: String,
 
-	@field:SerializedName("createdAt")
-	val createdAt: String,
-
 	@field:SerializedName("password")
 	val password: String,
 
@@ -41,8 +38,6 @@ data class User(
 	val name: String,
 
 	@field:SerializedName("id")
-	val id: Int,
-
-	@field:SerializedName("updatedAt")
-	val updatedAt: String
+	val id: Int
 )
+
