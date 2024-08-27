@@ -71,7 +71,8 @@ fun ForumPostCard(
             IconButton(onClick = { onNavigate(forum?.id.toString()) }) {
                 Icon(imageVector = Icons.AutoMirrored.Rounded.Comment, contentDescription = "comments")
             }
-            Text(text = forum?.replies?.size.toString())
+            val replies = if (forum?.replies == null) "0" else forum?.replies?.size.toString()
+            Text(text = replies)
         }
     }
 }
