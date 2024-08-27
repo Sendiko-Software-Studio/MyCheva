@@ -9,64 +9,69 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import com.mycheva.app.core.ui.components.timeAgo
+import com.mycheva.app.core.ui.theme.Neutral600
+import com.mycheva.app.core.ui.theme.Primary500
 import com.mycheva.app.core.ui.theme.poppinsFamily
-import com.mycheva.app.forum.core.data.RepliesItem
+import com.mycheva.app.forum.core.data.ForumsItem
 import defaultProfile
 
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
-fun CommentCard(
+fun PostCard(
     modifier: Modifier = Modifier,
-    comment: RepliesItem,
+    forum: ForumsItem
 ) {
     Column(
         modifier = modifier
             .padding(horizontal = 16.dp),
-        verticalArrangement = Arrangement.spacedBy(8.dp)
+        verticalArrangement = Arrangement.spacedBy(8.dp),
     ) {
         Row(
+            modifier = Modifier.fillMaxWidth(),
             verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.SpaceBetween,
-            modifier = Modifier.fillMaxWidth()
+            horizontalArrangement = Arrangement.spacedBy(8.dp)
         ) {
-            Row(
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.spacedBy(8.dp)
-            ) {
-                AsyncImage(
-                    model = comment.user.profileUrl.ifBlank { defaultProfile },
-                    modifier = Modifier
-                        .size(36.dp)
-                        .clip(CircleShape),
-                    contentDescription = null,
-                    contentScale = ContentScale.Crop
+            AsyncImage(
+                modifier = Modifier
+                    .size(48.dp)
+                    .clip(CircleShape),
+                model = forum.user.profileUrl.ifBlank { defaultProfile },
+                contentDescription = "Profile Picture",
+                contentScale = ContentScale.Crop,
+            )
+            Column {
+                Text(
+                    text = forum.user.name,
+                    fontFamily = poppinsFamily,
+                    fontSize = 18.sp
                 )
                 Text(
-                    text = comment.user.name,
-                    fontWeight = FontWeight.Bold,
+                    text = timeAgo(forum.updatedAt),
                     fontFamily = poppinsFamily,
-                    fontSize = 16.sp
+                    fontWeight = FontWeight.Bold,
+                    color = Neutral600,
+                    fontSize = 14.sp
                 )
             }
-            Text(
-                text = timeAgo(comment.createdAt),
-                color = Color.Gray,
-                fontFamily = poppinsFamily,
-                fontSize = 12.sp
-            )
         }
-        Text(text = comment.content)
+        Text(
+            text = forum.content,
+            fontFamily = poppinsFamily,
+            modifier = Modifier.fillMaxWidth(),
+            fontSize = 16.sp
+        )
+        HorizontalDivider(color = Primary500, thickness = 2.dp)
     }
 }

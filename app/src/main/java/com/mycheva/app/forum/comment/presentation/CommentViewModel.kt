@@ -113,7 +113,7 @@ class CommentViewModel @Inject constructor(
                             val replyEmpty = response.body()?.forum?.replies == null
                             val totalReplies = if (replyEmpty) 0 else response.body()!!.forum.replies.size
                             it.copy(
-                                comments = response.body()?.forum?.replies ?: emptyList(),
+                                comments = response.body()!!.forum.replies,
                                 totalComment = totalReplies,
                                 post = response.body()!!.forum,
                                 isCommentPosted = false
