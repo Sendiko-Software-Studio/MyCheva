@@ -20,6 +20,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.mycheva.app.core.ui.components.formatDateString
 import com.mycheva.app.core.ui.theme.Info
 import com.mycheva.app.core.ui.theme.Neutral50
 import com.mycheva.app.core.ui.theme.Neutral900
@@ -78,7 +79,7 @@ fun MeetingCard(
                     contentDescription = "event"
                 )
                 Text(
-                    text = "${eventsItem.date.substring(0, 10)}, ${eventsItem.time}",
+                    text = "${formatDateString(eventsItem.date.substring(0, 10))}, ${eventsItem.time}",
                     fontFamily = poppinsFamily
                 )
             }
@@ -104,7 +105,7 @@ fun MeetingCard(
 @Composable
 private fun MeetingCardPrev() {
     val data = EventsItem(
-        date = "26 Juli 2005",
+        date = "2005-07-26",
         createdAt = "",
         name = "Arrival of Destiny Takers",
         details = "Indonesia",
