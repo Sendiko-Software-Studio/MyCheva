@@ -16,22 +16,22 @@ import retrofit2.Response
 import javax.inject.Inject
 
 @HiltViewModel
-class ForumScreenViewModel @Inject constructor(
+class ForumViewModel @Inject constructor(
     private val repository: ForumRepository
 ) : ViewModel() {
 
     private val _token = repository.getToken()
-    private val _state = MutableStateFlow(ForumScreenState())
+    private val _state = MutableStateFlow(ForumState())
     val state = combine(_token, _state) { token, state ->
         state.copy(token = token)
-    }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), ForumScreenState())
+    }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), ForumState())
 
-    fun onEvent(event: ForumScreenEvent) {
+    fun onEvent(event: ForumEvent) {
         when (event) {
-            ForumScreenEvent.OnClearNotification ->
+            ForumEvent.OnClearNotification ->
                 _state.update { it.copy(isLoading = false, isRequestError = false, notificationMessage = "") }
 
-            is ForumScreenEvent.OnLoadForums -> loadForums(event.token)
+            is ForumEvent.OnLoadForums -> loadForums(event.token)
         }
     }
 

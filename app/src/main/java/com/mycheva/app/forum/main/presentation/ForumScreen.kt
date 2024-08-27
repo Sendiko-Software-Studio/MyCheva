@@ -44,8 +44,8 @@ import kotlinx.coroutines.delay
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalSharedTransitionApi::class)
 @Composable
 fun SharedTransitionScope.ForumScreen(
-    state: ForumScreenState,
-    onEvent: (ForumScreenEvent) -> Unit,
+    state: ForumState,
+    onEvent: (ForumEvent) -> Unit,
     onNavigate: (destination: Any?) -> Unit,
     animatedContentScope: AnimatedContentScope
 ) {
@@ -54,14 +54,14 @@ fun SharedTransitionScope.ForumScreen(
     LaunchedEffect(key1 = state.token) {
         if (state.token.isNotBlank()) {
             delay(300)
-            onEvent(ForumScreenEvent.OnLoadForums(state.token))
+            onEvent(ForumEvent.OnLoadForums(state.token))
         }
     }
 
     LaunchedEffect(key1 = state.notificationMessage) {
         if (state.notificationMessage.isNotBlank()) {
             delay(2000)
-            onEvent(ForumScreenEvent.OnClearNotification)
+            onEvent(ForumEvent.OnClearNotification)
         }
     }
 

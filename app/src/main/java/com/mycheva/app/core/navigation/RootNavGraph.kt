@@ -37,7 +37,7 @@ import com.mycheva.app.forum.add.presentation.AddPostScreenViewModel
 import com.mycheva.app.forum.comment.presentation.CommentScreen
 import com.mycheva.app.forum.comment.presentation.CommentViewModel
 import com.mycheva.app.forum.main.presentation.ForumScreen
-import com.mycheva.app.forum.main.presentation.ForumScreenViewModel
+import com.mycheva.app.forum.main.presentation.ForumViewModel
 import com.mycheva.app.login.presentation.LoginScreen
 import com.mycheva.app.login.presentation.LoginScreenViewModel
 import com.mycheva.app.profile.edit_pass.presentation.EditPasswordScreen
@@ -232,7 +232,7 @@ fun RootNavGraph(
                     )
                 }
                 composable<ForumScreen> {
-                    val viewModel = hiltViewModel<ForumScreenViewModel>()
+                    val viewModel = hiltViewModel<ForumViewModel>()
                     val state by viewModel.state.collectAsStateWithLifecycle()
                     ForumScreen(
                         state = state,
