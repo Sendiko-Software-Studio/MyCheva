@@ -8,9 +8,7 @@ import androidx.compose.animation.SharedTransitionScope
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
@@ -101,9 +99,9 @@ fun SharedTransitionScope.ScheduleScreen(
                 ) {
                     item {
                         CustomTextField(
-                            value = "",
-                            onValueChange = {},
-                            onClearClick = { /*TODO*/ },
+                            value = state.searchText,
+                            onValueChange = { onEvent(ScheduleScreenEvent.OnSearchTextChanged(it)) },
+                            onClearClick = { onEvent(ScheduleScreenEvent.OnClearFilter) },
                             type = TextFieldType.White,
                             modifier = Modifier
                                 .fillMaxWidth()
@@ -122,8 +120,8 @@ fun SharedTransitionScope.ScheduleScreen(
                             contentPadding = PaddingValues(horizontal = 16.dp),
                             horizontalArrangement = Arrangement.spacedBy(8.dp)
                         ) {
-                            val dates = state.events.toList().distinctBy {
-                                it.first
+                            val dates = state.events.distinctBy {
+                                it.date
                             }
                             items(dates) {
                                 Surface(
@@ -135,13 +133,13 @@ fun SharedTransitionScope.ScheduleScreen(
                                         horizontalAlignment = Alignment.CenterHorizontally
                                     ) {
                                         Text(
-                                            text = formatDateString(it.first.toString()).substring(0, 2),
+                                            text = formatDateString(it.date.substring(0, 10)).substring(0, 2),
                                             fontWeight = FontWeight.Bold,
                                             fontFamily = poppinsFamily,
                                             color = Neutral50
                                         )
                                         Text(
-                                            text = formatDateString(it.first.toString()).substring(2, 6),
+                                            text = formatDateString(it.date.substring(0, 10)).substring(2, 6),
                                             fontWeight = FontWeight.Normal,
                                             fontFamily = poppinsFamily,
                                             color = Neutral50,
@@ -152,25 +150,14 @@ fun SharedTransitionScope.ScheduleScreen(
                             }
                         }
                     }
-                    items(state.events.entries.toList()) { (date, events) ->
-                        Text(
-                            text = formatDateString(date.toString().substring(0, 10)),
-                            fontSize = 18.sp,
-                            fontWeight = FontWeight.SemiBold,
-                            fontFamily = poppinsFamily,
-                            modifier = Modifier.padding(horizontal = 16.dp)
+                    items(state.events) { event ->
+                        MeetingCard(
+                            modifier = Modifier.padding(horizontal = 16.dp),
+                            eventsItem = event,
+                            onClick = { eventId ->
+                                onNavigate(eventId)
+                            }
                         )
-                        Spacer(modifier = Modifier.height(8.dp))
-                        events.forEach { event ->
-                            MeetingCard(
-                                modifier = Modifier.padding(horizontal = 16.dp),
-                                eventsItem = event,
-                                onClick = { eventId ->
-                                    onNavigate(eventId)
-                                }
-                            )
-                            Spacer(modifier = Modifier.height(8.dp))
-                        }
                     }
 
                 }

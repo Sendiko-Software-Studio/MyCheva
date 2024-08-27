@@ -5,7 +5,6 @@ import androidx.annotation.RequiresApi
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.mycheva.app.dashboard.data.GetEventsResponse
-import com.mycheva.app.schedule.core.EventsItem
 import com.mycheva.app.schedule.main.domain.ScheduleScreenRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -16,8 +15,6 @@ import kotlinx.coroutines.flow.update
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import java.time.LocalDate
-import java.time.format.DateTimeFormatter
 import javax.inject.Inject
 
 @HiltViewModel
@@ -40,6 +37,25 @@ class ScheduleScreenViewModel @Inject constructor(
                 )
             }
             is ScheduleScreenEvent.OnLoadSchedule -> loadSchedule(event.token)
+            is ScheduleScreenEvent.OnSearchTextChanged -> searchMeetings(event.value)
+            ScheduleScreenEvent.OnClearFilter -> {
+                loadSchedule(state.value.token)
+                _state.update {
+                    it.copy(searchText = "")
+                }
+            }
+        }
+    }
+
+    private fun searchMeetings(value: String) {
+        _state.update { it.copy(searchText = value) }
+        val searched = state.value.events.filter {
+            it.name.contains(value) || it.desc.contains(value)
+        }
+        _state.update {
+            it.copy(
+                events = searched
+            )
         }
     }
 
@@ -57,7 +73,7 @@ class ScheduleScreenViewModel @Inject constructor(
                     when (response.code()) {
                        200 -> {
 
-                            val events = groupItemsByDate(response.body()!!.events)
+                            val events = response.body()!!.events
                            _state.update {
                                it.copy(
                                    events = events
@@ -80,13 +96,4 @@ class ScheduleScreenViewModel @Inject constructor(
             }
         )
     }
-
-    @RequiresApi(Build.VERSION_CODES.O)
-    fun groupItemsByDate(items: List<EventsItem>): Map<LocalDate, List<EventsItem>> {
-        val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd")
-        return items.groupBy {
-            LocalDate.parse(it.date.substring(0, 10), formatter)
-        }
-    }
-
 }
