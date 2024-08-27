@@ -26,6 +26,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.rounded.Announcement
+import androidx.compose.material.icons.rounded.CalendarMonth
 import androidx.compose.material.icons.rounded.Forum
 import androidx.compose.material.icons.rounded.Map
 import androidx.compose.material.icons.rounded.Person
@@ -52,8 +53,11 @@ import androidx.compose.ui.unit.sp
 import com.mycheva.app.R
 import com.mycheva.app.core.navigation.AnnouncementScreen
 import com.mycheva.app.core.navigation.AttendanceScreen
+import com.mycheva.app.core.navigation.DetailSchedule
 import com.mycheva.app.core.navigation.ForumScreen
+import com.mycheva.app.core.navigation.ProfileScreen
 import com.mycheva.app.core.navigation.RoadmapScreen
+import com.mycheva.app.core.navigation.ScheduleScreen
 import com.mycheva.app.core.ui.components.NotificationBox
 import com.mycheva.app.core.ui.theme.Neutral400
 import com.mycheva.app.core.ui.theme.Neutral50
@@ -195,7 +199,7 @@ fun SharedTransitionScope.DashboardScreen(
                         verticalAlignment = Alignment.CenterVertically,
                         horizontalArrangement = Arrangement.spacedBy(8.dp)
                     ) {
-                        IconButton(onClick = { /*TODO*/ }) {
+                        IconButton(onClick = { onNavigate(AnnouncementScreen) }) {
                             Icon(
                                 imageVector = Icons.AutoMirrored.Rounded.Announcement,
                                 contentDescription = "announcement",
@@ -203,7 +207,7 @@ fun SharedTransitionScope.DashboardScreen(
                             )
                         }
                         IconButton(
-                            onClick = { /*TODO*/ },
+                            onClick = { onNavigate(ProfileScreen) },
                             colors = IconButtonDefaults.iconButtonColors(
                                 containerColor = Neutral50,
                                 contentColor = Neutral900
@@ -247,7 +251,10 @@ fun SharedTransitionScope.DashboardScreen(
                                         if (state.latestEvent != null) {
                                             MeetingCard(
                                                 modifier = Modifier.fillMaxWidth(),
-                                                eventsItem = state.latestEvent
+                                                eventsItem = state.latestEvent,
+                                                onClick = { eventId ->
+                                                    onNavigate(DetailSchedule(eventId))
+                                                }
                                             )
                                         }
                                         if (state.latestEvent == null && !state.isLoading)
@@ -310,14 +317,14 @@ fun SharedTransitionScope.DashboardScreen(
                                     modifier = Modifier
                                         .weight(1f)
                                         .sharedBounds(
-                                            sharedContentState = rememberSharedContentState(key = "announcement"),
+                                            sharedContentState = rememberSharedContentState(key = "schedule"),
                                             animatedVisibilityScope = animatedContentScope
                                         ),
-                                    icon = Icons.AutoMirrored.Rounded.Announcement,
-                                    label = "Announcement",
+                                    icon = Icons.Rounded.CalendarMonth,
+                                    label = "Jadwal",
                                     enabled = !state.isLoading,
                                     onClick = {
-                                        onNavigate(AnnouncementScreen)
+                                        onNavigate(ScheduleScreen)
                                     }
                                 )
                                 MenuCard(
