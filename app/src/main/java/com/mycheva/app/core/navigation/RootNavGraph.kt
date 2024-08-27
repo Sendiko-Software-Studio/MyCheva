@@ -162,138 +162,137 @@ fun RootNavGraph(
                     ScheduleScreen(
                         state = state,
                         onEvent = viewModel::onEvent,
+                        animatedVisibilityScope = this,
                         onNavigate = {
-                            navController.navigate(DetailSchedule(it))
+                            if (it.isNotBlank()) {
+                                navController.navigate(DetailSchedule(it))
+                            } else navController.navigateUp()
                         }
                     )
                 }
-                navigation<DetailsGraph>(
-                    startDestination = AttendanceScreen
-                ) {
-                    composable<DetailSchedule> {
-                        val args = it.toRoute<DetailSchedule>()
-                        val viewModel = hiltViewModel<DetailScheduleViewModel>()
-                        val state by viewModel.state.collectAsStateWithLifecycle()
-                        DetailScheduleScreen(
-                            eventId = args.eventId,
-                            state = state,
-                            onEvent = viewModel::onEvent,
-                            onNavigateBack = {
+                composable<DetailSchedule> {
+                    val args = it.toRoute<DetailSchedule>()
+                    val viewModel = hiltViewModel<DetailScheduleViewModel>()
+                    val state by viewModel.state.collectAsStateWithLifecycle()
+                    DetailScheduleScreen(
+                        eventId = args.eventId,
+                        state = state,
+                        onEvent = viewModel::onEvent,
+                        onNavigateBack = {
+                            navController.navigateUp()
+                        }
+                    )
+                }
+                composable<EditUsernameScreen> {
+                    val viewModel = hiltViewModel<EditUsernameScreenViewModel>()
+                    val state by viewModel.state.collectAsStateWithLifecycle()
+                    EditUsernameScreen(
+                        state = state,
+                        onEvent = viewModel::onEvent,
+                        onNavigate = {
+                            navController.navigateUp()
+                        }
+                    )
+                }
+                composable<EditPasswordScreen> {
+                    val viewModel = hiltViewModel<EditPasswordScreenViewModel>()
+                    val state by viewModel.state.collectAsStateWithLifecycle()
+                    EditPasswordScreen(
+                        state = state,
+                        onEvent = viewModel::onEvent,
+                        onNavigate = {
+                            navController.navigateUp()
+                        }
+                    )
+                }
+                composable<AttendanceScreen> {
+                    val viewModel = hiltViewModel<AttendanceScreenViewModel>()
+                    val state by viewModel.state.collectAsStateWithLifecycle()
+                    AttendanceScreen(
+                        state = state,
+                        onEvent = viewModel::onEvent,
+                        onNavigateBack = {
+                            navController.navigateUp()
+                        },
+                        animatedContentScope = this
+                    )
+                }
+                composable<AnnouncementScreen> {
+                    val viewModel = hiltViewModel<AnnouncementViewModel>()
+                    val state by viewModel.state.collectAsStateWithLifecycle()
+                    AnnouncementScreen(
+                        state = state,
+                        onEvent = viewModel::onEvent,
+                        onNavigate = {
+                            if (it == null) {
                                 navController.navigateUp()
+                            } else navController.navigate(it)
+                        },
+                        animatedContentScope = this
+                    )
+                }
+                composable<ForumScreen> {
+                    val viewModel = hiltViewModel<ForumScreenViewModel>()
+                    val state by viewModel.state.collectAsStateWithLifecycle()
+                    ForumScreen(
+                        state = state,
+                        onEvent = viewModel::onEvent,
+                        onNavigate = {
+                            when (it) {
+                                is CommentScreen -> navController.navigate(CommentScreen(forumId = it.forumId))
+                                is PostScreen -> navController.navigate(PostScreen(imageUrl = it.imageUrl))
+                                null -> navController.navigateUp()
+                                else -> navController.navigate(it)
                             }
-                        )
-                    }
-                    composable<EditUsernameScreen> {
-                        val viewModel = hiltViewModel<EditUsernameScreenViewModel>()
-                        val state by viewModel.state.collectAsStateWithLifecycle()
-                        EditUsernameScreen(
-                            state = state,
-                            onEvent = viewModel::onEvent,
-                            onNavigate = {
+                        },
+                        animatedContentScope = this
+                    )
+                }
+                composable<PostScreen> {
+                    val args = it.toRoute<PostScreen>()
+                    val viewModel = hiltViewModel<AddPostScreenViewModel>()
+                    val state by viewModel.state.collectAsStateWithLifecycle()
+                    AddPostScreen(
+                        state = state,
+                        onEvent = viewModel::onEvent,
+                        onNavigateBack = {
+                            navController.navigateUp()
+                        }
+                    )
+                }
+                composable<CommentScreen> {
+                    val args = it.toRoute<CommentScreen>()
+                    val viewModel = hiltViewModel<CommentViewModel>()
+                    val state by viewModel.state.collectAsStateWithLifecycle()
+                    CommentScreen(
+                        state = state,
+                        onEvent = viewModel::onEvent,
+                        forumId = args.forumId,
+                        onNavigateBack = {
+                            navController.navigateUp()
+                        }
+                    )
+                }
+                composable<BookmarkScreen> {
+                    val viewModel = viewModel<BookmarkScreenViewModel>()
+                    val state by viewModel.state.collectAsStateWithLifecycle()
+                    BookmarkScreen(
+                        state = state,
+                        onEvent = viewModel::onEvent,
+                        onNavigate = {
+                            if (it == null) {
                                 navController.navigateUp()
-                            }
-                        )
-                    }
-                    composable<EditPasswordScreen> {
-                        val viewModel = hiltViewModel<EditPasswordScreenViewModel>()
-                        val state by viewModel.state.collectAsStateWithLifecycle()
-                        EditPasswordScreen(
-                            state = state,
-                            onEvent = viewModel::onEvent,
-                            onNavigate = {
-                                navController.navigateUp()
-                            }
-                        )
-                    }
-                    composable<AttendanceScreen> {
-                        val viewModel = hiltViewModel<AttendanceScreenViewModel>()
-                        val state by viewModel.state.collectAsStateWithLifecycle()
-                        AttendanceScreen(
-                            state = state,
-                            onEvent = viewModel::onEvent,
-                            onNavigateBack = {
-                                navController.navigateUp()
-                            },
-                            animatedContentScope = this
-                        )
-                    }
-                    composable<AnnouncementScreen> {
-                        val viewModel = hiltViewModel<AnnouncementViewModel>()
-                        val state by viewModel.state.collectAsStateWithLifecycle()
-                        AnnouncementScreen(
-                            state = state,
-                            onEvent = viewModel::onEvent,
-                            onNavigate = {
-                                if (it == null) {
-                                    navController.navigateUp()
-                                } else navController.navigate(it)
-                            },
-                            animatedContentScope = this
-                        )
-                    }
-                    composable<ForumScreen> {
-                        val viewModel = hiltViewModel<ForumScreenViewModel>()
-                        val state by viewModel.state.collectAsStateWithLifecycle()
-                        ForumScreen(
-                            state = state,
-                            onEvent = viewModel::onEvent,
-                            onNavigate = {
-                                when (it) {
-                                    is CommentScreen -> navController.navigate(CommentScreen(forumId = it.forumId))
-                                    is PostScreen -> navController.navigate(PostScreen(imageUrl = it.imageUrl))
-                                    null -> navController.navigateUp()
-                                    else -> navController.navigate(it)
-                                }
-                            },
-                            animatedContentScope = this
-                        )
-                    }
-                    composable<PostScreen> {
-                        val args = it.toRoute<PostScreen>()
-                        val viewModel = hiltViewModel<AddPostScreenViewModel>()
-                        val state by viewModel.state.collectAsStateWithLifecycle()
-                        AddPostScreen(
-                            state = state,
-                            onEvent = viewModel::onEvent,
-                            onNavigateBack = {
-                                navController.navigateUp()
-                            }
-                        )
-                    }
-                    composable<CommentScreen> {
-                        val args = it.toRoute<CommentScreen>()
-                        val viewModel = hiltViewModel<CommentViewModel>()
-                        val state by viewModel.state.collectAsStateWithLifecycle()
-                        CommentScreen(
-                            state = state,
-                            onEvent = viewModel::onEvent,
-                            forumId = args.forumId,
-                            onNavigateBack = {
-                                navController.navigateUp()
-                            }
-                        )
-                    }
-                    composable<BookmarkScreen> {
-                        val viewModel = viewModel<BookmarkScreenViewModel>()
-                        val state by viewModel.state.collectAsStateWithLifecycle()
-                        BookmarkScreen(
-                            state = state,
-                            onEvent = viewModel::onEvent,
-                            onNavigate = {
-                                if (it == null) {
-                                    navController.navigateUp()
-                                } else navController.navigate(it)
-                            }
-                        )
-                    }
-                    composable<RoadmapScreen> {
-                        RoadmapScreen(
-                            onNavigateBack = {
-                                navController.navigateUp()
-                            },
-                            animatedContentScope = this
-                        )
-                    }
+                            } else navController.navigate(it)
+                        }
+                    )
+                }
+                composable<RoadmapScreen> {
+                    RoadmapScreen(
+                        onNavigateBack = {
+                            navController.navigateUp()
+                        },
+                        animatedContentScope = this
+                    )
                 }
             }
         }
