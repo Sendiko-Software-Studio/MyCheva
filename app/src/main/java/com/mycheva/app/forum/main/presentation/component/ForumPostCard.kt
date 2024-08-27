@@ -31,6 +31,7 @@ import com.mycheva.app.core.ui.theme.Neutral600
 import com.mycheva.app.core.ui.theme.Neutral900
 import com.mycheva.app.core.ui.theme.poppinsFamily
 import com.mycheva.app.forum.core.data.ForumsItem
+import defaultProfile
 
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
@@ -61,7 +62,7 @@ fun ForumPostCard(
                     modifier = Modifier
                         .size(48.dp)
                         .clip(CircleShape),
-                    model = forum?.user?.profileUrl?.ifBlank { "https://static.vecteezy.com/system/resources/previews/007/409/979/original/people-icon-design-avatar-icon-person-icons-people-icons-are-set-in-trendy-flat-style-user-icon-set-vector.jpg" },
+                    model = forum?.user?.profileUrl?.ifBlank { defaultProfile },
                     contentDescription = "Profile Picture",
                     contentScale = ContentScale.Crop,
                 )

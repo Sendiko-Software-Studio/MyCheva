@@ -8,9 +8,6 @@ data class ForumsItem(
     @field:SerializedName("createdAt")
     val createdAt: String,
 
-    @field:SerializedName("replies")
-    val replies: List<RepliesItem>,
-
     @field:SerializedName("id")
     val id: Int,
 
@@ -20,10 +17,12 @@ data class ForumsItem(
     @field:SerializedName("user")
     val user: User,
 
+    @field:SerializedName("Replies")
+    val replies: List<RepliesItem>,
+
     @field:SerializedName("content")
     val content: String,
 
     @field:SerializedName("updatedAt")
     val updatedAt: String
 )
-
