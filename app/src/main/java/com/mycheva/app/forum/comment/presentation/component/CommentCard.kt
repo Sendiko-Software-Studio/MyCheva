@@ -67,6 +67,6 @@ fun CommentCard(
                 fontSize = 12.sp
             )
         }
-        Text(text = comment.content)
+        Text(text = comment.content, fontFamily = poppinsFamily)
     }
 }
