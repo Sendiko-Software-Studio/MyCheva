@@ -31,14 +31,16 @@ import com.mycheva.app.schedule.core.EventsItem
 @Composable
 fun MeetingCard(
     modifier: Modifier = Modifier,
-    eventsItem: EventsItem
+    eventsItem: EventsItem,
+    onClick: (eventId: String) -> Unit,
 ) {
     ElevatedCard(
         modifier = modifier,
         colors = CardDefaults.elevatedCardColors(
             containerColor = Primary300,
             contentColor = Neutral900,
-        )
+        ),
+        onClick = { onClick(eventsItem.id.toString()) }
     ) {
         Column(
             modifier = Modifier.padding(16.dp),
@@ -117,5 +119,5 @@ private fun MeetingCardPrev() {
         updatedAt = ""
     )
 
-    MeetingCard(eventsItem = data)
+    MeetingCard(eventsItem = data, onClick = {})
 }
