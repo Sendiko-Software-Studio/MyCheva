@@ -1,10 +1,13 @@
 package com.mycheva.app.forum.main.presentation
 
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.compose.animation.AnimatedContentScope
 import androidx.compose.animation.ExperimentalSharedTransitionApi
 import androidx.compose.animation.SharedTransitionScope
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -37,6 +40,7 @@ import com.mycheva.app.core.ui.theme.poppinsFamily
 import com.mycheva.app.forum.main.presentation.component.ForumPostCard
 import kotlinx.coroutines.delay
 
+@RequiresApi(Build.VERSION_CODES.O)
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalSharedTransitionApi::class)
 @Composable
 fun SharedTransitionScope.ForumScreen(
@@ -110,7 +114,7 @@ fun SharedTransitionScope.ForumScreen(
                 LazyColumn(
                     contentPadding = padding,
                     verticalArrangement = Arrangement.spacedBy(16.dp),
-                    modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection)
+                    modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection).fillMaxSize()
                 ) {
                     item {
                         CustomTextField(

@@ -1,78 +1,102 @@
 package com.mycheva.app.forum.main.presentation.component
 
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.rounded.Comment
+import androidx.compose.material.icons.rounded.ModeComment
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
+import com.mycheva.app.core.ui.components.timeAgo
+import com.mycheva.app.core.ui.theme.Neutral50
+import com.mycheva.app.core.ui.theme.Neutral600
+import com.mycheva.app.core.ui.theme.Neutral900
+import com.mycheva.app.core.ui.theme.poppinsFamily
 import com.mycheva.app.forum.core.data.ForumsItem
 
+@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun ForumPostCard(
     modifier: Modifier = Modifier,
     forum: ForumsItem?,
     onNavigate: (String) -> Unit,
 ) {
-    Column(
+    Card(
         modifier = modifier
+            .shadow(elevation = 4.dp, shape = CardDefaults.shape),
+        colors = CardDefaults.cardColors(
+            containerColor = Neutral50,
+            contentColor = Neutral900
+        ),
+        onClick = { onNavigate(forum?.id.toString()) }
     ) {
-        Row(
-            verticalAlignment = Alignment.CenterVertically,
+        Column(
+            modifier = Modifier.padding(16.dp),
+            verticalArrangement = Arrangement.spacedBy(8.dp)
         ) {
-            AsyncImage(
-                model = forum?.user?.profileUrl ?: "",
-                modifier = Modifier
-                    .size(48.dp)
-                    .clip(CircleShape),
-                contentDescription = null,
-                contentScale = ContentScale.Crop
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.spacedBy(8.dp)
+            ) {
+                AsyncImage(
+                    modifier = Modifier
+                        .size(48.dp)
+                        .clip(CircleShape),
+                    model = forum?.user?.profileUrl?.ifBlank { "https://static.vecteezy.com/system/resources/previews/007/409/979/original/people-icon-design-avatar-icon-person-icons-people-icons-are-set-in-trendy-flat-style-user-icon-set-vector.jpg" },
+                    contentDescription = "Profile Picture",
+                    contentScale = ContentScale.Crop,
+                )
+                Column {
+                    Text(
+                        text = forum?.user?.name ?: "",
+                        fontFamily = poppinsFamily,
+                        fontSize = 16.sp
+                    )
+                    Text(
+                        text = timeAgo(forum?.updatedAt ?: ""),
+                        fontFamily = poppinsFamily,
+                        fontWeight = FontWeight.Bold,
+                        color = Neutral600,
+                        fontSize = 12.sp
+                    )
+                }
+            }
+            Text(
+                text = forum?.content ?: "",
+                fontFamily = poppinsFamily,
+                modifier = Modifier.fillMaxWidth()
             )
-            Spacer(modifier = Modifier.width(8.dp))
-            Column {
-                Text(
-                    text = forum?.user?.name ?: "",
-                    fontSize = 20.sp,
-                    fontWeight = FontWeight.Bold
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.spacedBy(8.dp, Alignment.End)
+            ) {
+                Icon(
+                    imageVector = Icons.Rounded.ModeComment,
+                    contentDescription = "comment"
                 )
-                Text(
-                    text = forum?.createdAt?.substring(0, 10) ?: "",
-                    color = Color.Gray
-                )
+                val isEmpty = forum?.replies?.isEmpty() ?: true
+                val replies = if (isEmpty) "0" else forum!!.replies.size.toString()
+                Text(text = replies, fontFamily = poppinsFamily)
             }
-        }
-        Spacer(modifier = Modifier.height(8.dp))
-        Text(
-            text = forum?.content ?: "",
-            modifier = Modifier.fillMaxWidth(),
-        )
-        Row(
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.Start
-        ) {
-            IconButton(onClick = { onNavigate(forum?.id.toString()) }) {
-                Icon(imageVector = Icons.AutoMirrored.Rounded.Comment, contentDescription = "comments")
-            }
-            val replies = if (forum?.replies == null) "0" else forum?.replies?.size.toString()
-            Text(text = replies)
         }
     }
 }
