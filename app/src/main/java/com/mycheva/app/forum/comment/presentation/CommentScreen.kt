@@ -1,5 +1,7 @@
 package com.mycheva.app.forum.comment.presentation
 
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -32,9 +34,9 @@ import com.mycheva.app.core.ui.components.LargeTopBar
 import com.mycheva.app.core.ui.components.NotificationBox
 import com.mycheva.app.core.ui.components.PlainTextField
 import com.mycheva.app.forum.comment.presentation.component.CommentCard
-import com.mycheva.app.forum.main.presentation.component.ForumPostCard
 import kotlinx.coroutines.delay
 
+@RequiresApi(Build.VERSION_CODES.O)
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CommentScreen(
@@ -118,10 +120,7 @@ fun CommentScreen(
                         Spacer(modifier = Modifier.height(16.dp))
                     }
                     item {
-                        ForumPostCard(
-                            forum = state.post, onNavigate = {},
-                            modifier = Modifier.padding(horizontal = 16.dp)
-                        )
+                        // TODO: Create different card for forum post 
                     }
                     item {
                         Text(
