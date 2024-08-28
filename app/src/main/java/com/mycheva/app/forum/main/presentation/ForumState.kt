@@ -8,4 +8,5 @@ data class ForumState(
     val notificationMessage: String = "",
     val isRequestError: Boolean = false,
     val token: String = "",
+    val searchText: String = "",
 )

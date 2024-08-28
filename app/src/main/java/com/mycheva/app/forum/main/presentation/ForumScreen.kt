@@ -118,9 +118,9 @@ fun SharedTransitionScope.ForumScreen(
                 ) {
                     item {
                         CustomTextField(
-                            value = "",
-                            onValueChange = {},
-                            onClearClick = { /*TODO*/ },
+                            value = state.searchText,
+                            onValueChange = { onEvent(ForumEvent.OnSearchTextChange(it)) },
+                            onClearClick = { onEvent(ForumEvent.OnClearFilter) },
                             type = TextFieldType.White,
                             modifier = Modifier
                                 .fillMaxWidth(),

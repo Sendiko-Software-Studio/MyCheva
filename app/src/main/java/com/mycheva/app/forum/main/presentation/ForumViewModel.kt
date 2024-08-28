@@ -32,6 +32,29 @@ class ForumViewModel @Inject constructor(
                 _state.update { it.copy(isLoading = false, isRequestError = false, notificationMessage = "") }
 
             is ForumEvent.OnLoadForums -> loadForums(event.token)
+            ForumEvent.OnClearFilter -> {
+                loadForums(state.value.token)
+                _state.update {
+                    it.copy(
+                        searchText = "",
+                    )
+                }
+            }
+            is ForumEvent.OnSearchTextChange -> {
+                searchForums(event.value)
+            }
+        }
+    }
+
+    private fun searchForums(value: String) {
+        _state.update { it.copy(searchText = value) }
+        val searched = state.value.posts.filter { forumsItem ->
+            forumsItem.user.name.contains(value) || forumsItem.content.contains(value)
+        }
+        _state.update {
+            it.copy(
+                posts = searched
+            )
         }
     }
 
