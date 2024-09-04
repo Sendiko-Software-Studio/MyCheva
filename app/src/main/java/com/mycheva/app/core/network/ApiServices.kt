@@ -20,6 +20,7 @@ import com.mycheva.app.profile.main.data.GetUserResponse
 import com.mycheva.app.profile.main.data.LogoutResponse
 import com.mycheva.app.reset_password.data.ResetPasswordRequest
 import com.mycheva.app.reset_password.data.ResetPasswordResponse
+import com.mycheva.app.roadmap.data.GetRoadMapResponse
 import com.mycheva.app.schedule.detail.data.GetEventResponse
 import retrofit2.Call
 import retrofit2.http.Body
@@ -105,6 +106,11 @@ interface ApiServices {
         @Header("Authorization") token: String,
         @Body request: PostReplyRequest
     ): Call<PostReplyResponse>
+
+    @GET("roadmap")
+    fun getRoadMap(
+        @Header("Authorization") token: String,
+    ): Call<GetRoadMapResponse>
 
     @GET("logout")
     fun logout(
