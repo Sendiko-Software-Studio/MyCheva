@@ -48,7 +48,8 @@ import com.mycheva.app.profile.main.presentation.ProfileScreen
 import com.mycheva.app.profile.main.presentation.ProfileScreenViewModel
 import com.mycheva.app.reset_password.presentation.ResetPasswordScreen
 import com.mycheva.app.reset_password.presentation.ResetPasswordScreenViewModel
-import com.mycheva.app.roadmap.presentation.RoadmapScreen
+import com.mycheva.app.roadmap.presentation.RoadMapScreen
+import com.mycheva.app.roadmap.presentation.RoadMapViewModel
 import com.mycheva.app.schedule.detail.presentation.DetailScheduleScreen
 import com.mycheva.app.schedule.detail.presentation.DetailScheduleViewModel
 import com.mycheva.app.schedule.main.presentation.ScheduleScreen
@@ -287,11 +288,15 @@ fun RootNavGraph(
                     )
                 }
                 composable<RoadmapScreen> {
-                    RoadmapScreen(
+                    val viewModel = hiltViewModel<RoadMapViewModel>()
+                    val state by viewModel.state.collectAsStateWithLifecycle()
+                    RoadMapScreen(
+                        state = state,
+                        onEvent = viewModel::onEvent,
                         onNavigateBack = {
                             navController.navigateUp()
                         },
-                        animatedContentScope = this
+                        animationVisibility = this
                     )
                 }
             }
