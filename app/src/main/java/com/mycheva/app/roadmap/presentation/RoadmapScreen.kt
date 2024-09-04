@@ -19,10 +19,12 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.unit.dp
 import com.mycheva.app.core.ui.components.NotificationBox
 import com.mycheva.app.roadmap.presentation.component.RoadMapCard
@@ -36,6 +38,7 @@ fun SharedTransitionScope.RoadMapScreen(
     animationVisibility: AnimatedVisibilityScope,
     onNavigateBack: () -> Unit
 ) {
+    val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior()
 
     LaunchedEffect(key1 = state.token) {
         if (state.token.isNotBlank())
@@ -70,7 +73,8 @@ fun SharedTransitionScope.RoadMapScreen(
                                 contentDescription = "back"
                             )
                         }
-                    }
+                    },
+                    scrollBehavior = scrollBehavior
                 )
             },
             content = { paddingValues ->
@@ -81,7 +85,8 @@ fun SharedTransitionScope.RoadMapScreen(
                         end = 16.dp
                     ),
                     verticalArrangement = Arrangement.spacedBy(16.dp),
-                    horizontalAlignment = Alignment.CenterHorizontally
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection)
                 ) {
                     items(state.roadMaps) { roadmap ->
                         RoadMapCard(roadMapItem = roadmap)
