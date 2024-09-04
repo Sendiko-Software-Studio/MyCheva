@@ -87,7 +87,7 @@ fun ProfileScreen(
                             titleContentColor = Neutral50,
                             navigationIconContentColor = Neutral50
                         ),
-                        title = { Text(text = "Profile") },
+                        title = { Text(text = "Profile", fontFamily = poppinsFamily) },
                         navigationIcon = {
                             IconButton(onClick = { onNavigate(DashboardScreen) }) {
                                 Icon(
@@ -106,7 +106,7 @@ fun ProfileScreen(
                                     contentColor = Neutral50
                                 )
                             ) {
-                                Text(text = "Logout")
+                                Text(text = "Logout", fontFamily = poppinsFamily)
                             }
                         }
                     )
