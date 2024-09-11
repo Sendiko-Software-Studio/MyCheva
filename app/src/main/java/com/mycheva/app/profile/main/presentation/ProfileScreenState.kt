@@ -15,4 +15,8 @@ data class ProfileScreenState(
     val isError: Boolean = false,
     val notificationMessage: String = "",
     val isLogoutSuccess: Boolean = false,
+    val isEditingUsername: Boolean = false,
+    val isEditUsernameSuccess: Boolean = false,
+    val isChangingPassword: Boolean = false,
+    val isChangingPasswordSuccess: Boolean = false,
 )
