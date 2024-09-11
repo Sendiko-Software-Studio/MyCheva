@@ -1,6 +1,6 @@
 package com.mycheva.app.profile.main.presentation
 
-data class ProfileScreenState(
+data class ProfileState(
     val id: String = "",
     val imageUrl: String = "",
     val username: String = "",

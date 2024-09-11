@@ -48,15 +48,15 @@ import kotlinx.coroutines.delay
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
 fun ProfileScreen(
-    state: ProfileScreenState,
-    onEvent: (ProfileScreenEvent) -> Unit,
+    state: ProfileState,
+    onEvent: (ProfileEvent) -> Unit,
     onNavigate: (destination: Any) -> Unit,
 ) {
     val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior()
 
     LaunchedEffect(key1 = state.token) {
         if (state.token.isNotBlank())
-            onEvent(ProfileScreenEvent.OnGetProfile(state.token, state.id))
+            onEvent(ProfileEvent.OnGetProfile(state.token, state.id))
     }
 
     LaunchedEffect(key1 = state.isLogoutSuccess) {
@@ -69,7 +69,7 @@ fun ProfileScreen(
     LaunchedEffect(key1 = state.notificationMessage) {
         if (state.notificationMessage.isNotBlank()) {
             delay(2000)
-            onEvent(ProfileScreenEvent.OnClearState)
+            onEvent(ProfileEvent.OnClearState)
         }
     }
 
@@ -99,7 +99,7 @@ fun ProfileScreen(
                         actions = {
                             Button(
                                 onClick = {
-                                    onEvent(ProfileScreenEvent.OnLogout(state.token))
+                                    onEvent(ProfileEvent.OnLogout(state.token))
                                 },
                                 colors = ButtonDefaults.buttonColors(
                                     containerColor = Error,
@@ -189,7 +189,7 @@ fun ProfileScreen(
 @Composable
 private fun ProfileScreenPrev() {
     ProfileScreen(
-        state = ProfileScreenState(),
+        state = ProfileState(),
         onEvent = { },
         onNavigate = { }
     )

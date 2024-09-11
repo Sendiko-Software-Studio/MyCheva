@@ -20,26 +20,26 @@ import retrofit2.Response
 import javax.inject.Inject
 
 @HiltViewModel
-class ProfileScreenViewModel @Inject constructor(
+class ProfileViewModel @Inject constructor(
     private val repository: ProfileRepository
 ): ViewModel() {
 
     private val _token = repository.getToken()
     private val _userId = repository.getUserId()
-    private val _state = MutableStateFlow(ProfileScreenState())
+    private val _state = MutableStateFlow(ProfileState())
     val state = combine(_token, _userId, _state) { token, userId, state ->
         state.copy(
             token = token,
             id = userId
         )
-    }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), ProfileScreenState())
+    }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), ProfileState())
 
-    fun onEvent(event: ProfileScreenEvent) {
+    fun onEvent(event: ProfileEvent) {
         when (event) {
-            ProfileScreenEvent.OnClearState -> clearState()
-            ProfileScreenEvent.OnEditProfile -> TODO()
-            is ProfileScreenEvent.OnLogout -> logout()
-            is ProfileScreenEvent.OnGetProfile -> getProfile(event.token, event.userId)
+            ProfileEvent.OnClearState -> clearState()
+            ProfileEvent.OnEditProfile -> TODO()
+            is ProfileEvent.OnLogout -> logout()
+            is ProfileEvent.OnGetProfile -> getProfile(event.token, event.userId)
             }
         }
 

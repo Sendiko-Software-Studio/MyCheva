@@ -45,7 +45,7 @@ import com.mycheva.app.profile.edit_pass.presentation.EditPasswordScreenViewMode
 import com.mycheva.app.profile.edit_username.presentation.EditUsernameScreen
 import com.mycheva.app.profile.edit_username.presentation.EditUsernameScreenViewModel
 import com.mycheva.app.profile.main.presentation.ProfileScreen
-import com.mycheva.app.profile.main.presentation.ProfileScreenViewModel
+import com.mycheva.app.profile.main.presentation.ProfileViewModel
 import com.mycheva.app.reset_password.presentation.ResetPasswordScreen
 import com.mycheva.app.reset_password.presentation.ResetPasswordScreenViewModel
 import com.mycheva.app.roadmap.presentation.RoadMapScreen
@@ -142,7 +142,7 @@ fun RootNavGraph(
                     )
                 }
                 composable<ProfileScreen> {
-                    val viewModel = hiltViewModel<ProfileScreenViewModel>()
+                    val viewModel = hiltViewModel<ProfileViewModel>()
                     val state by viewModel.state.collectAsStateWithLifecycle()
                     ProfileScreen(
                         state = state,
