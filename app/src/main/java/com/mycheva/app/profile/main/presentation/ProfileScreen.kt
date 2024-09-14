@@ -1,14 +1,21 @@
 package com.mycheva.app.profile.main.presentation
 
 import android.annotation.SuppressLint
+import androidx.compose.animation.AnimatedContent
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.rounded.ArrowBack
@@ -33,15 +40,20 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.mycheva.app.core.navigation.DashboardScreen
+import com.mycheva.app.core.navigation.EditPasswordScreen
+import com.mycheva.app.core.navigation.EditUsernameScreen
 import com.mycheva.app.core.navigation.SplashScreen
 import com.mycheva.app.core.ui.components.NotificationBox
 import com.mycheva.app.core.ui.theme.Error
+import com.mycheva.app.core.ui.theme.Neutral400
 import com.mycheva.app.core.ui.theme.Neutral50
 import com.mycheva.app.core.ui.theme.Primary500
 import com.mycheva.app.core.ui.theme.poppinsFamily
+import com.mycheva.app.profile.main.presentation.component.PasswordSheet
 import com.mycheva.app.profile.main.presentation.component.ProfileButtons
 import com.mycheva.app.profile.main.presentation.component.ProfileDetails
 import com.mycheva.app.profile.main.presentation.component.ProfileImage
+import com.mycheva.app.profile.main.presentation.component.UsernameSheet
 import kotlinx.coroutines.delay
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -66,16 +78,38 @@ fun ProfileScreen(
         }
     }
 
-    LaunchedEffect(key1 = state.notificationMessage) {
-        if (state.notificationMessage.isNotBlank()) {
+    LaunchedEffect(key1 = state.isChangingPasswordSuccess) {
+        if (state.isChangingPasswordSuccess) {
+            delay(1000)
+            onEvent(ProfileEvent.OnClearState)
+        }
+    }
+
+    LaunchedEffect(key1 = state.isEditUsernameSuccess) {
+        if (state.isEditUsernameSuccess) {
+            delay(1000)
+            onEvent(ProfileEvent.OnClearState)
+            onEvent(ProfileEvent.OnGetProfile(state.token, state.id))
+        }
+    }
+
+    LaunchedEffect(key1 = state.notificationMessage, key2 = state.isPasswordNotMatch) {
+        if (state.notificationMessage.isNotBlank() && !state.isPasswordNotMatch) {
             delay(2000)
             onEvent(ProfileEvent.OnClearState)
         }
     }
 
+    LaunchedEffect(key1 = state.isError) {
+        if (state.isError) {
+            delay(2000)
+            onEvent(ProfileEvent.OnClearMessage)
+        }
+    }
+
     NotificationBox(
-        message = state.notificationMessage,
-        isLoading = state.isLoading,
+        message = if (state.isPasswordNotMatch) "" else state.notificationMessage,
+        isLoading = false,
         isErrorNotification = state.isError,
         content = {
             Scaffold(
@@ -112,12 +146,6 @@ fun ProfileScreen(
                     )
                 }
             ) { paddingValues ->
-                val padding = PaddingValues(
-                    top = paddingValues.calculateTopPadding() + 16.dp,
-                    start = 16.dp,
-                    end = 16.dp,
-                    bottom = paddingValues.calculateBottomPadding()
-                )
                 Column(
                     modifier = Modifier
                         .padding(top = paddingValues.calculateTopPadding())
@@ -129,27 +157,66 @@ fun ProfileScreen(
                         horizontalArrangement = Arrangement.spacedBy(8.dp),
                         modifier = Modifier.padding(horizontal = 16.dp)
                     ) {
-                        ProfileImage(
-                            imageUrl = state.imageUrl,
-                            onEditImage = {
+                        AnimatedContent(targetState = state.isLoading, label = "") { isLoading ->
+                            if (!isLoading) {
+                                ProfileImage(
+                                    imageUrl = state.imageUrl,
+                                    onEditImage = {
 
+                                    }
+                                )
+                            } else {
+                                Box(
+                                    modifier = Modifier
+                                        .size(76.dp)
+                                        .clip(CircleShape)
+                                        .background(Neutral400)
+                                )
                             }
-                        )
-                        Column(
-                            verticalArrangement = Arrangement.SpaceEvenly
-                        ) {
-                            Text(
-                                text = state.username,
-                                fontSize = 20.sp,
-                                fontWeight = FontWeight.SemiBold,
-                                fontFamily = poppinsFamily,
-                                color = Neutral50
-                            )
-                            Text(
-                                text = state.division,
-                                fontFamily = poppinsFamily,
-                                color = Neutral50
-                            )
+                        }
+                        AnimatedContent(targetState = state.isLoading, label = "") { isLoading ->
+                            if (!isLoading) {
+                                Column(
+                                    verticalArrangement = Arrangement.SpaceEvenly
+                                ) {
+                                    Text(
+                                        text = state.username,
+                                        fontSize = 20.sp,
+                                        fontWeight = FontWeight.SemiBold,
+                                        fontFamily = poppinsFamily,
+                                        color = Neutral50
+                                    )
+                                    Text(
+                                        text = state.division,
+                                        fontFamily = poppinsFamily,
+                                        color = Neutral50
+                                    )
+                                }
+                            } else {
+                                Column(
+                                    verticalArrangement = Arrangement.SpaceEvenly
+                                ) {
+                                    Box(
+                                        modifier = Modifier
+                                            .height(20.dp)
+                                            .width(48.dp)
+                                            .clip(
+                                                RoundedCornerShape(4.dp)
+                                            )
+                                            .background(Neutral400)
+                                    )
+                                    Spacer(Modifier.height(4.dp))
+                                    Box(
+                                        modifier = Modifier
+                                            .height(20.dp)
+                                            .width(128.dp)
+                                            .clip(
+                                                RoundedCornerShape(4.dp)
+                                            )
+                                            .background(Neutral400)
+                                    )
+                                }
+                            }
                         }
                     }
                     Surface(
@@ -165,6 +232,7 @@ fun ProfileScreen(
                         ) {
                             item {
                                 ProfileDetails(
+                                    isLoading = state.isLoading,
                                     username = state.username,
                                     email = state.email,
                                     name = state.name,
@@ -175,10 +243,44 @@ fun ProfileScreen(
                                 )
                             }
                             item {
-                                ProfileButtons(onNavigate = { onNavigate(it) })
+                                ProfileButtons(
+                                    onNavigate = {
+                                        if (it is EditUsernameScreen) {
+                                            onEvent(ProfileEvent.OnUsernameSheetToggle(!state.isEditingUsername))
+                                        }
+                                        if (it is EditPasswordScreen) {
+                                            onEvent(ProfileEvent.OnPasswordSheetToggle(!state.isChangingPassword))
+                                        }
+                                    }
+                                )
                             }
                         }
                     }
+                }
+                if (state.isEditingUsername) {
+                    UsernameSheet(
+                        onChange = {
+                            onEvent(ProfileEvent.OnUsernameEdit(it))
+                        },
+                        onDismiss = {
+                            onEvent(ProfileEvent.OnUsernameSheetToggle(false))
+                        },
+                        isLoading = state.isLoadingUsername,
+                        isSuccess = state.isEditUsernameSuccess,
+                        isError = state.isError
+                    )
+                }
+                if (state.isChangingPassword) {
+                    PasswordSheet(
+                        onChange = { pass, newPass ->
+                            onEvent(ProfileEvent.OnPasswordEdit(password = newPass, oldPassword = pass)) },
+                        onDismiss = {
+                            onEvent(ProfileEvent.OnPasswordSheetToggle(false))
+                        },
+                        isLoading = state.isLoadingPassword,
+                        isSuccess = state.isChangingPasswordSuccess,
+                        isError = state.isPasswordNotMatch
+                    )
                 }
             }
         }
