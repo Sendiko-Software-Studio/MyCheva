@@ -40,10 +40,6 @@ import com.mycheva.app.forum.main.presentation.ForumScreen
 import com.mycheva.app.forum.main.presentation.ForumViewModel
 import com.mycheva.app.login.presentation.LoginScreen
 import com.mycheva.app.login.presentation.LoginScreenViewModel
-import com.mycheva.app.profile.edit_pass.presentation.EditPasswordScreen
-import com.mycheva.app.profile.edit_pass.presentation.EditPasswordScreenViewModel
-import com.mycheva.app.profile.edit_username.presentation.EditUsernameScreen
-import com.mycheva.app.profile.edit_username.presentation.EditUsernameScreenViewModel
 import com.mycheva.app.profile.main.presentation.ProfileScreen
 import com.mycheva.app.profile.main.presentation.ProfileViewModel
 import com.mycheva.app.reset_password.presentation.ResetPasswordScreen
@@ -180,28 +176,6 @@ fun RootNavGraph(
                         state = state,
                         onEvent = viewModel::onEvent,
                         onNavigateBack = {
-                            navController.navigateUp()
-                        }
-                    )
-                }
-                composable<EditUsernameScreen> {
-                    val viewModel = hiltViewModel<EditUsernameScreenViewModel>()
-                    val state by viewModel.state.collectAsStateWithLifecycle()
-                    EditUsernameScreen(
-                        state = state,
-                        onEvent = viewModel::onEvent,
-                        onNavigate = {
-                            navController.navigateUp()
-                        }
-                    )
-                }
-                composable<EditPasswordScreen> {
-                    val viewModel = hiltViewModel<EditPasswordScreenViewModel>()
-                    val state by viewModel.state.collectAsStateWithLifecycle()
-                    EditPasswordScreen(
-                        state = state,
-                        onEvent = viewModel::onEvent,
-                        onNavigate = {
                             navController.navigateUp()
                         }
                     )
