@@ -1,4 +1,4 @@
-package com.mycheva.app.profile.edit_username.data
+package com.mycheva.app.profile.main.data
 
 import com.google.gson.annotations.SerializedName
 

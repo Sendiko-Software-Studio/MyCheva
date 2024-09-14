@@ -12,10 +12,10 @@ import com.mycheva.app.forum.comment.data.PostReplyResponse
 import com.mycheva.app.forum.main.data.GetForumsResponse
 import com.mycheva.app.login.data.LoginRequest
 import com.mycheva.app.login.data.LoginResponse
-import com.mycheva.app.profile.edit_pass.data.ChangePasswordRequest
-import com.mycheva.app.profile.edit_pass.data.ChangePasswordResponse
-import com.mycheva.app.profile.edit_username.data.ChangeUsernameRequest
-import com.mycheva.app.profile.edit_username.data.ChangeUsernameResponse
+import com.mycheva.app.profile.main.data.ChangePasswordRequest
+import com.mycheva.app.profile.main.data.ChangePasswordResponse
+import com.mycheva.app.profile.main.data.ChangeUsernameRequest
+import com.mycheva.app.profile.main.data.ChangeUsernameResponse
 import com.mycheva.app.profile.main.data.GetUserResponse
 import com.mycheva.app.profile.main.data.LogoutResponse
 import com.mycheva.app.reset_password.data.ResetPasswordRequest

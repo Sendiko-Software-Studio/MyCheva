@@ -17,7 +17,7 @@ data class GetUserResponse(
 data class User(
 
 	@field:SerializedName("profileUrl")
-	val profileUrl: String,
+	val profileUrl: String?,
 
 	@field:SerializedName("password")
 	val password: String,
