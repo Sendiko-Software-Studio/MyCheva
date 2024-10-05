@@ -81,7 +81,7 @@ fun MeetingCard(
                     contentDescription = "event"
                 )
                 Text(
-                    text = "${formatDateString(eventsItem.date.substring(0, 10))}, ${eventsItem.time}",
+                    text = "${formatDateString(eventsItem.date.substring(0, 10))}, ${eventsItem.time.substring(0, 5)}",
                     fontFamily = poppinsFamily
                 )
             }

@@ -5,7 +5,7 @@ import java.util.Locale
 
 fun formatDateString(inputDate: String): String {
     val inputFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
-    val outputFormat = SimpleDateFormat("dd MMMM yyyy", Locale.getDefault())
+    val outputFormat = SimpleDateFormat("dd MMMM", Locale.getDefault())
 
     val date = inputFormat.parse(inputDate)
 

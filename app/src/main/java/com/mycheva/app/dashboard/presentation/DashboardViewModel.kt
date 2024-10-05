@@ -26,7 +26,12 @@ class DashboardViewModel @Inject constructor(
             token = token,
             userId = userId,
         )
-    }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), DashboardState())
+    }
+        .stateIn(
+            viewModelScope,
+            SharingStarted.WhileSubscribed(5000),
+            DashboardState()
+        )
 
     init {
         _state.update { it.copy(isLoading = true) }
@@ -34,16 +39,19 @@ class DashboardViewModel @Inject constructor(
 
     fun onEvent(event: DashboardEvent) {
         when (event) {
-            DashboardEvent.OnClearState -> _state.update {
-                it.copy(
-                    isLoading = false,
-                    isRequestFailed = false,
-                    notificationMessage = ""
-                )
-            }
-
+            DashboardEvent.OnClearState -> clearState()
             is DashboardEvent.GetUserData -> getUserData(event.token, event.userId)
             is DashboardEvent.GetEventData -> getEventData(event.token)
+        }
+    }
+
+    private fun clearState() {
+        _state.update {
+            it.copy(
+                isLoading = false,
+                isRequestFailed = false,
+                notificationMessage = ""
+            )
         }
     }
 

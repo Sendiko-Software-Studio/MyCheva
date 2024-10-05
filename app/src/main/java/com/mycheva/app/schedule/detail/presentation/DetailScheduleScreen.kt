@@ -4,6 +4,7 @@ import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.ExperimentalSharedTransitionApi
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -28,11 +29,15 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalUriHandler
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.mycheva.app.core.ui.components.LargeTopBar
 import com.mycheva.app.core.ui.components.NotificationBox
-import com.mycheva.app.core.ui.theme.Primary400
+import com.mycheva.app.core.ui.components.formatDateString
+import com.mycheva.app.core.ui.theme.Neutral900
+import com.mycheva.app.core.ui.theme.Primary300
 import com.mycheva.app.core.ui.theme.poppinsFamily
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalSharedTransitionApi::class)
@@ -109,6 +114,18 @@ fun DetailScheduleScreen(
                             )
                         }
                     }
+                    item {
+                        AnimatedVisibility(
+                            visible = state.eventsItem != null,
+                            enter = fadeIn(),
+                            exit = fadeOut()
+                        ) {
+                            DetailSection(
+                                details = state.eventsItem!!.details,
+                                type = state.eventsItem!!.type
+                            )
+                        }
+                    }
                 }
             }
         )
@@ -119,11 +136,34 @@ fun DetailScheduleScreen(
 fun DescriptionSection(
     description: String,
 ) {
-    Text(
-        text = description,
-        fontSize = 16.sp,
-        fontFamily = poppinsFamily
-    )
+    Column {
+        Text(text = "Tentang", fontWeight = FontWeight.Bold)
+        Text(
+            text = description,
+            fontSize = 16.sp,
+            fontFamily = poppinsFamily
+        )
+    }
+}
+
+@Composable
+fun DetailSection(
+    details: String,
+    type: String
+) {
+    val uriHandler = LocalUriHandler.current
+    Column {
+        Text(text = "Detail lainnya", fontWeight = FontWeight.Bold)
+        Text(
+            text = details,
+            fontSize = 16.sp,
+            fontFamily = poppinsFamily,
+            modifier = Modifier.clickable {
+                if (type == "online")
+                    uriHandler.openUri(details)
+            }
+        )
+    }
 }
 
 @Composable
@@ -135,7 +175,7 @@ fun LocationSection(
     Surface(
         modifier = modifier,
         shape = RoundedCornerShape(8.dp),
-        color = Primary400
+        color = Primary300
     ) {
         Row(
             modifier = Modifier.padding(8.dp),
@@ -144,7 +184,8 @@ fun LocationSection(
             Icon(
                 imageVector = Icons.Rounded.LocationOn,
                 contentDescription = "location",
-                modifier = Modifier.size(36.dp)
+                modifier = Modifier.size(36.dp),
+                tint = Neutral900
             )
             Spacer(modifier = Modifier.width(8.dp))
             Column {
@@ -152,11 +193,13 @@ fun LocationSection(
                     text = type,
                     fontSize = 14.sp,
                     fontFamily = poppinsFamily,
+                    color = Neutral900
                 )
                 Text(
                     text = location,
                     fontSize = 14.sp,
-                    fontFamily = poppinsFamily
+                    fontFamily = poppinsFamily,
+                    color = Neutral900
                 )
             }
         }
@@ -172,7 +215,7 @@ fun DateTimeSection(
     Surface(
         modifier = modifier,
         shape = RoundedCornerShape(8.dp),
-        color = Primary400
+        color = Primary300
     ) {
         Row(
             modifier = Modifier.padding(8.dp),
@@ -181,19 +224,22 @@ fun DateTimeSection(
             Icon(
                 imageVector = Icons.Rounded.CalendarMonth,
                 contentDescription = "location",
-                modifier = Modifier.size(36.dp)
+                modifier = Modifier.size(36.dp),
+                tint = Neutral900
             )
             Spacer(modifier = Modifier.width(8.dp))
             Column {
                 Text(
-                    text = date,
+                    text = formatDateString(date),
                     fontSize = 14.sp,
                     fontFamily = poppinsFamily,
+                    color = Neutral900
                 )
                 Text(
-                    text = time,
+                    text = time.substring(0, 5),
                     fontSize = 14.sp,
-                    fontFamily = poppinsFamily
+                    fontFamily = poppinsFamily,
+                    color = Neutral900
                 )
             }
         }
