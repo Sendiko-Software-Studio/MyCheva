@@ -6,21 +6,14 @@ import com.mycheva.app.forum.comment.data.PostReplyRequest
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
-class CommentRepository @Inject constructor(
-    private val apiServices: ApiServices,
-    private val appPreferences: AppPreferences
-) {
+interface CommentRepository {
 
-    fun getToken(): Flow<String> {
-        return appPreferences.getToken()
-    }
+    fun getToken(): Flow<String>
 
-    fun getUserId(): Flow<String> {
-        return appPreferences.getUserId()
-    }
+    fun getUserId(): Flow<String>
 
-    fun loadData(token: String, forumId: String) = apiServices.getForum(token, forumId)
+    fun loadData(token: String, forumId: String)
 
-    fun postReply(token: String, request: PostReplyRequest) = apiServices.postReply(token, request)
+    fun postReply(token: String, request: PostReplyRequest)
 
 }
