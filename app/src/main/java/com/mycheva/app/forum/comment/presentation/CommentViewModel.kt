@@ -2,24 +2,23 @@ package com.mycheva.app.forum.comment.presentation
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.mycheva.app.forum.comment.data.GetForumResponse
+import com.mycheva.app.core.network.NOT_FOUND
+import com.mycheva.app.core.network.SERVER_ERROR
 import com.mycheva.app.forum.comment.data.PostReplyRequest
-import com.mycheva.app.forum.comment.data.PostReplyResponse
-import com.mycheva.app.forum.comment.domain.CommentRepository
+import com.mycheva.app.forum.comment.domain.CommentRepositoryImpl
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class CommentViewModel @Inject constructor(
-    private val repository: CommentRepository
+    private val repository: CommentRepositoryImpl
 ) : ViewModel() {
 
     private val _token = repository.getToken()
@@ -37,9 +36,17 @@ class CommentViewModel @Inject constructor(
             is CommentEvent.OnCommentTextChange -> _state.update {
                 it.copy(commentText = event.value)
             }
+
             CommentEvent.OnClearState -> _state.update {
-                it.copy(isLoading = false, isError = false, notificationMessage = "", isCommentPosted = false, commentText = "")
+                it.copy(
+                    isLoading = false,
+                    isError = false,
+                    notificationMessage = "",
+                    isCommentPosted = false,
+                    commentText = ""
+                )
             }
+
             is CommentEvent.OnLoadData -> loadData(event.token, event.forumId)
             is CommentEvent.OnPostComment -> postReply(event.token, event.userId, event.forumId)
         }
@@ -52,74 +59,60 @@ class CommentViewModel @Inject constructor(
             forumId = forumId.toInt(),
             content = state.value.commentText
         )
-        val request = repository.postReply(token = "Bearer $token", request = data)
-        request.enqueue(
-            object : Callback<PostReplyResponse> {
-                override fun onResponse(
-                    call: Call<PostReplyResponse>,
-                    response: Response<PostReplyResponse>
-                ) {
-                    _state.update { it.copy(isLoading = false) }
-                    when (response.code()) {
-                        201 -> _state.update { it.copy(
-                            isCommentPosted = true,
-                            notificationMessage = response.body()!!.message,
-                        ) }
-
-                        else -> _state.update { it.copy(
-                            isError = true,
-                            notificationMessage = "Server error."
-                        ) }
+        viewModelScope.launch(Dispatchers.IO) {
+            repository.postReply("Bearer $token", data)
+                .onSuccess {
+                    _state.update {
+                        it.copy(
+                            notificationMessage = "Reply berhasil di post!",
+                            isLoading = false
+                        )
                     }
                 }
-
-                override fun onFailure(p0: Call<PostReplyResponse>, p1: Throwable) {
-                    _state.update { it.copy(
-                        isError = true,
-                        notificationMessage = "Server error."
-                    ) }
+                .onFailure { error ->
+                    when(error.message) {
+                        NOT_FOUND -> _state.update {
+                            it.copy(
+                                notificationMessage = "Post tidak ditemukan.",
+                                isLoading = false,
+                                isError = true
+                            )
+                        }
+                        SERVER_ERROR -> _state.update {
+                            it.copy(
+                                notificationMessage = "Server error.",
+                                isLoading = false,
+                                isError = true
+                            )
+                        }
+                    }
                 }
-
-            }
-        )
+        }
     }
 
     private fun loadData(token: String, forumId: String) {
         _state.update { it.copy(isLoading = true) }
-        val request = repository.loadData("Bearer $token", forumId)
-        request.enqueue(
-            object : Callback<GetForumResponse> {
-                override fun onResponse(
-                    call: Call<GetForumResponse>,
-                    response: Response<GetForumResponse>
-                ) {
-                    _state.update { it.copy(isLoading = false) }
-                    when (response.code()) {
-                        200 -> _state.update {
-                            it.copy(
-                                comments = response.body()!!.forum.replies,
-                                totalComment = response.body()!!.forum.replies.size,
-                                post = response.body()!!.forum,
-                                isCommentPosted = false
-                            )
-                        }
-
-                        else -> _state.update { it.copy(
-                            isError = true,
-                            notificationMessage = "Server error."
-                        ) }
+        viewModelScope.launch(Dispatchers.IO) {
+            repository.loadData("Bearer $token", forumId)
+                .onSuccess { data ->
+                    _state.update {
+                        it.copy(
+                            post = data.first,
+                            comments = data.second,
+                            totalComment = data.second.size
+                        )
                     }
                 }
-
-                override fun onFailure(p0: Call<GetForumResponse>, p1: Throwable) {
-                    _state.update { it.copy(
-                        isError = true,
-                        notificationMessage = "Server error."
-                    ) }
+                .onFailure { error ->
+                    _state.update {
+                        it.copy(
+                            notificationMessage = "Server error.",
+                            isLoading = false,
+                            isError = true
+                        )
+                    }
                 }
-
-            }
-        )
+        }
     }
 
 
