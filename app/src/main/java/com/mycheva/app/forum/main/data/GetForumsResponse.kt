@@ -18,20 +18,20 @@ data class GetForumsResponse(
 data class User(
 
 	@field:SerializedName("profileUrl")
-	val profileUrl: String,
+	val profileUrl: String = "",
 
 	@field:SerializedName("createdAt")
-	val createdAt: String,
+	val createdAt: String = "",
 
 	@field:SerializedName("password")
-	val password: String,
+	val password: String = "",
 
 	@field:SerializedName("name")
-	val name: String,
+	val name: String = "",
 
 	@field:SerializedName("id")
-	val id: Int,
+	val id: Int = 0,
 
 	@field:SerializedName("updatedAt")
-	val updatedAt: String
+	val updatedAt: String = ""
 )
