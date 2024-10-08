@@ -5,7 +5,7 @@ import com.mycheva.app.forum.core.data.RepliesItem
 
 data class CommentScreenState(
     val comments: List<RepliesItem> = emptyList(),
-    val post: ForumsItem? = null,
+    val post: ForumsItem = ForumsItem(),
     val isError: Boolean = false,
     val notificationMessage: String = "",
     val isLoading: Boolean = false,
