@@ -20,10 +20,10 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
+import com.mycheva.app.core.network.defaultProfile
 import com.mycheva.app.core.ui.components.timeAgo
 import com.mycheva.app.core.ui.theme.poppinsFamily
 import com.mycheva.app.forum.core.data.RepliesItem
-import defaultProfile
 
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable

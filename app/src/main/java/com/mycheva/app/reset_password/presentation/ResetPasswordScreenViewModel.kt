@@ -1,9 +1,9 @@
 package com.mycheva.app.reset_password.presentation
 
-import NOT_FOUND
-import SERVER_ERROR
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.mycheva.app.core.network.NOT_FOUND
+import com.mycheva.app.core.network.SERVER_ERROR
 import com.mycheva.app.reset_password.data.ResetPasswordRequest
 import com.mycheva.app.reset_password.domain.ResetPasswordRepositoryImpl
 import dagger.hilt.android.lifecycle.HiltViewModel
