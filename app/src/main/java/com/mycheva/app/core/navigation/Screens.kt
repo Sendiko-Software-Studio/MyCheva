@@ -67,4 +67,6 @@ data class PostScreen(
 )
 
 @Serializable
-data object RoadmapScreen
+data class RoadmapScreen(
+    val divisionId: String
+)

@@ -43,11 +43,7 @@ fun SharedTransitionScope.SplashScreen(
         Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
             Image(
                 modifier = Modifier
-                    .size(128.dp)
-                    .sharedElement(
-                        state = rememberSharedContentState(key = "chevalier_logo"),
-                        animatedVisibilityScope = animatedVisibilityScope
-                    ),
+                    .size(128.dp),
                 painter = painterResource(id = R.drawable.chevalier_logo),
                 contentDescription = "Chevalier Lab"
             )

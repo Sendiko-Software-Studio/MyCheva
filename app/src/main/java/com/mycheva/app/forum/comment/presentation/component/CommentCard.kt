@@ -1,5 +1,7 @@
 package com.mycheva.app.forum.comment.presentation.component
 
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -16,9 +18,14 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
+import com.mycheva.app.core.network.defaultProfile
+import com.mycheva.app.core.ui.components.timeAgo
+import com.mycheva.app.core.ui.theme.poppinsFamily
 import com.mycheva.app.forum.core.data.RepliesItem
 
+@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun CommentCard(
     modifier: Modifier = Modifier,
@@ -26,7 +33,8 @@ fun CommentCard(
 ) {
     Column(
         modifier = modifier
-            .padding(horizontal = 16.dp)
+            .padding(horizontal = 16.dp),
+        verticalArrangement = Arrangement.spacedBy(8.dp)
     ) {
         Row(
             verticalAlignment = Alignment.CenterVertically,
@@ -38,23 +46,27 @@ fun CommentCard(
                 horizontalArrangement = Arrangement.spacedBy(8.dp)
             ) {
                 AsyncImage(
-                    model = comment.user.profileUrl,
+                    model = comment.user.profileUrl.ifBlank { defaultProfile },
                     modifier = Modifier
-                        .size(32.dp)
+                        .size(36.dp)
                         .clip(CircleShape),
                     contentDescription = null,
                     contentScale = ContentScale.Crop
                 )
                 Text(
                     text = comment.user.name,
-                    fontWeight = FontWeight.Bold
+                    fontWeight = FontWeight.Bold,
+                    fontFamily = poppinsFamily,
+                    fontSize = 16.sp
                 )
             }
             Text(
-                text = comment.createdAt.substring(0, 10),
-                color = Color.Gray
+                text = timeAgo(comment.createdAt),
+                color = Color.Gray,
+                fontFamily = poppinsFamily,
+                fontSize = 12.sp
             )
         }
-        Text(text = comment.content)
+        Text(text = comment.content, fontFamily = poppinsFamily)
     }
 }

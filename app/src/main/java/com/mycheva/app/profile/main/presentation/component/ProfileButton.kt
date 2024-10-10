@@ -1,16 +1,16 @@
 package com.mycheva.app.profile.main.presentation.component
 
-import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.text.font.FontWeight.Companion.Bold
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.mycheva.app.core.navigation.EditPasswordScreen
@@ -22,31 +22,37 @@ import com.mycheva.app.core.ui.theme.poppinsFamily
 fun ProfileButtons(
     onNavigate: (destination: Any) -> Unit,
 ) {
-    Column {
-        Button(
+    Row (
+        modifier = Modifier.fillMaxWidth()
+    ) {
+        OutlinedButton(
             onClick = { onNavigate(EditUsernameScreen) },
-            modifier = Modifier.fillMaxWidth(),
-            colors = ButtonDefaults.buttonColors(containerColor = Primary500),
-            shape = RoundedCornerShape(8.dp)
+            modifier = Modifier.weight(1f),
+            colors = ButtonDefaults.outlinedButtonColors(
+                contentColor = Primary500
+            ),
+            shape = RoundedCornerShape(8.dp),
+            border = BorderStroke(width = 1.dp, color = Primary500)
         ) {
             Text(
                 text = "Ubah username",
-                fontSize = 16.sp,
-                fontWeight = Bold,
+                fontSize = 14.sp,
                 fontFamily = poppinsFamily
             )
         }
-        Spacer(modifier = Modifier.height(16.dp))
-        Button(
+        Spacer(modifier = Modifier.width(16.dp))
+        OutlinedButton(
             onClick = { onNavigate(EditPasswordScreen) },
-            modifier = Modifier.fillMaxWidth(),
-            colors = ButtonDefaults.buttonColors(containerColor = Primary500),
-            shape = RoundedCornerShape(8.dp)
+            modifier = Modifier.weight(1f),
+            colors = ButtonDefaults.outlinedButtonColors(
+                contentColor = Primary500
+            ),
+            shape = RoundedCornerShape(8.dp),
+            border = BorderStroke(width = 1.dp, color = Primary500)
         ) {
             Text(
                 text = "Ubah password",
-                fontSize = 16.sp,
-                fontWeight = Bold,
+                fontSize = 14.sp,
                 fontFamily = poppinsFamily,
             )
         }

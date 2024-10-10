@@ -3,74 +3,121 @@ package com.mycheva.app.dashboard.presentation.component
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.rounded.CalendarToday
+import androidx.compose.material.icons.rounded.LocationOn
 import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.ElevatedAssistChip
 import androidx.compose.material3.ElevatedCard
+import androidx.compose.material3.Icon
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.mycheva.app.core.ui.theme.Primary500
+import com.mycheva.app.core.ui.components.formatDateString
+import com.mycheva.app.core.ui.theme.Info
+import com.mycheva.app.core.ui.theme.Neutral50
+import com.mycheva.app.core.ui.theme.Neutral900
+import com.mycheva.app.core.ui.theme.Primary300
 import com.mycheva.app.core.ui.theme.poppinsFamily
-import com.mycheva.app.schedule.core.EventsItem
+import com.mycheva.app.core.data.EventsItem
 
 @Composable
 fun MeetingCard(
     modifier: Modifier = Modifier,
-    eventsItem: EventsItem
+    eventsItem: EventsItem,
+    onClick: (eventId: String) -> Unit,
 ) {
     ElevatedCard(
         modifier = modifier,
         colors = CardDefaults.elevatedCardColors(
-            containerColor = Primary500,
-            contentColor = Color.White,
-        )
+            containerColor = Primary300,
+            contentColor = Neutral900,
+        ),
+        onClick = { onClick(eventsItem.id.toString()) }
     ) {
         Column(
-            modifier = Modifier.padding(16.dp)
+            modifier = Modifier.padding(16.dp),
+            verticalArrangement = Arrangement.spacedBy(8.dp)
         ) {
             Row(
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.spacedBy(8.dp),
-                modifier = Modifier.fillMaxWidth()
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically
             ) {
-                ElevatedAssistChip(
-                    onClick = { /*TODO*/ },
-                    label = { Text(text = eventsItem.type.uppercase(), fontSize = 12.sp) },
+                Text(
+                    text = eventsItem.name,
+                    fontFamily = poppinsFamily,
+                    fontSize = 18.sp,
+//                    modifier = Modifier.fillMaxWidth()
                 )
-                when (eventsItem.divisionId) {
-                    1 -> StartUpAndCompeIcon()
-                    2 -> GameDevIcon()
-                    3 -> UiuxDevIcon()
-                    4 -> WebDevIcon()
-                    5 -> AndroDevIcon()
+                Surface(
+                    color = Info,
+                    shape = RoundedCornerShape(8.dp)
+                ) {
+                    Text(
+                        text = eventsItem.type.uppercase(),
+                        fontFamily = poppinsFamily,
+                        fontSize = 12.sp,
+                        modifier = Modifier
+                            .padding(horizontal = 8.dp, vertical = 4.dp),
+                        color = Neutral50
+                    )
                 }
             }
-            Spacer(modifier = Modifier.height(4.dp))
-            Text(
-                text = eventsItem.name,
-                fontFamily = poppinsFamily,
-                fontSize = 20.sp,
-                fontWeight = FontWeight.Medium,
-                modifier = Modifier.fillMaxWidth()
-            )
-            Spacer(modifier = Modifier.height(4.dp))
             Row(
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.SpaceBetween,
-                modifier = Modifier.fillMaxWidth()
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.spacedBy(8.dp),
+                verticalAlignment = Alignment.CenterVertically
             ) {
-                Text(text = if (eventsItem.type == "online") "Klik untuk Link" else eventsItem.details, fontFamily = poppinsFamily)
-                Text(text = "${eventsItem.date.substring(0, 10)}, ${eventsItem.time.substring(0, 5)}", fontFamily = poppinsFamily)
+                Icon(
+                    imageVector = Icons.Rounded.CalendarToday,
+                    contentDescription = "event"
+                )
+                Text(
+                    text = "${formatDateString(eventsItem.date.toString().substring(0, 10))}, ${eventsItem.time.substring(0, 5)}",
+                    fontFamily = poppinsFamily
+                )
+            }
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.spacedBy(8.dp),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Icon(
+                    imageVector = Icons.Rounded.LocationOn,
+                    contentDescription = "event"
+                )
+                Text(
+                    text = eventsItem.details,
+                    fontFamily = poppinsFamily
+                )
             }
         }
     }
+}
+
+@Preview
+@Composable
+private fun MeetingCardPrev() {
+    val data = EventsItem(
+        date = "2005-07-26",
+        createdAt = "",
+        name = "Arrival of Destiny Takers",
+        details = "Indonesia",
+        id = 0,
+        time = "00.00",
+        divisionId = 0,
+        type = "ONSITE",
+        desc = "The day where gifted son born, destinied to take eveything",
+        updatedAt = ""
+    )
+
+    MeetingCard(eventsItem = data, onClick = {})
 }

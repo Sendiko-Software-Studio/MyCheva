@@ -3,7 +3,7 @@ package com.mycheva.app.core.network
 import com.mycheva.app.announcement.data.AnnouncementResponse
 import com.mycheva.app.attendance.data.AttendanceRequest
 import com.mycheva.app.attendance.data.AttendanceResponse
-import com.mycheva.app.dashboard.data.GetEventsResponse
+import com.mycheva.app.core.data.GetEventsResponse
 import com.mycheva.app.forum.add.data.ForumPostRequest
 import com.mycheva.app.forum.add.data.ForumPostResponse
 import com.mycheva.app.forum.comment.data.GetForumResponse
@@ -12,14 +12,15 @@ import com.mycheva.app.forum.comment.data.PostReplyResponse
 import com.mycheva.app.forum.main.data.GetForumsResponse
 import com.mycheva.app.login.data.LoginRequest
 import com.mycheva.app.login.data.LoginResponse
-import com.mycheva.app.profile.edit_pass.data.ChangePasswordRequest
-import com.mycheva.app.profile.edit_pass.data.ChangePasswordResponse
-import com.mycheva.app.profile.edit_username.data.ChangeUsernameRequest
-import com.mycheva.app.profile.edit_username.data.ChangeUsernameResponse
-import com.mycheva.app.profile.main.data.GetUserResponse
+import com.mycheva.app.profile.main.data.ChangePasswordRequest
+import com.mycheva.app.profile.main.data.ChangePasswordResponse
+import com.mycheva.app.profile.main.data.ChangeUsernameRequest
+import com.mycheva.app.profile.main.data.ChangeUsernameResponse
+import com.mycheva.app.core.data.GetUserResponse
 import com.mycheva.app.profile.main.data.LogoutResponse
 import com.mycheva.app.reset_password.data.ResetPasswordRequest
 import com.mycheva.app.reset_password.data.ResetPasswordResponse
+import com.mycheva.app.roadmap.data.GetRoadMapResponse
 import com.mycheva.app.schedule.detail.data.GetEventResponse
 import retrofit2.Call
 import retrofit2.http.Body
@@ -105,6 +106,11 @@ interface ApiServices {
         @Header("Authorization") token: String,
         @Body request: PostReplyRequest
     ): Call<PostReplyResponse>
+
+    @GET("roadmap")
+    fun getRoadMap(
+        @Header("Authorization") token: String,
+    ): Call<GetRoadMapResponse>
 
     @GET("logout")
     fun logout(

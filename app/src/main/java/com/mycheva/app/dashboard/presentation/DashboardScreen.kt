@@ -26,11 +26,17 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.rounded.Announcement
+import androidx.compose.material.icons.rounded.CalendarMonth
 import androidx.compose.material.icons.rounded.Forum
 import androidx.compose.material.icons.rounded.Map
+import androidx.compose.material.icons.rounded.Person
 import androidx.compose.material.icons.rounded.QrCode
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.IconButtonDefaults
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
@@ -47,10 +53,16 @@ import androidx.compose.ui.unit.sp
 import com.mycheva.app.R
 import com.mycheva.app.core.navigation.AnnouncementScreen
 import com.mycheva.app.core.navigation.AttendanceScreen
+import com.mycheva.app.core.navigation.DetailSchedule
 import com.mycheva.app.core.navigation.ForumScreen
+import com.mycheva.app.core.navigation.ProfileScreen
 import com.mycheva.app.core.navigation.RoadmapScreen
+import com.mycheva.app.core.navigation.ScheduleScreen
 import com.mycheva.app.core.ui.components.NotificationBox
 import com.mycheva.app.core.ui.theme.Neutral400
+import com.mycheva.app.core.ui.theme.Neutral50
+import com.mycheva.app.core.ui.theme.Neutral900
+import com.mycheva.app.core.ui.theme.Primary500
 import com.mycheva.app.core.ui.theme.poppinsFamily
 import com.mycheva.app.dashboard.presentation.component.EmptyMeetingCard
 import com.mycheva.app.dashboard.presentation.component.MeetingCard
@@ -100,10 +112,15 @@ fun SharedTransitionScope.DashboardScreen(
         isErrorNotification = state.isRequestFailed
     ) {
         Scaffold(
+            containerColor = Primary500,
             modifier = Modifier.fillMaxSize(),
             topBar = {
                 TopAppBar(
                     scrollBehavior = topAppBarScrollBehavior,
+                    colors = TopAppBarDefaults.topAppBarColors(
+                        containerColor = Primary500,
+                        titleContentColor = Neutral50
+                    ),
                     title = {
                         Row(
                             verticalAlignment = Alignment.CenterVertically,
@@ -114,10 +131,6 @@ fun SharedTransitionScope.DashboardScreen(
                                 contentDescription = "logo",
                                 modifier = Modifier
                                     .size(36.dp)
-                                    .sharedElement(
-                                        state = rememberSharedContentState(key = "chevalier_logo"),
-                                        animatedVisibilityScope = animatedContentScope
-                                    ),
                             )
                             Text(
                                 text = "MyCheva",
@@ -129,26 +142,32 @@ fun SharedTransitionScope.DashboardScreen(
                 )
             },
         ) {
-            LazyColumn(
-                modifier = Modifier
-                    .nestedScroll(topAppBarScrollBehavior.nestedScrollConnection),
-                contentPadding = PaddingValues(
-                    top = it.calculateTopPadding(),
-                    bottom = it.calculateBottomPadding(),
-                    start = 16.dp,
-                    end = 16.dp
-                ),
-                verticalArrangement = Arrangement.spacedBy(16.dp)
+            val contentPadding = PaddingValues(
+                top = it.calculateTopPadding(),
+                bottom = it.calculateBottomPadding(),
+                start = 16.dp,
+                end = 16.dp
+            )
+            Column(
+                Modifier.padding(top = it.calculateTopPadding())
             ) {
-                item {
-                    Column(
-                        modifier = Modifier.padding(top = 8.dp)
-                    ) {
+                Row(
+                    modifier = Modifier
+                        .padding(
+                            start = 16.dp,
+                            end = 16.dp,
+                            bottom = 16.dp
+                        )
+                        .fillMaxWidth(),
+                    horizontalArrangement = Arrangement.SpaceBetween
+                ) {
+                    Column {
                         Text(
                             text = greeting,
                             fontWeight = FontWeight.SemiBold,
                             fontSize = 18.sp,
                             fontFamily = poppinsFamily,
+                            color = Neutral50
                         )
                         AnimatedContent(
                             targetState = state.isLoading,
@@ -163,6 +182,7 @@ fun SharedTransitionScope.DashboardScreen(
                                         text = state.name,
                                         fontSize = 24.sp,
                                         fontFamily = poppinsFamily,
+                                        color = Neutral50
                                     )
 
                                 true ->
@@ -175,112 +195,154 @@ fun SharedTransitionScope.DashboardScreen(
                             }
                         }
                     }
-                }
-                item {
-                    Text(
-                        text = "Acara minggu ini",
-                        fontWeight = FontWeight.Bold,
-                        fontFamily = poppinsFamily
-                    )
-                    Spacer(modifier = Modifier.height(8.dp))
-                    AnimatedContent(
-                        targetState = state.isLoading,
-                        label = "",
-                        transitionSpec = {
-                            fadeIn().togetherWith(fadeOut())
-                        },
-                    ) { isLoading ->
-                        when (isLoading) {
-                            false -> {
-                                if (state.latestEvent != null) {
-                                    MeetingCard(
-                                        modifier = Modifier.fillMaxWidth(),
-                                        eventsItem = state.latestEvent
-                                    )
-                                }
-                                if (state.latestEvent == null && !state.isLoading)
-                                    EmptyMeetingCard(modifier = Modifier.fillMaxWidth())
-                            }
-                            true ->
-                                Box(
-                                    modifier = Modifier
-                                        .height(128.dp)
-                                        .fillMaxWidth()
-                                        .clip(RoundedCornerShape(4.dp))
-                                        .background(Neutral400)
-                                )
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.spacedBy(8.dp)
+                    ) {
+                        IconButton(onClick = { onNavigate(AnnouncementScreen) }) {
+                            Icon(
+                                imageVector = Icons.AutoMirrored.Rounded.Announcement,
+                                contentDescription = "announcement",
+                                tint = Neutral50
+                            )
+                        }
+                        IconButton(
+                            onClick = { onNavigate(ProfileScreen) },
+                            colors = IconButtonDefaults.iconButtonColors(
+                                containerColor = Neutral50,
+                                contentColor = Neutral900
+                            )
+                        ) {
+                            Icon(
+                                imageVector = Icons.Rounded.Person,
+                                contentDescription = "profile",
+                            )
                         }
                     }
                 }
-                item {
-                    Text(
-                        text = "Menu",
-                        fontWeight = FontWeight.Bold,
-                        fontFamily = poppinsFamily
-                    )
-                    Spacer(modifier = Modifier.height(8.dp))
-                    Row(
-                        modifier = Modifier.fillMaxWidth(),
-                        horizontalArrangement = Arrangement.spacedBy(8.dp)
+                Surface(
+                    modifier = Modifier
+                        .background(Primary500)
+                        .clip(RoundedCornerShape(topStart = 24.dp, topEnd = 24.dp))
+                        .fillMaxSize()
+                ) {
+                    LazyColumn(
+                        modifier = Modifier
+                            .nestedScroll(topAppBarScrollBehavior.nestedScrollConnection),
+                        contentPadding = PaddingValues(16.dp),
+                        verticalArrangement = Arrangement.spacedBy(16.dp)
                     ) {
-                        MenuCard(
-                            modifier = Modifier
-                                .weight(1f)
-                                .sharedBounds(
-                                    sharedContentState = rememberSharedContentState(key = "presensi"),
-                                    animatedVisibilityScope = animatedContentScope
-                                ),
-                            icon = Icons.Rounded.QrCode,
-                            label = "Presensi QR",
-                            enabled = !state.isLoading,
-                            onClick = { onNavigate(AttendanceScreen) }
-                        )
-                        MenuCard(
-                            modifier = Modifier
-                                .weight(1f)
-                                .sharedBounds(
-                                    sharedContentState = rememberSharedContentState(key = "roadmap"),
-                                    animatedVisibilityScope = animatedContentScope
-                                ),
-                            icon = Icons.Rounded.Map,
-                            label = "Roadmap",
-                            enabled = !state.isLoading,
-                            onClick = { onNavigate(RoadmapScreen) }
-                        )
-                    }
-                    Spacer(modifier = Modifier.height(8.dp))
-                    Row(
-                        modifier = Modifier.fillMaxWidth(),
-                        horizontalArrangement = Arrangement.spacedBy(8.dp)
-                    ) {
-                        MenuCard(
-                            modifier = Modifier
-                                .weight(1f)
-                                .sharedBounds(
-                                    sharedContentState = rememberSharedContentState(key = "announcement"),
-                                    animatedVisibilityScope = animatedContentScope
-                                ),
-                            icon = Icons.AutoMirrored.Rounded.Announcement,
-                            label = "Announcement",
-                            enabled = !state.isLoading,
-                            onClick = {
-                                onNavigate(AnnouncementScreen)
+                        item {
+                            Text(
+                                text = "Acara minggu ini",
+                                fontWeight = FontWeight.Bold,
+                                fontFamily = poppinsFamily
+                            )
+                            Spacer(modifier = Modifier.height(8.dp))
+                            AnimatedContent(
+                                targetState = state.isLoading,
+                                label = "",
+                                transitionSpec = {
+                                    fadeIn().togetherWith(fadeOut())
+                                },
+                            ) { isLoading ->
+                                when (isLoading) {
+                                    false -> {
+                                        if (state.latestEvent != null) {
+                                            MeetingCard(
+                                                modifier = Modifier.fillMaxWidth(),
+                                                eventsItem = state.latestEvent,
+                                                onClick = { eventId ->
+                                                    onNavigate(DetailSchedule(eventId))
+                                                }
+                                            )
+                                        }
+                                        if (state.latestEvent == null && !state.isLoading)
+                                            EmptyMeetingCard(modifier = Modifier.fillMaxWidth())
+                                    }
+
+                                    true ->
+                                        Box(
+                                            modifier = Modifier
+                                                .height(128.dp)
+                                                .fillMaxWidth()
+                                                .clip(RoundedCornerShape(4.dp))
+                                                .background(Neutral400)
+                                        )
+                                }
                             }
-                        )
-                        MenuCard(
-                            modifier = Modifier
-                                .weight(1f)
-                                .sharedBounds(
-                                    sharedContentState = rememberSharedContentState(key = "forum"),
-                                    animatedVisibilityScope = animatedContentScope,
-                                ),
-                            icon = Icons.Rounded.Forum,
-                            label = "Forum",
-                            enabled = !state.isLoading,
-                            onClick = {
-                                onNavigate(ForumScreen)
+                        }
+                        item {
+                            Text(
+                                text = "Menu",
+                                fontWeight = FontWeight.Bold,
+                                fontFamily = poppinsFamily
+                            )
+                            Spacer(modifier = Modifier.height(8.dp))
+                            Row(
+                                modifier = Modifier.fillMaxWidth(),
+                                horizontalArrangement = Arrangement.spacedBy(8.dp)
+                            ) {
+                                MenuCard(
+                                    modifier = Modifier
+                                        .weight(1f)
+                                        .sharedBounds(
+                                            sharedContentState = rememberSharedContentState(key = "presensi"),
+                                            animatedVisibilityScope = animatedContentScope
+                                        ),
+                                    icon = Icons.Rounded.QrCode,
+                                    label = "Presensi QR",
+                                    enabled = !state.isLoading,
+                                    onClick = { onNavigate(AttendanceScreen) }
+                                )
+                                MenuCard(
+                                    modifier = Modifier
+                                        .weight(1f)
+                                        .sharedBounds(
+                                            sharedContentState = rememberSharedContentState(key = "roadmap"),
+                                            animatedVisibilityScope = animatedContentScope
+                                        ),
+                                    icon = Icons.Rounded.Map,
+                                    label = "Roadmap",
+                                    enabled = !state.isLoading,
+                                    onClick = { onNavigate(RoadmapScreen("0")) }
+                                )
                             }
-                        )
+                            Spacer(modifier = Modifier.height(8.dp))
+                            Row(
+                                modifier = Modifier.fillMaxWidth(),
+                                horizontalArrangement = Arrangement.spacedBy(8.dp)
+                            ) {
+                                MenuCard(
+                                    modifier = Modifier
+                                        .weight(1f)
+                                        .sharedBounds(
+                                            sharedContentState = rememberSharedContentState(key = "schedule"),
+                                            animatedVisibilityScope = animatedContentScope
+                                        ),
+                                    icon = Icons.Rounded.CalendarMonth,
+                                    label = "Jadwal",
+                                    enabled = !state.isLoading,
+                                    onClick = {
+                                        onNavigate(ScheduleScreen)
+                                    }
+                                )
+                                MenuCard(
+                                    modifier = Modifier
+                                        .weight(1f)
+                                        .sharedBounds(
+                                            sharedContentState = rememberSharedContentState(key = "forum"),
+                                            animatedVisibilityScope = animatedContentScope,
+                                        ),
+                                    icon = Icons.Rounded.Forum,
+                                    label = "Forum",
+                                    enabled = !state.isLoading,
+                                    onClick = {
+                                        onNavigate(ForumScreen)
+                                    }
+                                )
+                            }
+                        }
                     }
                 }
             }

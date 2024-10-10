@@ -2,6 +2,7 @@ package com.mycheva.app.core.di
 
 import android.content.Context
 import com.mycheva.app.core.network.ApiServices
+import com.mycheva.app.core.network.NGROK_SERVER
 import com.mycheva.app.core.preferences.AppPreferences
 import com.mycheva.app.core.preferences.dataStore
 import dagger.Module
@@ -9,7 +10,6 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
-import ngrokserver
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
@@ -49,7 +49,7 @@ object AppModule {
     @Provides
     fun provideRetrofit(okHttpClient: OkHttpClient): Retrofit {
         return Retrofit.Builder()
-            .baseUrl(ngrokserver)
+            .baseUrl(NGROK_SERVER)
             .client(okHttpClient)
             .addConverterFactory(GsonConverterFactory.create())
             .build()

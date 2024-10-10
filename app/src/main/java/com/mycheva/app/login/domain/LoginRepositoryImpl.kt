@@ -1,9 +1,9 @@
 package com.mycheva.app.login.domain
 
-import NOT_FOUND
-import SERVER_ERROR
-import UNAUTHORIZED
 import com.mycheva.app.core.network.ApiServices
+import com.mycheva.app.core.network.NOT_FOUND
+import com.mycheva.app.core.network.SERVER_ERROR
+import com.mycheva.app.core.network.UNAUTHORIZED
 import com.mycheva.app.core.preferences.AppPreferences
 import com.mycheva.app.login.data.LoginRequest
 import com.mycheva.app.login.data.LoginResponse
@@ -39,7 +39,7 @@ class LoginRepositoryImpl @Inject constructor(
                         call: Call<LoginResponse>,
                         throwable: Throwable
                     ) {
-                        continuation.resume(Result.failure(Exception(SERVER_ERROR   )))
+                        continuation.resume(Result.failure(Exception(SERVER_ERROR)))
                     }
 
                 }

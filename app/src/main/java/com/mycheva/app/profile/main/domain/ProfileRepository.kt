@@ -1,27 +1,24 @@
 package com.mycheva.app.profile.main.domain
 
-import com.mycheva.app.core.network.ApiServices
-import com.mycheva.app.core.preferences.AppPreferences
+import com.mycheva.app.profile.main.data.ChangePasswordRequest
+import com.mycheva.app.profile.main.data.ChangeUsernameRequest
+import com.mycheva.app.core.data.User
 import kotlinx.coroutines.flow.Flow
-import javax.inject.Inject
 
-class ProfileRepository @Inject constructor(
-    private val appPreferences: AppPreferences,
-    private val apiServices: ApiServices
-) {
+interface ProfileRepository {
 
-    fun getToken(): Flow<String> {
-        return appPreferences.getToken()
-    }
+    fun getToken(): Flow<String>
 
-    fun getUserId(): Flow<String> {
-        return appPreferences.getUserId()
-    }
+    fun getUserId(): Flow<String>
 
-    suspend fun deleteToken() = appPreferences.deleteToken()
+    suspend fun deleteToken(): Result<String>
 
-    fun getUser(token: String, userId: String) = apiServices.getUser(token, userId)
+    suspend fun getUser(token: String, userId: String): Result<User>
 
-    fun logout(token: String) = apiServices.logout(token)
+    suspend fun logout(token: String): Result<String>
+
+    suspend fun changeUsername(token: String, userId: String, request: ChangeUsernameRequest): Result<String>
+
+    suspend fun changePassword(token: String, userId: String, request: ChangePasswordRequest): Result<String>
 
 }

@@ -37,9 +37,17 @@ class CommentViewModel @Inject constructor(
             is CommentEvent.OnCommentTextChange -> _state.update {
                 it.copy(commentText = event.value)
             }
+
             CommentEvent.OnClearState -> _state.update {
-                it.copy(isLoading = false, isError = false, notificationMessage = "", isCommentPosted = false, commentText = "")
+                it.copy(
+                    isLoading = false,
+                    isError = false,
+                    notificationMessage = "",
+                    isCommentPosted = false,
+                    commentText = ""
+                )
             }
+
             is CommentEvent.OnLoadData -> loadData(event.token, event.forumId)
             is CommentEvent.OnPostComment -> postReply(event.token, event.userId, event.forumId)
         }
@@ -61,23 +69,29 @@ class CommentViewModel @Inject constructor(
                 ) {
                     _state.update { it.copy(isLoading = false) }
                     when (response.code()) {
-                        201 -> _state.update { it.copy(
-                            isCommentPosted = true,
-                            notificationMessage = response.body()!!.message,
-                        ) }
+                        201 -> _state.update {
+                            it.copy(
+                                isCommentPosted = true,
+                                notificationMessage = response.body()!!.message,
+                            )
+                        }
 
-                        else -> _state.update { it.copy(
-                            isError = true,
-                            notificationMessage = "Server error."
-                        ) }
+                        else -> _state.update {
+                            it.copy(
+                                isError = true,
+                                notificationMessage = "Server error."
+                            )
+                        }
                     }
                 }
 
                 override fun onFailure(p0: Call<PostReplyResponse>, p1: Throwable) {
-                    _state.update { it.copy(
-                        isError = true,
-                        notificationMessage = "Server error."
-                    ) }
+                    _state.update {
+                        it.copy(
+                            isError = true,
+                            notificationMessage = "Server error."
+                        )
+                    }
                 }
 
             }
@@ -96,26 +110,32 @@ class CommentViewModel @Inject constructor(
                     _state.update { it.copy(isLoading = false) }
                     when (response.code()) {
                         200 -> _state.update {
+                            val replyEmpty = response.body()?.forum?.replies == null
+                            val totalReplies = if (replyEmpty) 0 else response.body()!!.forum.replies.size
                             it.copy(
                                 comments = response.body()!!.forum.replies,
-                                totalComment = response.body()!!.forum.replies.size,
+                                totalComment = totalReplies,
                                 post = response.body()!!.forum,
                                 isCommentPosted = false
                             )
                         }
 
-                        else -> _state.update { it.copy(
-                            isError = true,
-                            notificationMessage = "Server error."
-                        ) }
+                        else -> _state.update {
+                            it.copy(
+                                isError = true,
+                                notificationMessage = "Server error."
+                            )
+                        }
                     }
                 }
 
                 override fun onFailure(p0: Call<GetForumResponse>, p1: Throwable) {
-                    _state.update { it.copy(
-                        isError = true,
-                        notificationMessage = "Server error."
-                    ) }
+                    _state.update {
+                        it.copy(
+                            isError = true,
+                            notificationMessage = "Server error."
+                        )
+                    }
                 }
 
             }
