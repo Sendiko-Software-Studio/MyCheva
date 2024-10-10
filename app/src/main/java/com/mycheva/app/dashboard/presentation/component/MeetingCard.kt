@@ -26,7 +26,7 @@ import com.mycheva.app.core.ui.theme.Neutral50
 import com.mycheva.app.core.ui.theme.Neutral900
 import com.mycheva.app.core.ui.theme.Primary300
 import com.mycheva.app.core.ui.theme.poppinsFamily
-import com.mycheva.app.schedule.core.EventsItem
+import com.mycheva.app.core.data.EventsItem
 
 @Composable
 fun MeetingCard(
@@ -81,7 +81,7 @@ fun MeetingCard(
                     contentDescription = "event"
                 )
                 Text(
-                    text = "${formatDateString(eventsItem.date.substring(0, 10))}, ${eventsItem.time.substring(0, 5)}",
+                    text = "${formatDateString(eventsItem.date.toString().substring(0, 10))}, ${eventsItem.time.substring(0, 5)}",
                     fontFamily = poppinsFamily
                 )
             }

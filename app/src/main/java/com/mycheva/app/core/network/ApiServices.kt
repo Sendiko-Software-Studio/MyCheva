@@ -3,7 +3,7 @@ package com.mycheva.app.core.network
 import com.mycheva.app.announcement.data.AnnouncementResponse
 import com.mycheva.app.attendance.data.AttendanceRequest
 import com.mycheva.app.attendance.data.AttendanceResponse
-import com.mycheva.app.dashboard.data.GetEventsResponse
+import com.mycheva.app.core.data.GetEventsResponse
 import com.mycheva.app.forum.add.data.ForumPostRequest
 import com.mycheva.app.forum.add.data.ForumPostResponse
 import com.mycheva.app.forum.comment.data.GetForumResponse
@@ -16,7 +16,7 @@ import com.mycheva.app.profile.main.data.ChangePasswordRequest
 import com.mycheva.app.profile.main.data.ChangePasswordResponse
 import com.mycheva.app.profile.main.data.ChangeUsernameRequest
 import com.mycheva.app.profile.main.data.ChangeUsernameResponse
-import com.mycheva.app.profile.main.data.GetUserResponse
+import com.mycheva.app.core.data.GetUserResponse
 import com.mycheva.app.profile.main.data.LogoutResponse
 import com.mycheva.app.reset_password.data.ResetPasswordRequest
 import com.mycheva.app.reset_password.data.ResetPasswordResponse

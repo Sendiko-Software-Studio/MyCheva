@@ -3,10 +3,10 @@ package com.mycheva.app.dashboard.domain
 import android.util.Log
 import com.mycheva.app.core.network.ApiServices
 import com.mycheva.app.core.preferences.AppPreferences
-import com.mycheva.app.dashboard.data.GetEventsResponse
-import com.mycheva.app.profile.main.data.GetUserResponse
-import com.mycheva.app.profile.main.data.User
-import com.mycheva.app.schedule.core.EventsItem
+import com.mycheva.app.core.data.EventsItem
+import com.mycheva.app.core.data.GetEventsResponse
+import com.mycheva.app.core.data.GetUserResponse
+import com.mycheva.app.core.data.User
 import kotlinx.coroutines.flow.Flow
 import retrofit2.Call
 import retrofit2.Callback

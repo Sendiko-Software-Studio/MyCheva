@@ -1,7 +1,7 @@
 package com.mycheva.app.dashboard.domain
 
-import com.mycheva.app.profile.main.data.User
-import com.mycheva.app.schedule.core.EventsItem
+import com.mycheva.app.core.data.User
+import com.mycheva.app.core.data.EventsItem
 import kotlinx.coroutines.flow.Flow
 
 interface DashboardRepository {
