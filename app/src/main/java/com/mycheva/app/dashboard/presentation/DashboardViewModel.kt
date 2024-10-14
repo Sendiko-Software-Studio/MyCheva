@@ -1,7 +1,10 @@
 package com.mycheva.app.dashboard.presentation
 
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.mycheva.app.core.data.EventsItem
 import com.mycheva.app.dashboard.domain.DashboardRepositoryImpl
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
@@ -11,6 +14,7 @@ import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import java.time.LocalDate
 import javax.inject.Inject
 
 @HiltViewModel
@@ -55,14 +59,28 @@ class DashboardViewModel @Inject constructor(
         }
     }
 
+    @RequiresApi(Build.VERSION_CODES.O)
+    fun filterEvents(events: List<EventsItem>, userDivisionId: Int): List<EventsItem> {
+        val today = LocalDate.now()
+        val nextWeek = today.plusDays(7)
+
+        val filteredEvents = events.filter { event ->
+            event.divisionId == userDivisionId &&
+                    LocalDate.parse(event.date.substringBefore("T")) in today..nextWeek
+        }
+
+        return filteredEvents.ifEmpty { emptyList() }
+    }
+
+    @RequiresApi(Build.VERSION_CODES.O)
     private fun getEventData(token: String) {
         _state.update { it.copy(isLoading = true) }
         viewModelScope.launch {
             repo.getEvents(token)
                 .onSuccess { result ->
-                    val event = result.firstOrNull {
-                        it.divisionId.toString() == state.value.divisionId
-                    }
+                    val event = if (filterEvents(result, _state.value.divisionId.toInt()).isNotEmpty())
+                        filterEvents(result, _state.value.divisionId.toInt()).first()
+                    else null
                     _state.update {
                         it.copy(
                             latestEvent = event,

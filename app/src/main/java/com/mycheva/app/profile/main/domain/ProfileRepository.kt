@@ -2,7 +2,7 @@ package com.mycheva.app.profile.main.domain
 
 import com.mycheva.app.profile.main.data.ChangePasswordRequest
 import com.mycheva.app.profile.main.data.ChangeUsernameRequest
-import com.mycheva.app.profile.main.data.User
+import com.mycheva.app.core.data.User
 import kotlinx.coroutines.flow.Flow
 
 interface ProfileRepository {

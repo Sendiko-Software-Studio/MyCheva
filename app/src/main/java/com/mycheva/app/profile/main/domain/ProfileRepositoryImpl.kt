@@ -9,8 +9,8 @@ import com.mycheva.app.profile.main.data.ChangePasswordRequest
 import com.mycheva.app.profile.main.data.ChangePasswordResponse
 import com.mycheva.app.profile.main.data.ChangeUsernameRequest
 import com.mycheva.app.profile.main.data.ChangeUsernameResponse
-import com.mycheva.app.profile.main.data.GetUserResponse
-import com.mycheva.app.profile.main.data.User
+import com.mycheva.app.core.data.GetUserResponse
+import com.mycheva.app.core.data.User
 import kotlinx.coroutines.flow.Flow
 import retrofit2.Call
 import retrofit2.Callback

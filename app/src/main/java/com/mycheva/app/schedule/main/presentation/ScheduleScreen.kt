@@ -133,13 +133,13 @@ fun SharedTransitionScope.ScheduleScreen(
                                         horizontalAlignment = Alignment.CenterHorizontally
                                     ) {
                                         Text(
-                                            text = formatDateString(it.date.substring(0, 10)).substring(0, 2),
+                                            text = formatDateString(it.date.toString().substring(0, 10)).substring(0, 2),
                                             fontWeight = FontWeight.Bold,
                                             fontFamily = poppinsFamily,
                                             color = Neutral50
                                         )
                                         Text(
-                                            text = formatDateString(it.date.substring(0, 10)).substring(2, 6),
+                                            text = formatDateString(it.date.toString().substring(0, 10)).substring(2, 6),
                                             fontWeight = FontWeight.Normal,
                                             fontFamily = poppinsFamily,
                                             color = Neutral50,
