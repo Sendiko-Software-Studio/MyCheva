@@ -47,22 +47,22 @@ import kotlinx.coroutines.delay
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalSharedTransitionApi::class)
 @Composable
 fun SharedTransitionScope.ScheduleScreen(
-    state: ScheduleScreenState,
+    state: ScheduleState,
     animatedVisibilityScope: AnimatedVisibilityScope,
-    onEvent: (ScheduleScreenEvent) -> Unit,
+    onEvent: (ScheduleEvent) -> Unit,
     onNavigate: (eventId: String) -> Unit
 ) {
     val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior()
 
     LaunchedEffect(key1 = state.token) {
         if (state.token.isNotBlank())
-            onEvent(ScheduleScreenEvent.OnLoadSchedule(state.token))
+            onEvent(ScheduleEvent.OnLoadSchedule(state.token))
     }
 
     LaunchedEffect(key1 = state.notificationMessage) {
         if (state.notificationMessage.isNotBlank()) {
             delay(2000)
-            onEvent(ScheduleScreenEvent.OnClearState)
+            onEvent(ScheduleEvent.OnClearState)
         }
     }
 
@@ -100,8 +100,8 @@ fun SharedTransitionScope.ScheduleScreen(
                     item {
                         CustomTextField(
                             value = state.searchText,
-                            onValueChange = { onEvent(ScheduleScreenEvent.OnSearchTextChanged(it)) },
-                            onClearClick = { onEvent(ScheduleScreenEvent.OnClearFilter) },
+                            onValueChange = { onEvent(ScheduleEvent.OnSearchTextChanged(it)) },
+                            onClearClick = { onEvent(ScheduleEvent.OnClearFilter) },
                             type = TextFieldType.White,
                             modifier = Modifier
                                 .fillMaxWidth()

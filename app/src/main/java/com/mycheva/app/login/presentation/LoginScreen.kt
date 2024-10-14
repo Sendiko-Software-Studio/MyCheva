@@ -45,15 +45,15 @@ import androidx.compose.ui.res.painterResource as painterResource1
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
 fun LoginScreen(
-    state: LoginScreenState,
-    onEvent: (LoginScreenEvent) -> Unit,
+    state: LoginState,
+    onEvent: (LoginEvent) -> Unit,
     onNavigate: (destination: Any) -> Unit,
 ) {
 
     LaunchedEffect(key1 = state.isSignInFailed) {
         if (state.isSignInFailed) {
             delay(1000)
-            onEvent(LoginScreenEvent.OnClearState)
+            onEvent(LoginEvent.OnClearState)
         }
     }
 
@@ -107,10 +107,10 @@ fun LoginScreen(
                         isError = state.usernameTextState.isError,
                         supportingText = state.usernameTextState.errorMessage,
                         onValueChange = {
-                            onEvent(LoginScreenEvent.OnUsernameChanged(it))
+                            onEvent(LoginEvent.OnUsernameChanged(it))
                         },
                         onClearClick = {
-                            onEvent(LoginScreenEvent.OnUsernameCleared)
+                            onEvent(LoginEvent.OnUsernameCleared)
                         },
                         leadingIcon = {
                             Icon(
@@ -130,10 +130,10 @@ fun LoginScreen(
                         isError = state.passwordTextState.isError,
                         supportingText = state.passwordTextState.errorMessage,
                         onValueChange = {
-                            onEvent(LoginScreenEvent.OnPasswordChanged(it))
+                            onEvent(LoginEvent.OnPasswordChanged(it))
                         },
                         onPasswordToggle = {
-                            onEvent(LoginScreenEvent.OnPasswordVisibilityToggle(it))
+                            onEvent(LoginEvent.OnPasswordVisibilityToggle(it))
                         },
                         leadingIcon = {
                             Icon(
@@ -161,7 +161,7 @@ fun LoginScreen(
                         modifier = Modifier
                             .fillMaxWidth()
                             .padding(vertical = 16.dp),
-                        onClick = { onEvent(LoginScreenEvent.OnLogin) },
+                        onClick = { onEvent(LoginEvent.OnLogin) },
                         content = {
                             Text(
                                 text = "Login",
