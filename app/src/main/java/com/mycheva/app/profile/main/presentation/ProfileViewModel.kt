@@ -38,7 +38,6 @@ class ProfileViewModel @Inject constructor(
     fun onEvent(event: ProfileEvent) {
         when (event) {
             ProfileEvent.OnClearState -> clearState()
-//            ProfileEvent.OnEditProfile -> TODO()
             is ProfileEvent.OnLogout -> logout()
             is ProfileEvent.OnGetProfile -> getProfile(event.token, event.userId)
             is ProfileEvent.OnPasswordEdit -> editPassword(event.password, event.oldPassword)

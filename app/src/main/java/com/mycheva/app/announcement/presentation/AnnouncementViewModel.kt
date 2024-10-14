@@ -28,15 +28,21 @@ class AnnouncementViewModel @Inject constructor(
 
     fun onEvent(event: AnnouncementScreenEvent) {
         when(event) {
-            AnnouncementScreenEvent.OnClearState -> _state.update { it.copy(
-                isLoading = false,
-                notificationMessage = "",
-                isRequestError = false,
-            ) }
+            AnnouncementScreenEvent.OnClearState -> clearState()
 
             is AnnouncementScreenEvent.OnAddBookmark -> TODO()
 
             is AnnouncementScreenEvent.OnLoadAnnouncements -> loadAnnouncements(event.token)
+        }
+    }
+
+    private fun clearState() {
+        _state.update {
+            it.copy(
+                isLoading = false,
+                notificationMessage = "",
+                isRequestError = false,
+            )
         }
     }
 

@@ -1,6 +1,6 @@
 package com.mycheva.app.forum.add.presentation
 
-data class AddPostScreenState(
+data class AddPostForumState(
     val isLoading: Boolean = false,
     val isRequestError: Boolean = false,
     val isRequestSuccess: Boolean = false,

@@ -28,21 +28,30 @@ class ForumViewModel @Inject constructor(
 
     fun onEvent(event: ForumEvent) {
         when (event) {
-            ForumEvent.OnClearNotification ->
-                _state.update { it.copy(isLoading = false, isRequestError = false, notificationMessage = "") }
+            ForumEvent.OnClearNotification -> clearNotification()
 
             is ForumEvent.OnLoadForums -> loadForums(event.token)
-            ForumEvent.OnClearFilter -> {
-                loadForums(state.value.token)
-                _state.update {
-                    it.copy(
-                        searchText = "",
-                    )
-                }
-            }
-            is ForumEvent.OnSearchTextChange -> {
-                searchForums(event.value)
-            }
+            ForumEvent.OnClearFilter -> clearFilter()
+            is ForumEvent.OnSearchTextChange -> searchForums(event.value)
+        }
+    }
+
+    private fun clearFilter() {
+        loadForums(state.value.token)
+        _state.update {
+            it.copy(
+                searchText = "",
+            )
+        }
+    }
+
+    private fun clearNotification() {
+        _state.update {
+            it.copy(
+                isLoading = false,
+                isRequestError = false,
+                notificationMessage = ""
+            )
         }
     }
 

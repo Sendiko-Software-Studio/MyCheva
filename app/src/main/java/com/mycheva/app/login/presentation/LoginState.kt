@@ -2,7 +2,7 @@ package com.mycheva.app.login.presentation
 
 import com.mycheva.app.core.ui.data.TextFieldError
 
-data class LoginScreenState(
+data class LoginState(
     val isLoading: Boolean = false,
     val isSignInSuccessful: Boolean = false,
     val isSignInFailed: Boolean = false,

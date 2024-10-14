@@ -17,23 +17,27 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class ResetPasswordScreenViewModel @Inject constructor(
+class ResetPasswordViewModel @Inject constructor(
     private val repository: ResetPasswordRepositoryImpl
 ) : ViewModel() {
 
     private val _token = repository.getToken()
-    private val _state = MutableStateFlow(ResetPasswordScreenState())
+    private val _state = MutableStateFlow(ResetPasswordState())
     val state = combine(_token, _state) { token, state ->
         state.copy(token = token)
-    }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), ResetPasswordScreenState())
+    }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), ResetPasswordState())
 
-    fun onEvent(event: ResetPasswordScreenEvent) {
+    fun onEvent(event: ResetPasswordEvent) {
         when (event) {
-            is ResetPasswordScreenEvent.OnEmailTextChange -> onEmailChanged(event)
-            is ResetPasswordScreenEvent.OnResetPassword -> resetPassword(event.token, event.email)
-            ResetPasswordScreenEvent.OnEmailCleared -> onEmailCleared()
-            ResetPasswordScreenEvent.ClearState -> _state.update { ResetPasswordScreenState() }
+            is ResetPasswordEvent.OnEmailTextChange -> changeEmail(event.email)
+            is ResetPasswordEvent.OnResetPassword -> resetPassword(event.token, event.email)
+            ResetPasswordEvent.OnEmailCleared -> clearEmailText ()
+            ResetPasswordEvent.ClearState -> clearState()
         }
+    }
+
+    private fun clearState() {
+        _state.update { ResetPasswordState() }
     }
 
     private fun resetPassword(token: String, email: String) {
@@ -64,15 +68,15 @@ class ResetPasswordScreenViewModel @Inject constructor(
         }
     }
 
-    private fun onEmailCleared() {
+    private fun clearEmailText() {
         _state.update {
             it.copy(emailText = "")
         }
     }
 
-    private fun onEmailChanged(event: ResetPasswordScreenEvent.OnEmailTextChange) {
+    private fun changeEmail(email: String) {
         _state.update {
-            it.copy(emailText = event.email)
+            it.copy(emailText = email)
         }
     }
 

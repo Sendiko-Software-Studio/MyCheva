@@ -29,15 +29,15 @@ import kotlinx.coroutines.delay
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AddPostScreen(
-    state: AddPostScreenState,
-    onEvent: (AddPostScreenEvent) -> Unit,
+    state: AddPostForumState,
+    onEvent: (AddPostForumEvent) -> Unit,
     onNavigateBack: () -> Unit,
 ) {
 
     LaunchedEffect(key1 = state.notificationMessage) {
         if (state.notificationMessage.isNotBlank()) {
             delay(2000)
-            onEvent(AddPostScreenEvent.OnClearState)
+            onEvent(AddPostForumEvent.OnClearState)
         }
     }
 
@@ -76,7 +76,7 @@ fun AddPostScreen(
                             value = state.postText,
                             placeholder = "Apa yang ingin ditanyakan?",
                             onValueChange = {
-                                onEvent(AddPostScreenEvent.OnPostTextChanged(it))
+                                onEvent(AddPostForumEvent.OnPostTextChanged(it))
                             }
                         )
                     }
@@ -108,7 +108,7 @@ fun AddPostScreen(
                                 ),
                                 modifier = Modifier
                                     .weight(1f),
-                                onClick = { onEvent(AddPostScreenEvent.OnPost(state.token, state.userId, state.postText)) },
+                                onClick = { onEvent(AddPostForumEvent.OnPost(state.token, state.userId, state.postText)) },
                                 content = {
                                     Text(
                                         text = "Kirim",

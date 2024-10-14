@@ -1,6 +1,6 @@
 package com.mycheva.app.reset_password.presentation
 
-data class ResetPasswordScreenState(
+data class ResetPasswordState(
     val emailText: String = "",
     val isLoading: Boolean = false,
     val isRequestFailed: Boolean = false,

@@ -31,6 +31,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.mycheva.app.core.ui.components.LargeTopBar
@@ -243,5 +244,17 @@ fun DateTimeSection(
                 )
             }
         }
+    }
+}
+
+@Preview
+@Composable
+private fun DetailScheduleScreenPrev() {
+    DetailScheduleScreen(
+        state = DetailScheduleState(),
+        eventId = "0",
+        onEvent = {}
+    ) {
+
     }
 }

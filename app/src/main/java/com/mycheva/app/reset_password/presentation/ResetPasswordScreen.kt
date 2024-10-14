@@ -1,6 +1,5 @@
 package com.mycheva.app.reset_password.presentation
 
-import androidx.compose.animation.ExperimentalSharedTransitionApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -38,15 +37,15 @@ import androidx.compose.ui.res.painterResource as painterResource1
 
 @Composable
 fun ResetPasswordScreen(
-    state: ResetPasswordScreenState,
-    onEvent: (ResetPasswordScreenEvent) -> Unit,
+    state: ResetPasswordState,
+    onEvent: (ResetPasswordEvent) -> Unit,
     onNavigateBack: () -> Unit,
 ) {
 
     LaunchedEffect(key1 = state.notificationMessage) {
         if (state.notificationMessage.isNotEmpty()) {
             delay(2000)
-            onEvent(ResetPasswordScreenEvent.ClearState)
+            onEvent(ResetPasswordEvent.ClearState)
         }
     }
 
@@ -94,7 +93,7 @@ fun ResetPasswordScreen(
             CustomTextField(
                 label = "Masukkan email anda",
                 value = state.emailText,
-                onValueChange = { onEvent(ResetPasswordScreenEvent.OnEmailTextChange(it)) },
+                onValueChange = { onEvent(ResetPasswordEvent.OnEmailTextChange(it)) },
                 onClearClick = { /*TODO*/ },
                 modifier = Modifier
                     .fillMaxWidth()
@@ -112,7 +111,7 @@ fun ResetPasswordScreen(
                     .fillMaxWidth()
                     .padding(horizontal = 16.dp),
                 onClick = {
-                    onEvent(ResetPasswordScreenEvent.OnResetPassword(state.token, state.emailText))
+                    onEvent(ResetPasswordEvent.OnResetPassword(state.token, state.emailText))
                 },
                 content = {
                     Text(text = "Reset Password", fontFamily = poppinsFamily)

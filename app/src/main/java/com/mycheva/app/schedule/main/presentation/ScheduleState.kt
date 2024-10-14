@@ -2,7 +2,7 @@ package com.mycheva.app.schedule.main.presentation
 
 import com.mycheva.app.schedule.core.EventsItem
 
-data class ScheduleScreenState(
+data class ScheduleState(
     val events: List<EventsItem> = emptyList<EventsItem>(),
     val isLoading: Boolean = false,
     val notificationMessage: String = "",
