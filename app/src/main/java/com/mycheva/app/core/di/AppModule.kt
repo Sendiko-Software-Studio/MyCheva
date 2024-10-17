@@ -1,6 +1,9 @@
 package com.mycheva.app.core.di
 
 import android.content.Context
+import androidx.room.Room
+import com.mycheva.app.core.database.AppDatabase
+import com.mycheva.app.core.database.BookmarkDao
 import com.mycheva.app.core.network.ApiServices
 import com.mycheva.app.core.network.NGROK_SERVER
 import com.mycheva.app.core.preferences.AppPreferences
@@ -59,6 +62,19 @@ object AppModule {
     @Provides
     fun provideApiServices(retrofit: Retrofit): ApiServices {
         return retrofit.create(ApiServices::class.java)
+    }
+
+    @Singleton
+    @Provides
+    fun provideDatabase(@ApplicationContext context: Context): AppDatabase {
+        return Room.databaseBuilder(context, AppDatabase::class.java, "app_db")
+            .build()
+    }
+
+    @Singleton
+    @Provides
+    fun provideBookmarkDao(database: AppDatabase): BookmarkDao {
+        return database.bookmarkDao
     }
 
 }
