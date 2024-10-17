@@ -17,7 +17,6 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -29,11 +28,11 @@ import com.mycheva.app.announcement.presentation.AnnouncementViewModel
 import com.mycheva.app.attendance.presentation.AttendanceScreen
 import com.mycheva.app.attendance.presentation.AttendanceScreenViewModel
 import com.mycheva.app.bookmark.presentation.BookmarkScreen
-import com.mycheva.app.bookmark.presentation.BookmarkScreenViewModel
+import com.mycheva.app.bookmark.presentation.BookmarkViewModel
 import com.mycheva.app.dashboard.presentation.DashboardScreen
 import com.mycheva.app.dashboard.presentation.DashboardViewModel
-import com.mycheva.app.forum.add.presentation.AddPostScreen
 import com.mycheva.app.forum.add.presentation.AddPostForumViewModel
+import com.mycheva.app.forum.add.presentation.AddPostScreen
 import com.mycheva.app.forum.comment.presentation.CommentScreen
 import com.mycheva.app.forum.comment.presentation.CommentViewModel
 import com.mycheva.app.forum.main.presentation.ForumScreen
@@ -249,7 +248,7 @@ fun RootNavGraph(
                     )
                 }
                 composable<BookmarkScreen> {
-                    val viewModel = viewModel<BookmarkScreenViewModel>()
+                    val viewModel = hiltViewModel<BookmarkViewModel>()
                     val state by viewModel.state.collectAsStateWithLifecycle()
                     BookmarkScreen(
                         state = state,
