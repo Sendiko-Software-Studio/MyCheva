@@ -28,8 +28,8 @@ import kotlinx.coroutines.delay
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalSharedTransitionApi::class)
 @Composable
 fun SharedTransitionScope.AnnouncementScreen(
-    state: AnnouncementScreenState,
-    onEvent: (AnnouncementScreenEvent) -> Unit,
+    state: AnnouncementState,
+    onEvent: (AnnouncementEvent) -> Unit,
     onNavigate: (destination: Any?) -> Unit,
     animatedContentScope: AnimatedContentScope
 ) {
@@ -38,14 +38,14 @@ fun SharedTransitionScope.AnnouncementScreen(
     LaunchedEffect(key1 = state.token) {
         if (state.token.isNotBlank()) {
             delay(300)
-            onEvent(AnnouncementScreenEvent.OnLoadAnnouncements(state.token))
+            onEvent(AnnouncementEvent.OnLoadAnnouncements(state.token))
         }
     }
 
     LaunchedEffect(key1 = state.notificationMessage) {
         if (state.notificationMessage.isNotBlank()) {
             delay(2000)
-            onEvent(AnnouncementScreenEvent.OnClearState)
+            onEvent(AnnouncementEvent.OnClearState)
         }
     }
 
@@ -85,7 +85,7 @@ fun SharedTransitionScope.AnnouncementScreen(
                         AnnouncementCard(
                             announcement = announcement,
                             onAddBookMark = {
-                                onEvent(AnnouncementScreenEvent.OnAddBookmark(announcement))
+                                onEvent(AnnouncementEvent.OnAddBookmark(announcement))
                             },
                             modifier = Modifier.padding(horizontal = 16.dp)
                         )
