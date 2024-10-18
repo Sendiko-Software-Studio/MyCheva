@@ -33,14 +33,18 @@ class AttendanceScreenViewModel @Inject constructor(
 
     fun onEvent(event: AttendanceScreenEvent) {
         when (event) {
-            AttendanceScreenEvent.OnClearState -> _state.update {
-                it.copy(
-                    isRequestSuccess = false,
-                    isRequestFailed = false,
-                    notificationMessage = ""
-                )
-            }
+            AttendanceScreenEvent.OnClearState -> clearState()
             is AttendanceScreenEvent.OnEventIdRead -> postAttendance(event.token, event.eventId, event.userId)
+        }
+    }
+
+    private fun clearState() {
+        _state.update {
+            it.copy(
+                isRequestSuccess = false,
+                isRequestFailed = false,
+                notificationMessage = ""
+            )
         }
     }
 

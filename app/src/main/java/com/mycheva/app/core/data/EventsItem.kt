@@ -1,4 +1,4 @@
-package com.mycheva.app.schedule.core
+package com.mycheva.app.core.data
 
 import com.google.gson.annotations.SerializedName
 

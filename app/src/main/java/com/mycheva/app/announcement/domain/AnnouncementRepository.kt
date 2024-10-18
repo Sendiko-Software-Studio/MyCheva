@@ -1,19 +1,15 @@
 package com.mycheva.app.announcement.domain
 
-import com.mycheva.app.core.network.ApiServices
-import com.mycheva.app.core.preferences.AppPreferences
+import com.mycheva.app.announcement.data.AnnouncementsItem
+import com.mycheva.app.core.database.BookmarkEntity
 import kotlinx.coroutines.flow.Flow
-import javax.inject.Inject
 
-class AnnouncementRepository @Inject constructor(
-    private val apiServices: ApiServices,
-    private val appPreferences: AppPreferences
-) {
+interface AnnouncementRepository {
 
-    fun getToken(): Flow<String> {
-        return appPreferences.getToken()
-    }
+    fun getToken(): Flow<String>
 
-    fun getAnnouncements(token: String) =  apiServices.getAnnouncements(token)
+    suspend fun getAnnouncements(token: String): Result<List<AnnouncementsItem>>
+
+    suspend fun addBookmark(bookmark: BookmarkEntity): Boolean
 
 }

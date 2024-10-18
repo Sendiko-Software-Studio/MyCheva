@@ -28,9 +28,17 @@ class DetailScheduleViewModel @Inject constructor(
 
     fun onEvent(event: DetailScheduleEvent) {
         when (event) {
-            DetailScheduleEvent.OnClearState -> TODO()
+            DetailScheduleEvent.OnClearState -> clearState()
             is DetailScheduleEvent.OnLoadSchedule -> loadSchedule(event.token, event.eventId)
         }
+    }
+
+    private fun clearState() {
+        _state.update { it.copy(
+            notificationMessage = "",
+            isLoading = false,
+            isRequestFailed = false
+        ) }
     }
 
     private fun loadSchedule(token: String, eventId: String) {

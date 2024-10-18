@@ -1,5 +1,6 @@
 package com.mycheva.app.bookmark.presentation
 
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
@@ -8,14 +9,14 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.Preview
-import com.mycheva.app.announcement.presentation.component.AnnouncementCard
+import androidx.compose.ui.unit.dp
 import com.mycheva.app.core.ui.components.LargeTopBar
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun BookmarkScreen(
-    state: BookmarkScreenState,
-    onEvent: (BookmarkScreenEvent) -> Unit,
+    state: BookmarkState,
+    onEvent: (BookmarkEvent) -> Unit,
     onNavigate: (destination: Any?) -> Unit,
 ) {
     Scaffold(
@@ -27,14 +28,19 @@ fun BookmarkScreen(
             )
         },
         content = { paddingValues ->
+            val contentPadding = PaddingValues(
+                top = paddingValues.calculateTopPadding(),
+                start = 16.dp,
+                end = 16.dp
+            )
             LazyColumn(
-                contentPadding = paddingValues
+                contentPadding = contentPadding
             ) {
-                items(state.announcements) {
-                    AnnouncementCard(
-                        announcement = it,
-                        onAddBookMark = {
-                            onEvent(BookmarkScreenEvent.OnRemoveBookmark(it))
+                items(state.bookmarks) {
+                    BookmarkCard(
+                        bookmark = it,
+                        onRemoveBookmark = {
+                            onEvent(BookmarkEvent.OnRemoveBookmark(it))
                         },
                     )
                 }
@@ -47,7 +53,7 @@ fun BookmarkScreen(
 @Composable
 private fun BookmarkScreenPrev() {
     BookmarkScreen(
-        state = BookmarkScreenState(),
+        state = BookmarkState(),
         onEvent = {  },
         onNavigate = {  }
     )

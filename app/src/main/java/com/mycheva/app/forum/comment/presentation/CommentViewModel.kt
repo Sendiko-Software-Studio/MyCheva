@@ -34,22 +34,30 @@ class CommentViewModel @Inject constructor(
 
     fun onEvent(event: CommentEvent) {
         when (event) {
-            is CommentEvent.OnCommentTextChange -> _state.update {
-                it.copy(commentText = event.value)
-            }
+            is CommentEvent.OnCommentTextChange -> changeCommentText(event.value)
 
-            CommentEvent.OnClearState -> _state.update {
-                it.copy(
-                    isLoading = false,
-                    isError = false,
-                    notificationMessage = "",
-                    isCommentPosted = false,
-                    commentText = ""
-                )
-            }
+            CommentEvent.OnClearState -> clearState()
 
             is CommentEvent.OnLoadData -> loadData(event.token, event.forumId)
             is CommentEvent.OnPostComment -> postReply(event.token, event.userId, event.forumId)
+        }
+    }
+
+    private fun clearState() {
+        _state.update {
+            it.copy(
+                isLoading = false,
+                isError = false,
+                notificationMessage = "",
+                isCommentPosted = false,
+                commentText = ""
+            )
+        }
+    }
+
+    private fun changeCommentText(value: String) {
+        _state.update {
+            it.copy(commentText = value)
         }
     }
 

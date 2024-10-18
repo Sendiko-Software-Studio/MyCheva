@@ -17,7 +17,6 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -29,27 +28,27 @@ import com.mycheva.app.announcement.presentation.AnnouncementViewModel
 import com.mycheva.app.attendance.presentation.AttendanceScreen
 import com.mycheva.app.attendance.presentation.AttendanceScreenViewModel
 import com.mycheva.app.bookmark.presentation.BookmarkScreen
-import com.mycheva.app.bookmark.presentation.BookmarkScreenViewModel
+import com.mycheva.app.bookmark.presentation.BookmarkViewModel
 import com.mycheva.app.dashboard.presentation.DashboardScreen
 import com.mycheva.app.dashboard.presentation.DashboardViewModel
+import com.mycheva.app.forum.add.presentation.AddPostForumViewModel
 import com.mycheva.app.forum.add.presentation.AddPostScreen
-import com.mycheva.app.forum.add.presentation.AddPostScreenViewModel
 import com.mycheva.app.forum.comment.presentation.CommentScreen
 import com.mycheva.app.forum.comment.presentation.CommentViewModel
 import com.mycheva.app.forum.main.presentation.ForumScreen
 import com.mycheva.app.forum.main.presentation.ForumViewModel
 import com.mycheva.app.login.presentation.LoginScreen
-import com.mycheva.app.login.presentation.LoginScreenViewModel
+import com.mycheva.app.login.presentation.LoginViewModel
 import com.mycheva.app.profile.main.presentation.ProfileScreen
 import com.mycheva.app.profile.main.presentation.ProfileViewModel
 import com.mycheva.app.reset_password.presentation.ResetPasswordScreen
-import com.mycheva.app.reset_password.presentation.ResetPasswordScreenViewModel
+import com.mycheva.app.reset_password.presentation.ResetPasswordViewModel
 import com.mycheva.app.roadmap.presentation.RoadMapScreen
 import com.mycheva.app.roadmap.presentation.RoadMapViewModel
 import com.mycheva.app.schedule.detail.presentation.DetailScheduleScreen
 import com.mycheva.app.schedule.detail.presentation.DetailScheduleViewModel
 import com.mycheva.app.schedule.main.presentation.ScheduleScreen
-import com.mycheva.app.schedule.main.presentation.ScheduleScreenViewModel
+import com.mycheva.app.schedule.main.presentation.ScheduleViewModel
 import com.mycheva.app.splashscreen.presentation.SplashScreen
 import com.mycheva.app.splashscreen.presentation.SplashScreenViewModel
 
@@ -100,7 +99,7 @@ fun RootNavGraph(
                     )
                 }
                 composable<LoginScreen> {
-                    val viewModel = hiltViewModel<LoginScreenViewModel>()
+                    val viewModel = hiltViewModel<LoginViewModel>()
                     val state by viewModel.state.collectAsStateWithLifecycle()
                     LoginScreen(
                         state = state,
@@ -111,7 +110,7 @@ fun RootNavGraph(
                     )
                 }
                 composable<ResetPasswordScreen> {
-                    val viewModel = hiltViewModel<ResetPasswordScreenViewModel>()
+                    val viewModel = hiltViewModel<ResetPasswordViewModel>()
                     val state by viewModel.state.collectAsStateWithLifecycle()
                     ResetPasswordScreen(
                         state = state,
@@ -154,7 +153,7 @@ fun RootNavGraph(
                     )
                 }
                 composable<ScheduleScreen> {
-                    val viewModel = hiltViewModel<ScheduleScreenViewModel>()
+                    val viewModel = hiltViewModel<ScheduleViewModel>()
                     val state by viewModel.state.collectAsStateWithLifecycle()
                     ScheduleScreen(
                         state = state,
@@ -225,7 +224,7 @@ fun RootNavGraph(
                 }
                 composable<PostScreen> {
                     val args = it.toRoute<PostScreen>()
-                    val viewModel = hiltViewModel<AddPostScreenViewModel>()
+                    val viewModel = hiltViewModel<AddPostForumViewModel>()
                     val state by viewModel.state.collectAsStateWithLifecycle()
                     AddPostScreen(
                         state = state,
@@ -249,7 +248,7 @@ fun RootNavGraph(
                     )
                 }
                 composable<BookmarkScreen> {
-                    val viewModel = viewModel<BookmarkScreenViewModel>()
+                    val viewModel = hiltViewModel<BookmarkViewModel>()
                     val state by viewModel.state.collectAsStateWithLifecycle()
                     BookmarkScreen(
                         state = state,

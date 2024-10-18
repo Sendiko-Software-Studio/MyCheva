@@ -1,6 +1,6 @@
 package com.mycheva.app.schedule.detail.presentation
 
-import com.mycheva.app.schedule.core.EventsItem
+import com.mycheva.app.core.data.EventsItem
 
 data class DetailScheduleState(
     val token: String = "",

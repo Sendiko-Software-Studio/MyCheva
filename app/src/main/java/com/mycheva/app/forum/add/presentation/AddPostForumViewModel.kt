@@ -17,29 +17,41 @@ import retrofit2.Response
 import javax.inject.Inject
 
 @HiltViewModel
-class AddPostScreenViewModel @Inject constructor(
+class AddPostForumViewModel @Inject constructor(
     private val repository: AddPostRepository
 ) : ViewModel() {
 
     private val _token = repository.getToken()
     private val _userId = repository.getUserId()
-    private val _state = MutableStateFlow(AddPostScreenState())
+    private val _state = MutableStateFlow(AddPostForumState())
     val state = combine(_token, _userId, _state) { token, userId, state ->
         state.copy(token = token, userId = userId)
-    }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), AddPostScreenState())
+    }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), AddPostForumState())
 
-    fun onEvent(event: AddPostScreenEvent) {
+    fun onEvent(event: AddPostForumEvent) {
         when (event) {
-            AddPostScreenEvent.OnClearState -> _state.update { it.copy(
+            AddPostForumEvent.OnClearState -> clearState()
+            is AddPostForumEvent.OnPostTextChanged -> changePostText(event.text)
+            is AddPostForumEvent.OnPost -> post(event.token, event.userId, event.content)
+        }
+    }
+
+    private fun changePostText(value: String) {
+        _state.update {
+            it.copy(
+                postText = value
+            )
+        }
+    }
+
+    private fun clearState() {
+        _state.update {
+            it.copy(
                 isLoading = false,
                 isRequestError = false,
                 isRequestSuccess = false,
                 notificationMessage = ""
-            ) }
-            is AddPostScreenEvent.OnPostTextChanged -> _state.update { it.copy(
-                postText = event.text
-            ) }
-            is AddPostScreenEvent.OnPost -> post(event.token, event.userId, event.content)
+            )
         }
     }
 

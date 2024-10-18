@@ -19,7 +19,7 @@ import androidx.compose.ui.unit.sp
 import com.mycheva.app.core.ui.theme.Neutral200
 import com.mycheva.app.core.ui.theme.Primary500
 import com.mycheva.app.core.ui.theme.poppinsFamily
-import com.mycheva.app.schedule.core.EventsItem
+import com.mycheva.app.core.data.EventsItem
 
 @Composable
 fun EventCard(

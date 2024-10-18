@@ -17,21 +17,21 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class LoginScreenViewModel @Inject constructor(
+class LoginViewModel @Inject constructor(
     private val repository: LoginRepositoryImpl
 ) : ViewModel() {
 
-    private val _state = MutableStateFlow(LoginScreenState())
+    private val _state = MutableStateFlow(LoginState())
     val state = _state.asStateFlow()
 
-    fun onEvent(event: LoginScreenEvent) {
+    fun onEvent(event: LoginEvent) {
         when (event) {
-            is LoginScreenEvent.OnUsernameChanged -> onUsernameChanged(event.username)
-            is LoginScreenEvent.OnPasswordChanged -> onPasswordChanged(event.password)
-            is LoginScreenEvent.OnPasswordVisibilityToggle -> onPasswordVisibilityChanged(event.isVisible)
-            LoginScreenEvent.OnLogin -> login()
-            LoginScreenEvent.OnUsernameCleared -> onUsernameClear()
-            LoginScreenEvent.OnClearState -> clearState()
+            is LoginEvent.OnUsernameChanged -> changeUsernameText(event.username)
+            is LoginEvent.OnPasswordChanged -> changePasswordText(event.password)
+            is LoginEvent.OnPasswordVisibilityToggle -> changePasswordVisibility(event.isVisible)
+            LoginEvent.OnLogin -> login()
+            LoginEvent.OnUsernameCleared -> clearUsername()
+            LoginEvent.OnClearState -> clearState()
         }
     }
 
@@ -114,19 +114,19 @@ class LoginScreenViewModel @Inject constructor(
         }
     }
 
-    private fun onUsernameClear() {
+    private fun clearUsername() {
         _state.update { it.copy(usernameText = "") }
     }
 
-    private fun onPasswordVisibilityChanged(isVisible: Boolean) {
+    private fun changePasswordVisibility(isVisible: Boolean) {
         _state.update { it.copy(isPasswordVisible = isVisible) }
     }
 
-    private fun onPasswordChanged(password: String) {
+    private fun changePasswordText(password: String) {
         _state.update { it.copy(passwordText = password) }
     }
 
-    private fun onUsernameChanged(username: String) {
+    private fun changeUsernameText(username: String) {
         _state.update { it.copy(usernameText = username) }
     }
 }

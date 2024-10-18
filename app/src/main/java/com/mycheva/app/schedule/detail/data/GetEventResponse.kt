@@ -1,7 +1,7 @@
 package com.mycheva.app.schedule.detail.data
 
 import com.google.gson.annotations.SerializedName
-import com.mycheva.app.schedule.core.EventsItem
+import com.mycheva.app.core.data.EventsItem
 
 data class GetEventResponse(
 

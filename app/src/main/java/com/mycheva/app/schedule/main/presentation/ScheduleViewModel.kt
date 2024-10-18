@@ -18,32 +18,31 @@ import retrofit2.Response
 import javax.inject.Inject
 
 @HiltViewModel
-class ScheduleScreenViewModel @Inject constructor(
+class ScheduleViewModel @Inject constructor(
     private val repository: ScheduleScreenRepository
 ): ViewModel() {
 
     private val _token = repository.getToken()
-    private val _state = MutableStateFlow(ScheduleScreenState())
+    private val _state = MutableStateFlow(ScheduleState())
     val state = combine(_token, _state) { token, state ->
         state.copy(token = token)
-    }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), ScheduleScreenState())
+    }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), ScheduleState())
 
-    fun onEvent(event: ScheduleScreenEvent) {
+    fun onEvent(event: ScheduleEvent) {
         when (event) {
-            ScheduleScreenEvent.OnClearState -> _state.update {
-                it.copy(
-                    isRequestFailed = false,
-                    notificationMessage = ""
-                )
-            }
-            is ScheduleScreenEvent.OnLoadSchedule -> loadSchedule(event.token)
-            is ScheduleScreenEvent.OnSearchTextChanged -> searchMeetings(event.value)
-            ScheduleScreenEvent.OnClearFilter -> {
-                loadSchedule(state.value.token)
-                _state.update {
-                    it.copy(searchText = "")
-                }
-            }
+            ScheduleEvent.OnClearState -> clearState()
+            is ScheduleEvent.OnLoadSchedule -> loadSchedule(event.token)
+            is ScheduleEvent.OnSearchTextChanged -> searchMeetings(event.value)
+            ScheduleEvent.OnClearFilter -> loadSchedule(state.value.token)
+        }
+    }
+
+    private fun clearState() {
+        _state.update {
+            it.copy(
+                isRequestFailed = false,
+                notificationMessage = ""
+            )
         }
     }
 
@@ -95,5 +94,8 @@ class ScheduleScreenViewModel @Inject constructor(
 
             }
         )
+        _state.update {
+            it.copy(searchText = "")
+        }
     }
 }
