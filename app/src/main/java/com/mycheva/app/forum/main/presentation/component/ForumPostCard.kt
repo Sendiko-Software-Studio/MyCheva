@@ -2,6 +2,9 @@ package com.mycheva.app.forum.main.presentation.component
 
 import android.os.Build
 import androidx.annotation.RequiresApi
+import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -13,8 +16,11 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.ModeComment
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
+import androidx.compose.material3.VerticalDivider
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -40,17 +46,11 @@ fun ForumPostCard(
     forum: ForumsItem?,
     onNavigate: (String) -> Unit,
 ) {
-    Card(
-        modifier = modifier
-            .shadow(elevation = 4.dp, shape = CardDefaults.shape),
-        colors = CardDefaults.cardColors(
-            containerColor = Neutral50,
-            contentColor = Neutral900
-        ),
+    Surface(
         onClick = { onNavigate(forum?.id.toString()) }
     ) {
         Column(
-            modifier = Modifier.padding(16.dp),
+            modifier = modifier.padding(16.dp),
             verticalArrangement = Arrangement.spacedBy(8.dp)
         ) {
             Row(
