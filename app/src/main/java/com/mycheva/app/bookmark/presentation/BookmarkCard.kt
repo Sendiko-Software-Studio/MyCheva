@@ -24,6 +24,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import com.mycheva.app.core.database.BookmarkEntity
+import com.mycheva.app.core.ui.components.timeAgo
 
 @Composable
 fun BookmarkCard(
@@ -55,12 +56,12 @@ fun BookmarkCard(
                     fontWeight = FontWeight.Bold
                 )
                 Text(
-                    text = bookmark.timeStamp,
+                    text = timeAgo(bookmark.timeStamp),
                     color = Color.Gray
                 )
             }
         }
-        if (bookmark.imageUrl.isNullOrBlank()) {
+        if (bookmark.imageUrl.isBlank()) {
             AsyncImage(
                 model = bookmark.imageUrl,
                 contentDescription = null,
