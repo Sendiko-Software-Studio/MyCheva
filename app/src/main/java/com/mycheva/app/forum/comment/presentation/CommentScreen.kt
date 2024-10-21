@@ -37,6 +37,7 @@ import com.mycheva.app.core.ui.components.TextFieldType
 import com.mycheva.app.core.ui.theme.poppinsFamily
 import com.mycheva.app.forum.comment.presentation.component.CommentCard
 import com.mycheva.app.forum.comment.presentation.component.PostCard
+import com.mycheva.app.forum.main.presentation.ForumUi
 import kotlinx.coroutines.delay
 
 @RequiresApi(Build.VERSION_CODES.O)
@@ -108,7 +109,7 @@ fun CommentScreen(
                                 enter = fadeIn(),
                                 exit = fadeOut()
                             ) {
-                                PostCard(forum = state.post!!)
+                                PostCard(forum = ForumUi.toForumUi(state.post!!))
                             }
                         }
                         item {
@@ -159,7 +160,7 @@ fun CommentScreen(
                         }
                         items(state.comments) {
                             CommentCard(
-                                comment = it,
+                                comment = CommentUi.toCommentUi(it),
                                 modifier = Modifier.padding(horizontal = 16.dp)
                             )
                         }

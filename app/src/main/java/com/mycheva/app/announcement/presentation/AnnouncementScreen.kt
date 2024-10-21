@@ -139,7 +139,7 @@ fun SharedTransitionScope.AnnouncementScreen(
                     }
                     items(state.announcements) { announcement ->
                         AnnouncementCard(
-                            announcement = announcement,
+                            announcement = AnnouncementUi.toAnnouncementUi(announcement),
                             onAddBookMark = {
                                 onEvent(AnnouncementEvent.OnAddBookmark(announcement))
                             },

@@ -25,13 +25,13 @@ import com.mycheva.app.core.ui.components.timeAgo
 import com.mycheva.app.core.ui.theme.Neutral600
 import com.mycheva.app.core.ui.theme.Primary500
 import com.mycheva.app.core.ui.theme.poppinsFamily
-import com.mycheva.app.forum.core.data.ForumsItem
+import com.mycheva.app.forum.main.presentation.ForumUi
 
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun PostCard(
     modifier: Modifier = Modifier,
-    forum: ForumsItem
+    forum: ForumUi
 ) {
     Column(
         modifier = modifier,
@@ -47,18 +47,18 @@ fun PostCard(
                 modifier = Modifier
                     .size(48.dp)
                     .clip(CircleShape),
-                model = forum.user.profileUrl.ifBlank { defaultProfile },
+                model = forum.profileUrl.ifBlank { defaultProfile },
                 contentDescription = "Profile Picture",
                 contentScale = ContentScale.Crop,
             )
             Column {
                 Text(
-                    text = forum.user.name,
+                    text = forum.username,
                     fontFamily = poppinsFamily,
                     fontSize = 18.sp
                 )
                 Text(
-                    text = timeAgo(forum.updatedAt),
+                    text = timeAgo(forum.time),
                     fontFamily = poppinsFamily,
                     fontWeight = FontWeight.Bold,
                     color = Neutral600,

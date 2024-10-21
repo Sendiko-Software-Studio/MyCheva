@@ -5,7 +5,6 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
@@ -28,7 +27,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
-import com.mycheva.app.announcement.data.AnnouncementsItem
+import com.mycheva.app.announcement.presentation.AnnouncementUi
 import com.mycheva.app.core.ui.components.timeAgo
 import com.mycheva.app.core.ui.theme.Neutral50
 import com.mycheva.app.core.ui.theme.Neutral900
@@ -38,7 +37,7 @@ import com.mycheva.app.core.ui.theme.poppinsFamily
 @Composable
 fun AnnouncementCard(
     modifier: Modifier = Modifier,
-    announcement: AnnouncementsItem,
+    announcement: AnnouncementUi,
     onAddBookMark: () -> Unit,
 ) {
     Card(
@@ -58,7 +57,7 @@ fun AnnouncementCard(
                 modifier = Modifier.fillMaxWidth()
             ) {
                 AsyncImage(
-                    model = announcement.user.profileUrl,
+                    model = announcement.profileUrl,
                     modifier = Modifier
                         .size(48.dp)
                         .clip(CircleShape),
@@ -68,27 +67,18 @@ fun AnnouncementCard(
                 Spacer(modifier = Modifier.width(8.dp))
                 Column {
                     Text(
-                        text = announcement.user.name,
+                        text = announcement.username,
                         fontSize = 20.sp,
                         fontWeight = FontWeight.Bold,
                         fontFamily = poppinsFamily
                     )
                     Text(
-                        text = timeAgo(announcement.createdAt),
+                        text = timeAgo(announcement.time),
                         color = Color.Gray,
                         fontFamily = poppinsFamily
                     )
                 }
             }
-            if (announcement.imageUrl.isNullOrBlank()) {
-                AsyncImage(
-                    model = announcement.imageUrl,
-                    contentDescription = null,
-                    modifier = Modifier.fillMaxWidth(),
-                    contentScale = ContentScale.Fit
-                )
-            }
-            Spacer(modifier = Modifier.height(8.dp))
             Text(
                 text = announcement.content,
                 modifier = Modifier.fillMaxWidth(),
