@@ -23,13 +23,13 @@ import coil.compose.AsyncImage
 import com.mycheva.app.core.network.defaultProfile
 import com.mycheva.app.core.ui.components.timeAgo
 import com.mycheva.app.core.ui.theme.poppinsFamily
-import com.mycheva.app.forum.core.data.RepliesItem
+import com.mycheva.app.forum.comment.presentation.CommentUi
 
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun CommentCard(
     modifier: Modifier = Modifier,
-    comment: RepliesItem,
+    comment: CommentUi,
 ) {
     Column(
         modifier = modifier
@@ -46,7 +46,7 @@ fun CommentCard(
                 horizontalArrangement = Arrangement.spacedBy(8.dp)
             ) {
                 AsyncImage(
-                    model = comment.user.profileUrl.ifBlank { defaultProfile },
+                    model = comment.profileUrl.ifBlank { defaultProfile },
                     modifier = Modifier
                         .size(36.dp)
                         .clip(CircleShape),
@@ -54,14 +54,14 @@ fun CommentCard(
                     contentScale = ContentScale.Crop
                 )
                 Text(
-                    text = comment.user.name,
+                    text = comment.username,
                     fontWeight = FontWeight.Bold,
                     fontFamily = poppinsFamily,
                     fontSize = 16.sp
                 )
             }
             Text(
-                text = timeAgo(comment.createdAt),
+                text = timeAgo(comment.time),
                 color = Color.Gray,
                 fontFamily = poppinsFamily,
                 fontSize = 12.sp

@@ -1,10 +1,10 @@
-package com.mycheva.app.bookmark.presentation
+package com.mycheva.app.bookmark.presentation.component
 
+import android.annotation.SuppressLint
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
@@ -23,12 +23,15 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
-import com.mycheva.app.core.database.BookmarkEntity
+import com.mycheva.app.bookmark.presentation.BookmarkUi
+import com.mycheva.app.core.ui.components.timeAgo
+import com.mycheva.app.core.ui.theme.poppinsFamily
 
+@SuppressLint("NewApi")
 @Composable
 fun BookmarkCard(
     modifier: Modifier = Modifier,
-    bookmark: BookmarkEntity,
+    bookmark: BookmarkUi,
     onRemoveBookmark: () -> Unit,
 ) {
     Column(
@@ -50,28 +53,22 @@ fun BookmarkCard(
             Spacer(modifier = Modifier.width(8.dp))
             Column {
                 Text(
-                    text = bookmark.name,
+                    text = bookmark.username,
                     fontSize = 20.sp,
-                    fontWeight = FontWeight.Bold
+                    fontWeight = FontWeight.Bold,
+                    fontFamily = poppinsFamily
                 )
                 Text(
-                    text = bookmark.timeStamp,
-                    color = Color.Gray
+                    text = timeAgo(bookmark.time),
+                    color = Color.Gray,
+                    fontFamily = poppinsFamily
                 )
             }
         }
-        if (bookmark.imageUrl.isNullOrBlank()) {
-            AsyncImage(
-                model = bookmark.imageUrl,
-                contentDescription = null,
-                modifier = Modifier.fillMaxWidth(),
-                contentScale = ContentScale.Fit
-            )
-        }
-        Spacer(modifier = Modifier.height(8.dp))
         Text(
             text = bookmark.content,
             modifier = Modifier.fillMaxWidth(),
+            fontFamily = poppinsFamily
         )
         IconButton(onClick = { onRemoveBookmark() }) {
             Icon(

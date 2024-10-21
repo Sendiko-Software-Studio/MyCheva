@@ -25,21 +25,21 @@ import com.mycheva.app.core.ui.components.timeAgo
 import com.mycheva.app.core.ui.theme.Neutral600
 import com.mycheva.app.core.ui.theme.Primary500
 import com.mycheva.app.core.ui.theme.poppinsFamily
-import com.mycheva.app.forum.core.data.ForumsItem
+import com.mycheva.app.forum.main.presentation.ForumUi
 
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun PostCard(
     modifier: Modifier = Modifier,
-    forum: ForumsItem
+    forum: ForumUi
 ) {
     Column(
-        modifier = modifier
-            .padding(horizontal = 16.dp),
+        modifier = modifier,
         verticalArrangement = Arrangement.spacedBy(8.dp),
     ) {
         Row(
-            modifier = Modifier.fillMaxWidth(),
+            modifier = Modifier.fillMaxWidth()
+                .padding(horizontal = 16.dp),
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.spacedBy(8.dp)
         ) {
@@ -47,18 +47,18 @@ fun PostCard(
                 modifier = Modifier
                     .size(48.dp)
                     .clip(CircleShape),
-                model = forum.user.profileUrl.ifBlank { defaultProfile },
+                model = forum.profileUrl.ifBlank { defaultProfile },
                 contentDescription = "Profile Picture",
                 contentScale = ContentScale.Crop,
             )
             Column {
                 Text(
-                    text = forum.user.name,
+                    text = forum.username,
                     fontFamily = poppinsFamily,
                     fontSize = 18.sp
                 )
                 Text(
-                    text = timeAgo(forum.updatedAt),
+                    text = timeAgo(forum.time),
                     fontFamily = poppinsFamily,
                     fontWeight = FontWeight.Bold,
                     color = Neutral600,
@@ -69,7 +69,8 @@ fun PostCard(
         Text(
             text = forum.content,
             fontFamily = poppinsFamily,
-            modifier = Modifier.fillMaxWidth(),
+            modifier = Modifier.fillMaxWidth()
+                .padding(horizontal = 16.dp),
             fontSize = 16.sp
         )
         HorizontalDivider(color = Primary500, thickness = 2.dp)

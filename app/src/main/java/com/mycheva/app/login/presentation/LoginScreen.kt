@@ -28,6 +28,7 @@ import androidx.compose.ui.text.font.FontWeight.Companion.Bold
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextDecoration
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.mycheva.app.R
@@ -177,4 +178,10 @@ fun LoginScreen(
             }
         }
     )
+}
+
+@Preview
+@Composable
+private fun LoginScreenPrev() {
+    LoginScreen(state = LoginState(), onNavigate = {}, onEvent = {})
 }

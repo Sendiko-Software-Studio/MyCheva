@@ -12,16 +12,12 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.rounded.ArrowBack
-import androidx.compose.material.icons.rounded.CalendarMonth
-import androidx.compose.material.icons.rounded.LocationOn
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.Icon
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -90,16 +86,32 @@ fun DetailScheduleScreen(
                                 modifier = Modifier.fillMaxWidth(),
                                 horizontalArrangement = Arrangement.SpaceBetween
                             ) {
-                                DateTimeSection(
+                                DateSection(
                                     modifier = Modifier.weight(1f),
                                     date = state.eventsItem!!.date.substring(0, 10),
-                                    time = state.eventsItem!!.time
                                 )
                                 Spacer(modifier = Modifier.width(16.dp))
                                 LocationSection(
                                     modifier = Modifier.weight(1f),
                                     type = state.eventsItem!!.type.uppercase(),
-                                    location = state.eventsItem!!.details
+                                )
+                            }
+                        }
+                    }
+                    item {
+                        AnimatedVisibility(
+                            visible = state.eventsItem != null,
+                            enter = fadeIn(),
+                            exit = fadeOut()
+                        ) {
+                            Row(
+                                verticalAlignment = Alignment.Top,
+                                modifier = Modifier.fillMaxWidth(),
+                                horizontalArrangement = Arrangement.SpaceBetween
+                            ) {
+                                TimeSection(
+                                    modifier = Modifier.fillMaxWidth(1/2f),
+                                    time = state.eventsItem!!.time,
                                 )
                             }
                         }
@@ -138,7 +150,11 @@ fun DescriptionSection(
     description: String,
 ) {
     Column {
-        Text(text = "Tentang", fontWeight = FontWeight.Bold)
+        Text(
+            text = "Tentang",
+            fontWeight = FontWeight.Bold,
+            fontFamily = poppinsFamily
+        )
         Text(
             text = description,
             fontSize = 16.sp,
@@ -154,7 +170,11 @@ fun DetailSection(
 ) {
     val uriHandler = LocalUriHandler.current
     Column {
-        Text(text = "Detail lainnya", fontWeight = FontWeight.Bold)
+        Text(
+            text = "Detail lainnya",
+            fontWeight = FontWeight.Bold,
+            fontFamily = poppinsFamily
+        )
         Text(
             text = details,
             fontSize = 16.sp,
@@ -170,7 +190,6 @@ fun DetailSection(
 @Composable
 fun LocationSection(
     type: String,
-    location: String,
     modifier: Modifier = Modifier
 ) {
     Surface(
@@ -178,71 +197,82 @@ fun LocationSection(
         shape = RoundedCornerShape(8.dp),
         color = Primary300
     ) {
-        Row(
-            modifier = Modifier.padding(8.dp),
-            verticalAlignment = Alignment.CenterVertically
+        Column(
+            modifier = Modifier.padding(8.dp)
         ) {
-            Icon(
-                imageVector = Icons.Rounded.LocationOn,
-                contentDescription = "location",
-                modifier = Modifier.size(36.dp),
-                tint = Neutral900
+            Text(
+                text = "Pelaksanaan",
+                fontSize = 14.sp,
+                fontFamily = poppinsFamily,
+                color = Neutral900,
+                fontWeight = FontWeight.SemiBold
             )
-            Spacer(modifier = Modifier.width(8.dp))
-            Column {
-                Text(
-                    text = type,
-                    fontSize = 14.sp,
-                    fontFamily = poppinsFamily,
-                    color = Neutral900
-                )
-                Text(
-                    text = location,
-                    fontSize = 14.sp,
-                    fontFamily = poppinsFamily,
-                    color = Neutral900
-                )
-            }
+            Text(
+                text = type,
+                fontSize = 14.sp,
+                fontFamily = poppinsFamily,
+                color = Neutral900
+            )
         }
     }
 }
 
 @Composable
-fun DateTimeSection(
+fun DateSection(
     modifier: Modifier = Modifier,
     date: String,
-    time: String
 ) {
     Surface(
         modifier = modifier,
         shape = RoundedCornerShape(8.dp),
         color = Primary300
     ) {
-        Row(
-            modifier = Modifier.padding(8.dp),
-            verticalAlignment = Alignment.CenterVertically
+        Column(
+            modifier = Modifier.padding(8.dp)
         ) {
-            Icon(
-                imageVector = Icons.Rounded.CalendarMonth,
-                contentDescription = "location",
-                modifier = Modifier.size(36.dp),
-                tint = Neutral900
+            Text(
+                text = "Hari/Tanggal",
+                fontSize = 14.sp,
+                fontFamily = poppinsFamily,
+                color = Neutral900,
+                fontWeight = FontWeight.SemiBold
             )
-            Spacer(modifier = Modifier.width(8.dp))
-            Column {
-                Text(
-                    text = formatDateString(date),
-                    fontSize = 14.sp,
-                    fontFamily = poppinsFamily,
-                    color = Neutral900
-                )
-                Text(
-                    text = time.substring(0, 5),
-                    fontSize = 14.sp,
-                    fontFamily = poppinsFamily,
-                    color = Neutral900
-                )
-            }
+            Text(
+                text = formatDateString(date),
+                fontSize = 14.sp,
+                fontFamily = poppinsFamily,
+                color = Neutral900
+            )
+        }
+    }
+}
+
+@Composable
+fun TimeSection(
+    modifier: Modifier = Modifier,
+    time: String,
+) {
+    Surface(
+        modifier = modifier,
+        shape = RoundedCornerShape(8.dp),
+        color = Primary300
+    ) {
+        Column(
+            modifier = Modifier.padding(8.dp)
+        ) {
+            Text(
+                text = "Waktu",
+                fontSize = 14.sp,
+                fontFamily = poppinsFamily,
+                color = Neutral900,
+                fontWeight = FontWeight.SemiBold
+            )
+            Text(
+                text = time,
+                fontSize = 14.sp,
+                fontFamily = poppinsFamily,
+                color = Neutral900
+            )
         }
     }
 }

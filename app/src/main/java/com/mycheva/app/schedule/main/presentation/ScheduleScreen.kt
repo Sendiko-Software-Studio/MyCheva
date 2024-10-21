@@ -2,14 +2,23 @@ package com.mycheva.app.schedule.main.presentation
 
 import android.os.Build
 import androidx.annotation.RequiresApi
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.AnimatedVisibilityScope
 import androidx.compose.animation.ExperimentalSharedTransitionApi
 import androidx.compose.animation.SharedTransitionScope
+import androidx.compose.animation.expandHorizontally
+import androidx.compose.animation.expandVertically
+import androidx.compose.animation.shrinkHorizontally
+import androidx.compose.animation.shrinkVertically
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
@@ -30,9 +39,12 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.mycheva.app.R
+import com.mycheva.app.core.ui.components.CardSkeleton
 import com.mycheva.app.core.ui.components.CustomTextField
 import com.mycheva.app.core.ui.components.NotificationBox
 import com.mycheva.app.core.ui.components.TextFieldType
@@ -41,6 +53,7 @@ import com.mycheva.app.core.ui.theme.Neutral50
 import com.mycheva.app.core.ui.theme.Primary500
 import com.mycheva.app.core.ui.theme.poppinsFamily
 import com.mycheva.app.dashboard.presentation.component.MeetingCard
+import com.mycheva.app.schedule.main.presentation.component.CalendarSkeleton
 import kotlinx.coroutines.delay
 
 @RequiresApi(Build.VERSION_CODES.O)
@@ -68,7 +81,7 @@ fun SharedTransitionScope.ScheduleScreen(
 
     NotificationBox(
         message = state.notificationMessage,
-        isLoading = state.isLoading,
+        isLoading = false,
         isErrorNotification = state.isRequestFailed
     ) {
         Scaffold(
@@ -94,7 +107,6 @@ fun SharedTransitionScope.ScheduleScreen(
             content = { paddingValues ->
                 LazyColumn(
                     contentPadding = paddingValues,
-                    verticalArrangement = Arrangement.spacedBy(16.dp),
                     modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection)
                 ) {
                     item {
@@ -116,12 +128,38 @@ fun SharedTransitionScope.ScheduleScreen(
                         )
                     }
                     item {
+                        AnimatedVisibility(!state.isLoading && state.events.isEmpty()) {
+                            Box(
+                                modifier = Modifier.fillMaxSize(),
+                                contentAlignment = Alignment.Center
+                            ) {
+                                Image(
+                                    modifier = Modifier.size(256.dp),
+                                    painter = painterResource(R.drawable.not_found),
+                                    contentDescription = "Konten tidak ditemukan."
+                                )
+                            }
+                        }
+                    }
+                    item {
                         LazyRow(
                             contentPadding = PaddingValues(horizontal = 16.dp),
-                            horizontalArrangement = Arrangement.spacedBy(8.dp)
+                            horizontalArrangement = Arrangement.spacedBy(8.dp),
+                            modifier = Modifier.padding(bottom = 16.dp)
                         ) {
                             val dates = state.events.distinctBy {
                                 it.date
+                            }
+                            item {
+                                (1..5).forEach {
+                                    AnimatedVisibility(
+                                        visible = state.isLoading && state.events.isEmpty(),
+                                        enter = expandHorizontally(),
+                                        exit = shrinkHorizontally()
+                                    ) {
+                                        CalendarSkeleton(modifier = Modifier.padding(end = 16.dp))
+                                    }
+                                }
                             }
                             items(dates) {
                                 Surface(
@@ -150,9 +188,24 @@ fun SharedTransitionScope.ScheduleScreen(
                             }
                         }
                     }
+                    item {
+                        (1..5).forEach {
+                            AnimatedVisibility(
+                                visible = state.isLoading && state.events.isEmpty(),
+                                enter = expandVertically(),
+                                exit = shrinkVertically()
+                            ) {
+                                CardSkeleton(
+                                    modifier = Modifier
+                                        .fillMaxWidth()
+                                        .padding(start = 16.dp, end = 16.dp, bottom = 16.dp)
+                                )
+                            }
+                        }
+                    }
                     items(state.events) { event ->
                         MeetingCard(
-                            modifier = Modifier.padding(horizontal = 16.dp),
+                            modifier = Modifier.padding(start = 16.dp, end = 16.dp, bottom = 16.dp),
                             eventsItem = event,
                             onClick = { eventId ->
                                 onNavigate(eventId)

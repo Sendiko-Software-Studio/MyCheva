@@ -2,7 +2,6 @@ package com.mycheva.app.announcement.presentation
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.mycheva.app.announcement.data.AnnouncementResponse
 import com.mycheva.app.announcement.data.AnnouncementsItem
 import com.mycheva.app.announcement.domain.AnnouncementRepositoryImpl
 import com.mycheva.app.core.database.BookmarkEntity
@@ -14,9 +13,6 @@ import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
 import javax.inject.Inject
 
 @HiltViewModel
@@ -25,18 +21,18 @@ class AnnouncementViewModel @Inject constructor(
 ): ViewModel() {
 
     private val _token = repo.getToken()
-    private val _state = MutableStateFlow(AnnouncementScreenState())
+    private val _state = MutableStateFlow(AnnouncementState())
     val state = combine(_token, _state) { token, state ->
         state.copy(token = token)
-    }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), AnnouncementScreenState())
+    }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), AnnouncementState())
 
-    fun onEvent(event: AnnouncementScreenEvent) {
+    fun onEvent(event: AnnouncementEvent) {
         when(event) {
-            AnnouncementScreenEvent.OnClearState -> clearState()
+            AnnouncementEvent.OnClearState -> clearState()
 
-            is AnnouncementScreenEvent.OnAddBookmark -> addBookmark(event.announcement)
+            is AnnouncementEvent.OnAddBookmark -> addBookmark(event.announcement)
 
-            is AnnouncementScreenEvent.OnLoadAnnouncements -> loadAnnouncements(event.token)
+            is AnnouncementEvent.OnLoadAnnouncements -> loadAnnouncements(event.token)
         }
     }
 
