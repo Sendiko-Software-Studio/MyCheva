@@ -34,12 +34,12 @@ fun PostCard(
     forum: ForumsItem
 ) {
     Column(
-        modifier = modifier
-            .padding(horizontal = 16.dp),
+        modifier = modifier,
         verticalArrangement = Arrangement.spacedBy(8.dp),
     ) {
         Row(
-            modifier = Modifier.fillMaxWidth(),
+            modifier = Modifier.fillMaxWidth()
+                .padding(horizontal = 16.dp),
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.spacedBy(8.dp)
         ) {
@@ -69,7 +69,8 @@ fun PostCard(
         Text(
             text = forum.content,
             fontFamily = poppinsFamily,
-            modifier = Modifier.fillMaxWidth(),
+            modifier = Modifier.fillMaxWidth()
+                .padding(horizontal = 16.dp),
             fontSize = 16.sp
         )
         HorizontalDivider(color = Primary500, thickness = 2.dp)
