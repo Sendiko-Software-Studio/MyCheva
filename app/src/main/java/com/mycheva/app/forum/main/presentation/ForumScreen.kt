@@ -178,7 +178,7 @@ fun SharedTransitionScope.ForumScreen(
                             HorizontalDivider(modifier = Modifier.fillMaxWidth())
                         }
                         ForumPostCard(
-                            forum = post,
+                            forum = ForumUi.toForumUi(post),
                             modifier = Modifier.padding(bottom = 16.dp),
                             onNavigate = {
                                 onNavigate(CommentScreen(forumId = it))
