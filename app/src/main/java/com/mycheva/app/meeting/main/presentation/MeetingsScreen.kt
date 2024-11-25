@@ -52,7 +52,7 @@ import com.mycheva.app.core.ui.components.formatDateString
 import com.mycheva.app.core.ui.theme.Neutral50
 import com.mycheva.app.core.ui.theme.Primary500
 import com.mycheva.app.core.ui.theme.poppinsFamily
-import com.mycheva.app.dashboard.presentation.component.MeetingCard
+import com.mycheva.app.core.ui.components.MeetingCard
 import com.mycheva.app.meeting.main.presentation.component.CalendarSkeleton
 import kotlinx.coroutines.delay
 
@@ -189,7 +189,7 @@ fun SharedTransitionScope.MeetingsScreen(
                         }
                     }
                     item {
-                        (1..5).forEach {
+                        repeat(5) {
                             AnimatedVisibility(
                                 visible = state.isLoading && state.events.isEmpty(),
                                 enter = expandVertically(),
