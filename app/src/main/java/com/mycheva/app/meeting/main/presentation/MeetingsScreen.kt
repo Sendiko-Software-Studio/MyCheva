@@ -1,4 +1,4 @@
-package com.mycheva.app.schedule.main.presentation
+package com.mycheva.app.meeting.main.presentation
 
 import android.os.Build
 import androidx.annotation.RequiresApi
@@ -52,30 +52,30 @@ import com.mycheva.app.core.ui.components.formatDateString
 import com.mycheva.app.core.ui.theme.Neutral50
 import com.mycheva.app.core.ui.theme.Primary500
 import com.mycheva.app.core.ui.theme.poppinsFamily
-import com.mycheva.app.dashboard.presentation.component.MeetingCard
-import com.mycheva.app.schedule.main.presentation.component.CalendarSkeleton
+import com.mycheva.app.core.ui.components.MeetingCard
+import com.mycheva.app.meeting.main.presentation.component.CalendarSkeleton
 import kotlinx.coroutines.delay
 
 @RequiresApi(Build.VERSION_CODES.O)
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalSharedTransitionApi::class)
 @Composable
-fun SharedTransitionScope.ScheduleScreen(
-    state: ScheduleState,
+fun SharedTransitionScope.MeetingsScreen(
+    state: MeetingsState,
     animatedVisibilityScope: AnimatedVisibilityScope,
-    onEvent: (ScheduleEvent) -> Unit,
+    onEvent: (MeetingsAction) -> Unit,
     onNavigate: (eventId: String) -> Unit
 ) {
     val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior()
 
     LaunchedEffect(key1 = state.token) {
         if (state.token.isNotBlank())
-            onEvent(ScheduleEvent.OnLoadSchedule(state.token))
+            onEvent(MeetingsAction.OnLoadSchedule(state.token))
     }
 
     LaunchedEffect(key1 = state.notificationMessage) {
         if (state.notificationMessage.isNotBlank()) {
             delay(2000)
-            onEvent(ScheduleEvent.OnClearState)
+            onEvent(MeetingsAction.OnClearState)
         }
     }
 
@@ -112,8 +112,8 @@ fun SharedTransitionScope.ScheduleScreen(
                     item {
                         CustomTextField(
                             value = state.searchText,
-                            onValueChange = { onEvent(ScheduleEvent.OnSearchTextChanged(it)) },
-                            onClearClick = { onEvent(ScheduleEvent.OnClearFilter) },
+                            onValueChange = { onEvent(MeetingsAction.OnSearchTextChanged(it)) },
+                            onClearClick = { onEvent(MeetingsAction.OnClearFilter) },
                             type = TextFieldType.White,
                             modifier = Modifier
                                 .fillMaxWidth()
@@ -189,7 +189,7 @@ fun SharedTransitionScope.ScheduleScreen(
                         }
                     }
                     item {
-                        (1..5).forEach {
+                        repeat(5) {
                             AnimatedVisibility(
                                 visible = state.isLoading && state.events.isEmpty(),
                                 enter = expandVertically(),

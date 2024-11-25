@@ -21,7 +21,7 @@ import com.mycheva.app.profile.main.data.LogoutResponse
 import com.mycheva.app.reset_password.data.ResetPasswordRequest
 import com.mycheva.app.reset_password.data.ResetPasswordResponse
 import com.mycheva.app.roadmap.data.GetRoadMapResponse
-import com.mycheva.app.schedule.detail.data.GetEventResponse
+import com.mycheva.app.meeting.detail.data.GetMeetingResponse
 import retrofit2.Call
 import retrofit2.http.Body
 import retrofit2.http.GET
@@ -51,7 +51,7 @@ interface ApiServices {
     fun getEvent(
         @Header("Authorization") token: String,
         @Path("id") eventId: String
-    ): Call<GetEventResponse>
+    ): Call<GetMeetingResponse>
 
     @POST("attendance")
     fun postAttendance(

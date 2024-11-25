@@ -1,11 +1,11 @@
-package com.mycheva.app.schedule.main.presentation
+package com.mycheva.app.meeting.main.presentation
 
 import android.os.Build
 import androidx.annotation.RequiresApi
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.mycheva.app.core.data.GetEventsResponse
-import com.mycheva.app.schedule.main.domain.ScheduleScreenRepository
+import com.mycheva.app.meeting.main.domain.MeetingsRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
@@ -18,22 +18,22 @@ import retrofit2.Response
 import javax.inject.Inject
 
 @HiltViewModel
-class ScheduleViewModel @Inject constructor(
-    private val repository: ScheduleScreenRepository
+class MeetingsViewModel @Inject constructor(
+    private val repository: MeetingsRepository
 ): ViewModel() {
 
     private val _token = repository.getToken()
-    private val _state = MutableStateFlow(ScheduleState())
+    private val _state = MutableStateFlow(MeetingsState())
     val state = combine(_token, _state) { token, state ->
         state.copy(token = token)
-    }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), ScheduleState())
+    }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), MeetingsState())
 
-    fun onEvent(event: ScheduleEvent) {
-        when (event) {
-            ScheduleEvent.OnClearState -> clearState()
-            is ScheduleEvent.OnLoadSchedule -> loadSchedule(event.token)
-            is ScheduleEvent.OnSearchTextChanged -> searchMeetings(event.value)
-            ScheduleEvent.OnClearFilter -> loadSchedule(state.value.token)
+    fun onEvent(action: MeetingsAction) {
+        when (action) {
+            MeetingsAction.OnClearState -> clearState()
+            is MeetingsAction.OnLoadSchedule -> loadSchedule(action.token)
+            is MeetingsAction.OnSearchTextChanged -> searchMeetings(action.value)
+            MeetingsAction.OnClearFilter -> loadSchedule(state.value.token)
         }
     }
 
@@ -71,7 +71,6 @@ class ScheduleViewModel @Inject constructor(
                     _state.update { it.copy(isLoading = false) }
                     when (response.code()) {
                        200 -> {
-
                             val events = response.body()!!.events
                            _state.update {
                                it.copy(

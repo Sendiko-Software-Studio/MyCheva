@@ -1,8 +1,8 @@
-package com.mycheva.app.schedule.main.presentation
+package com.mycheva.app.meeting.main.presentation
 
 import com.mycheva.app.core.data.EventsItem
 
-data class ScheduleState(
+data class MeetingsState(
     val events: List<EventsItem> = emptyList<EventsItem>(),
     val isLoading: Boolean = false,
     val notificationMessage: String = "",

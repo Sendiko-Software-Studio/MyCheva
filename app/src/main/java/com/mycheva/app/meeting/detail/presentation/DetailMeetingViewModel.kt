@@ -1,9 +1,9 @@
-package com.mycheva.app.schedule.detail.presentation
+package com.mycheva.app.meeting.detail.presentation
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.mycheva.app.schedule.detail.data.GetEventResponse
-import com.mycheva.app.schedule.detail.domain.DetailScheduleRepository
+import com.mycheva.app.meeting.detail.data.GetMeetingResponse
+import com.mycheva.app.meeting.detail.domain.DetailMeetingRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
@@ -16,20 +16,20 @@ import retrofit2.Response
 import javax.inject.Inject
 
 @HiltViewModel
-class DetailScheduleViewModel @Inject constructor(
-    private val repository: DetailScheduleRepository
+class DetailMeetingViewModel @Inject constructor(
+    private val repository: DetailMeetingRepository
 ) : ViewModel() {
 
     private val _token = repository.getToken()
-    private val _state = MutableStateFlow(DetailScheduleState())
+    private val _state = MutableStateFlow(DetailMeetingState())
     val state = combine(_token, _state) { token, state ->
         state.copy(token = token)
-    }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), DetailScheduleState())
+    }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), DetailMeetingState())
 
-    fun onEvent(event: DetailScheduleEvent) {
+    fun onEvent(event: DetailMeetingAction) {
         when (event) {
-            DetailScheduleEvent.OnClearState -> clearState()
-            is DetailScheduleEvent.OnLoadSchedule -> loadSchedule(event.token, event.eventId)
+            DetailMeetingAction.OnClearState -> clearState()
+            is DetailMeetingAction.OnLoadSchedule -> loadSchedule(event.token, event.eventId)
         }
     }
 
@@ -45,10 +45,10 @@ class DetailScheduleViewModel @Inject constructor(
         _state.update { it.copy(isLoading = true) }
         val request = repository.getEvent(token = "Bearer $token", eventId = eventId)
         request.enqueue(
-            object : Callback<GetEventResponse> {
+            object : Callback<GetMeetingResponse> {
                 override fun onResponse(
-                    call: Call<GetEventResponse>,
-                    response: Response<GetEventResponse>
+                    call: Call<GetMeetingResponse>,
+                    response: Response<GetMeetingResponse>
                 ) {
                     _state.update { it.copy(isLoading = false) }
                     when (response.code()) {
@@ -65,7 +65,7 @@ class DetailScheduleViewModel @Inject constructor(
                     }
                 }
 
-                override fun onFailure(call: Call<GetEventResponse>, throwable: Throwable) {
+                override fun onFailure(call: Call<GetMeetingResponse>, throwable: Throwable) {
                     _state.update { it.copy(
                         isRequestFailed = true,
                         notificationMessage = "Server error."

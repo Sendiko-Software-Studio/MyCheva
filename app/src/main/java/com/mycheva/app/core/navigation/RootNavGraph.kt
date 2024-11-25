@@ -45,10 +45,10 @@ import com.mycheva.app.reset_password.presentation.ResetPasswordScreen
 import com.mycheva.app.reset_password.presentation.ResetPasswordViewModel
 import com.mycheva.app.roadmap.presentation.RoadMapScreen
 import com.mycheva.app.roadmap.presentation.RoadMapViewModel
-import com.mycheva.app.schedule.detail.presentation.DetailScheduleScreen
-import com.mycheva.app.schedule.detail.presentation.DetailScheduleViewModel
-import com.mycheva.app.schedule.main.presentation.ScheduleScreen
-import com.mycheva.app.schedule.main.presentation.ScheduleViewModel
+import com.mycheva.app.meeting.detail.presentation.DetailMeetingScreen
+import com.mycheva.app.meeting.detail.presentation.DetailMeetingViewModel
+import com.mycheva.app.meeting.main.presentation.MeetingsScreen
+import com.mycheva.app.meeting.main.presentation.MeetingsViewModel
 import com.mycheva.app.splashscreen.presentation.SplashScreen
 import com.mycheva.app.splashscreen.presentation.SplashScreenViewModel
 
@@ -153,9 +153,9 @@ fun RootNavGraph(
                     )
                 }
                 composable<ScheduleScreen> {
-                    val viewModel = hiltViewModel<ScheduleViewModel>()
+                    val viewModel = hiltViewModel<MeetingsViewModel>()
                     val state by viewModel.state.collectAsStateWithLifecycle()
-                    ScheduleScreen(
+                    MeetingsScreen(
                         state = state,
                         onEvent = viewModel::onEvent,
                         animatedVisibilityScope = this,
@@ -168,9 +168,9 @@ fun RootNavGraph(
                 }
                 composable<DetailSchedule> {
                     val args = it.toRoute<DetailSchedule>()
-                    val viewModel = hiltViewModel<DetailScheduleViewModel>()
+                    val viewModel = hiltViewModel<DetailMeetingViewModel>()
                     val state by viewModel.state.collectAsStateWithLifecycle()
-                    DetailScheduleScreen(
+                    DetailMeetingScreen(
                         eventId = args.eventId,
                         state = state,
                         onEvent = viewModel::onEvent,
