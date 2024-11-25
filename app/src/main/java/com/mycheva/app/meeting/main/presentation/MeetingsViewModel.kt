@@ -28,11 +28,11 @@ class MeetingsViewModel @Inject constructor(
         state.copy(token = token)
     }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), MeetingsState())
 
-    fun onEvent(event: MeetingsAction) {
-        when (event) {
+    fun onEvent(action: MeetingsAction) {
+        when (action) {
             MeetingsAction.OnClearState -> clearState()
-            is MeetingsAction.OnLoadSchedule -> loadSchedule(event.token)
-            is MeetingsAction.OnSearchTextChanged -> searchMeetings(event.value)
+            is MeetingsAction.OnLoadSchedule -> loadSchedule(action.token)
+            is MeetingsAction.OnSearchTextChanged -> searchMeetings(action.value)
             MeetingsAction.OnClearFilter -> loadSchedule(state.value.token)
         }
     }
@@ -71,7 +71,6 @@ class MeetingsViewModel @Inject constructor(
                     _state.update { it.copy(isLoading = false) }
                     when (response.code()) {
                        200 -> {
-
                             val events = response.body()!!.events
                            _state.update {
                                it.copy(
