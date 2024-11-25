@@ -1,4 +1,4 @@
-package com.mycheva.app.dashboard.presentation.component
+package com.mycheva.app.core.ui.components
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -20,7 +20,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.mycheva.app.core.ui.components.formatDateString
 import com.mycheva.app.core.ui.theme.Info
 import com.mycheva.app.core.ui.theme.Neutral50
 import com.mycheva.app.core.ui.theme.Neutral900
@@ -55,7 +54,7 @@ fun MeetingCard(
                     text = eventsItem.name,
                     fontFamily = poppinsFamily,
                     fontSize = 18.sp,
-//                    modifier = Modifier.fillMaxWidth()
+                    modifier = Modifier.weight(1f)
                 )
                 Surface(
                     color = Info,
@@ -109,7 +108,7 @@ private fun MeetingCardPrev() {
     val data = EventsItem(
         date = "2005-07-26",
         createdAt = "",
-        name = "Arrival of Destiny Takers",
+        name = "Pertemuan 2: Introduction to Android Development",
         details = "Indonesia",
         id = 0,
         time = "00.00",
