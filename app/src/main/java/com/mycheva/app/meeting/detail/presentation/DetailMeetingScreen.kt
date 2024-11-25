@@ -1,4 +1,4 @@
-package com.mycheva.app.schedule.detail.presentation
+package com.mycheva.app.meeting.detail.presentation
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.ExperimentalSharedTransitionApi
@@ -39,16 +39,16 @@ import com.mycheva.app.core.ui.theme.poppinsFamily
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalSharedTransitionApi::class)
 @Composable
-fun DetailScheduleScreen(
-    state: DetailScheduleState,
+fun DetailMeetingScreen(
+    state: DetailMeetingState,
     eventId: String,
-    onEvent: (DetailScheduleEvent) -> Unit,
+    onEvent: (DetailMeetingAction) -> Unit,
     onNavigateBack: () -> Unit
 ) {
 
     LaunchedEffect(key1 = eventId, key2 = state.token) {
         if (eventId.isNotBlank() && state.token.isNotBlank()) {
-            onEvent(DetailScheduleEvent.OnLoadSchedule(state.token, eventId))
+            onEvent(DetailMeetingAction.OnLoadSchedule(state.token, eventId))
         }
     }
 
@@ -280,8 +280,8 @@ fun TimeSection(
 @Preview
 @Composable
 private fun DetailScheduleScreenPrev() {
-    DetailScheduleScreen(
-        state = DetailScheduleState(),
+    DetailMeetingScreen(
+        state = DetailMeetingState(),
         eventId = "0",
         onEvent = {}
     ) {

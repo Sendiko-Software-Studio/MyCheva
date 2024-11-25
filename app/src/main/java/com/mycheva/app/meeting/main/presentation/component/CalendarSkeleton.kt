@@ -1,4 +1,4 @@
-package com.mycheva.app.schedule.main.presentation.component
+package com.mycheva.app.meeting.main.presentation.component
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box

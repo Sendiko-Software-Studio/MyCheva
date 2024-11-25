@@ -1,9 +1,9 @@
-package com.mycheva.app.schedule.detail.data
+package com.mycheva.app.meeting.detail.data
 
 import com.google.gson.annotations.SerializedName
 import com.mycheva.app.core.data.EventsItem
 
-data class GetEventResponse(
+data class GetMeetingResponse(
 
 	@field:SerializedName("message")
 	val message: String,

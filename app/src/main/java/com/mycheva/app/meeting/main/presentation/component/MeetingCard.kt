@@ -1,4 +1,4 @@
-package com.mycheva.app.schedule.main.presentation.component
+package com.mycheva.app.meeting.main.presentation.component
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -22,7 +22,7 @@ import com.mycheva.app.core.ui.theme.poppinsFamily
 import com.mycheva.app.core.data.EventsItem
 
 @Composable
-fun EventCard(
+fun MeetingCard(
     modifier: Modifier = Modifier,
     onClick: () -> Unit,
     eventsItem: EventsItem

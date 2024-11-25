@@ -1,11 +1,11 @@
-package com.mycheva.app.schedule.main.domain
+package com.mycheva.app.meeting.main.domain
 
 import com.mycheva.app.core.network.ApiServices
 import com.mycheva.app.core.preferences.AppPreferences
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
-class ScheduleScreenRepository @Inject constructor(
+class MeetingsRepository @Inject constructor(
     private val apiService: ApiServices,
     private val appPreferences: AppPreferences
 ) {
