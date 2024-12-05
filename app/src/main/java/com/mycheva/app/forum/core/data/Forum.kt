@@ -3,7 +3,7 @@ package com.mycheva.app.forum.core.data
 import com.google.gson.annotations.SerializedName
 import com.mycheva.app.forum.main.data.User
 
-data class ForumsItem(
+data class Forum(
 
     @field:SerializedName("createdAt")
     val createdAt: String,
@@ -18,7 +18,7 @@ data class ForumsItem(
     val user: User,
 
     @field:SerializedName("Replies")
-    val replies: List<RepliesItem>,
+    val replies: List<Replies>,
 
     @field:SerializedName("content")
     val content: String,
