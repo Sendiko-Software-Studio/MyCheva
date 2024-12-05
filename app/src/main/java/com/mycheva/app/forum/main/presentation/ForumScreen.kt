@@ -145,7 +145,7 @@ fun SharedTransitionScope.ForumScreen(
                         )
                     }
                     item {
-                        AnimatedVisibility(!state.isLoading && state.posts.isEmpty()) {
+                        AnimatedVisibility(!state.isLoading && state.forums.isEmpty()) {
                             Box(
                                 modifier = Modifier.fillMaxSize(),
                                 contentAlignment = Alignment.Center
@@ -161,7 +161,7 @@ fun SharedTransitionScope.ForumScreen(
                     item {
                         (1..5).forEach {
                             AnimatedVisibility(
-                                visible = state.isLoading && state.posts.isEmpty(),
+                                visible = state.isLoading && state.forums.isEmpty(),
                                 enter = expandVertically(),
                                 exit = shrinkVertically()
                             ) {
@@ -173,8 +173,8 @@ fun SharedTransitionScope.ForumScreen(
                             }
                         }
                     }
-                    items(state.posts) { post ->
-                        if (state.posts.first() != post) {
+                    items(state.forums) { post ->
+                        if (state.forums.first() != post) {
                             HorizontalDivider(modifier = Modifier.fillMaxWidth())
                         }
                         ForumPostCard(
