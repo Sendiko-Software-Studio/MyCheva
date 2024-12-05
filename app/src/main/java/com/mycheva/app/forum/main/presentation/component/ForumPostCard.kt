@@ -52,7 +52,7 @@ fun ForumPostCard(
                     modifier = Modifier
                         .size(48.dp)
                         .clip(CircleShape),
-                    model = forum.profileUrl.ifBlank { defaultProfile },
+                    model = forum.profileUrl?.ifBlank { defaultProfile },
                     contentDescription = "Profile Picture",
                     contentScale = ContentScale.Crop,
                 )
