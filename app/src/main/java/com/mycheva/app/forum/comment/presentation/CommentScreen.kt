@@ -81,6 +81,7 @@ fun CommentScreen(
                     title = {
                         Text(text = "Forum", fontFamily = poppinsFamily)
                     },
+                    scrollBehavior = scrollBehavior,
                     navigationIcon = {
                         IconButton(onClick = onNavigateBack) {
                             Icon(
@@ -161,7 +162,7 @@ fun CommentScreen(
                         items(state.comments) {
                             CommentCard(
                                 comment = CommentUi.toCommentUi(it),
-                                modifier = Modifier.padding(horizontal = 16.dp)
+                                modifier = Modifier.padding(8.dp)
                             )
                         }
                     }

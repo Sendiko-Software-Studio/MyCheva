@@ -1,11 +1,11 @@
 package com.mycheva.app.forum.comment.presentation
 
-import com.mycheva.app.forum.core.data.ForumsItem
-import com.mycheva.app.forum.core.data.RepliesItem
+import com.mycheva.app.forum.core.data.Forum
+import com.mycheva.app.forum.core.data.Replies
 
 data class CommentScreenState(
-    val comments: List<RepliesItem> = emptyList(),
-    val post: ForumsItem? = null,
+    val comments: List<Replies> = emptyList(),
+    val post: Forum? = null,
     val isError: Boolean = false,
     val notificationMessage: String = "",
     val isLoading: Boolean = false,
