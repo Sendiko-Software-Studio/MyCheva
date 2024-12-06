@@ -38,7 +38,9 @@ class RoadMapViewModel @Inject constructor(
                 .onSuccess { result ->
                     _state.update {
                         it.copy(
-                            roadMaps = result.roadmaps,
+                            roadMaps = result.roadmaps.filter { roadmaps ->
+                                roadmaps.divisionId.toString() == divisionId
+                            },
                             isLoading = false
                         )
                     }
