@@ -39,16 +39,16 @@ import com.mycheva.app.forum.main.presentation.ForumScreen
 import com.mycheva.app.forum.main.presentation.ForumViewModel
 import com.mycheva.app.login.presentation.LoginScreen
 import com.mycheva.app.login.presentation.LoginViewModel
+import com.mycheva.app.meeting.detail.presentation.DetailMeetingScreen
+import com.mycheva.app.meeting.detail.presentation.DetailMeetingViewModel
+import com.mycheva.app.meeting.main.presentation.MeetingsScreen
+import com.mycheva.app.meeting.main.presentation.MeetingsViewModel
 import com.mycheva.app.profile.main.presentation.ProfileScreen
 import com.mycheva.app.profile.main.presentation.ProfileViewModel
 import com.mycheva.app.reset_password.presentation.ResetPasswordScreen
 import com.mycheva.app.reset_password.presentation.ResetPasswordViewModel
 import com.mycheva.app.roadmap.presentation.RoadMapScreen
 import com.mycheva.app.roadmap.presentation.RoadMapViewModel
-import com.mycheva.app.meeting.detail.presentation.DetailMeetingScreen
-import com.mycheva.app.meeting.detail.presentation.DetailMeetingViewModel
-import com.mycheva.app.meeting.main.presentation.MeetingsScreen
-import com.mycheva.app.meeting.main.presentation.MeetingsViewModel
 import com.mycheva.app.splashscreen.presentation.SplashScreen
 import com.mycheva.app.splashscreen.presentation.SplashScreenViewModel
 
@@ -261,9 +261,11 @@ fun RootNavGraph(
                     )
                 }
                 composable<RoadmapScreen> {
+                    val args = it.toRoute<RoadmapScreen>()
                     val viewModel = hiltViewModel<RoadMapViewModel>()
                     val state by viewModel.state.collectAsStateWithLifecycle()
                     RoadMapScreen(
+                        divisionId = args.divisionId,
                         state = state,
                         onEvent = viewModel::onEvent,
                         onNavigateBack = {
