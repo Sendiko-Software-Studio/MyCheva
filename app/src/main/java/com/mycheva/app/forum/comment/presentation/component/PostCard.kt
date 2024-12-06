@@ -26,6 +26,7 @@ import com.mycheva.app.core.ui.theme.Neutral600
 import com.mycheva.app.core.ui.theme.Primary500
 import com.mycheva.app.core.ui.theme.poppinsFamily
 import com.mycheva.app.forum.main.presentation.ForumUi
+import com.mycheva.app.forum.main.presentation.component.RoleChip
 
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
@@ -52,11 +53,17 @@ fun PostCard(
                 contentScale = ContentScale.Crop,
             )
             Column {
-                Text(
-                    text = forum.username,
-                    fontFamily = poppinsFamily,
-                    fontSize = 18.sp
-                )
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.spacedBy(8.dp)
+                ) {
+                    Text(
+                        text = forum.username,
+                        fontFamily = poppinsFamily,
+                        fontSize = 18.sp
+                    )
+                    RoleChip(role = forum.role)
+                }
                 Text(
                     text = timeAgo(forum.time),
                     fontFamily = poppinsFamily,

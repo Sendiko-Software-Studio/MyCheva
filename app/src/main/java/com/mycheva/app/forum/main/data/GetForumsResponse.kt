@@ -15,22 +15,3 @@ data class GetForumsResponse(
 	val status: Int
 )
 
-data class User(
-
-	@field:SerializedName("profileUrl")
-	val profileUrl: String,
-
-	@field:SerializedName("password")
-	val password: String,
-
-	@field:SerializedName("roleId")
-	val roleId: Int,
-
-	@field:SerializedName("name")
-	val name: String,
-
-	@field:SerializedName("id")
-	val id: Int
-)
-
-

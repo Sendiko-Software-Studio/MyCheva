@@ -1,7 +1,6 @@
 package com.mycheva.app.forum.core.data
 
 import com.google.gson.annotations.SerializedName
-import com.mycheva.app.forum.main.data.User
 
 data class Replies(
 

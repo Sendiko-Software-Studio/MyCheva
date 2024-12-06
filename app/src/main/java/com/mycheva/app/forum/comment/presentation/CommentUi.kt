@@ -8,6 +8,7 @@ data class CommentUi(
     val username: String,
     val time: String,
     val content: String,
+    val role: String
 ) {
     companion object {
         fun toCommentUi(replies: Replies): CommentUi {
@@ -16,7 +17,8 @@ data class CommentUi(
                 profileUrl = if (replies.user.profileUrl.isNullOrBlank()) " " else replies.user.profileUrl,
                 username = replies.user.name,
                 time = replies.createdAt,
-                content = replies.content
+                content = replies.content,
+                role = replies.user.role.name
             )
         }
     }

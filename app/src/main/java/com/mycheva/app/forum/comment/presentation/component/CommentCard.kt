@@ -24,6 +24,7 @@ import com.mycheva.app.core.network.defaultProfile
 import com.mycheva.app.core.ui.components.timeAgo
 import com.mycheva.app.core.ui.theme.poppinsFamily
 import com.mycheva.app.forum.comment.presentation.CommentUi
+import com.mycheva.app.forum.main.presentation.component.RoleChip
 
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
@@ -53,12 +54,18 @@ fun CommentCard(
                     contentDescription = null,
                     contentScale = ContentScale.Crop
                 )
-                Text(
-                    text = comment.username,
-                    fontWeight = FontWeight.Bold,
-                    fontFamily = poppinsFamily,
-                    fontSize = 16.sp
-                )
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.spacedBy(8.dp)
+                ) {
+                    Text(
+                        text = comment.username,
+                        fontWeight = FontWeight.Bold,
+                        fontFamily = poppinsFamily,
+                        fontSize = 16.sp
+                    )
+                    RoleChip(role = comment.role)
+                }
             }
             Text(
                 text = timeAgo(comment.time),

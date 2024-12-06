@@ -16,6 +16,6 @@ data class User(
     @field:SerializedName("id")
     val id: Int,
 
-    @field:SerializedName("role")
+    @field:SerializedName("Role")
     val role: Role
 )
