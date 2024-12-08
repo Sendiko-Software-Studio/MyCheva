@@ -3,22 +3,20 @@ package com.mycheva.app.attendance.presentation
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.mycheva.app.attendance.data.AttendanceRequest
-import com.mycheva.app.attendance.data.AttendanceResponse
-import com.mycheva.app.attendance.domain.AttendanceRepository
+import com.mycheva.app.attendance.domain.AttendanceRepositoryImpl
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class AttendanceScreenViewModel @Inject constructor(
-    private val repository: AttendanceRepository
+    private val repository: AttendanceRepositoryImpl
 ): ViewModel() {
 
     private val _token = repository.getToken()
@@ -48,52 +46,27 @@ class AttendanceScreenViewModel @Inject constructor(
         }
     }
 
-    private fun postAttendance(token: String, eventId: String, userId: String) {
+    private fun postAttendance(token: String, eventId: String, userId: String) = viewModelScope.launch(Dispatchers.IO) {
         _state.update { it.copy(isLoading = true) }
         val data = AttendanceRequest(
             eventId = eventId,
             userId = userId,
             status = "present"
         )
-        val request = repository.postAttendance(
+        repository.postAttendance(
             token = "Bearer $token",
             request = data
         )
-        request.enqueue(
-            object : Callback<AttendanceResponse> {
-                override fun onResponse(
-                    call: Call<AttendanceResponse>,
-                    response: Response<AttendanceResponse>
-                ) {
-                    _state.update { it.copy(isLoading = false) }
-                    when (response.code()) {
-                        201 -> _state.update {
-                            it.copy(
-                                notificationMessage = response.body()!!.message,
-                                isRequestSuccess = true
-                            )
-                        }
-
-                        else -> _state.update {
-                            it.copy(
-                                notificationMessage = "Server error.",
-                                isRequestSuccess = false
-                            )
-                        }
-                    }
+            .onSuccess {
+                _state.update {
+                    it.copy(isLoading = false, notificationMessage = "Attendance successfully recorded.", isRequestSuccess = true)
                 }
-
-                override fun onFailure(call: Call<AttendanceResponse>, throwable: Throwable) {
-                    _state.update {
-                        it.copy(
-                            notificationMessage = "Server error.",
-                            isRequestSuccess = false
-                        )
-                    }
-                }
-
             }
-        )
+            .onFailure {
+                _state.update {
+                    it.copy(isLoading = false, notificationMessage = "Failed to record attendance.", isRequestFailed = true)
+                }
+            }
     }
 
 }
