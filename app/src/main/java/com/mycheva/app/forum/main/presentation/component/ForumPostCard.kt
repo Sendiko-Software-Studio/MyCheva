@@ -57,11 +57,17 @@ fun ForumPostCard(
                     contentScale = ContentScale.Crop,
                 )
                 Column {
-                    Text(
-                        text = forum.username,
-                        fontFamily = poppinsFamily,
-                        fontSize = 16.sp
-                    )
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.spacedBy(8.dp)
+                    ) {
+                        Text(
+                            text = forum.username,
+                            fontFamily = poppinsFamily,
+                            fontSize = 18.sp
+                        )
+                        RoleChip(role = forum.role)
+                    }
                     Text(
                         text = timeAgo(forum.time),
                         fontFamily = poppinsFamily,

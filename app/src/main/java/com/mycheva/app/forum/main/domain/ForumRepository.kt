@@ -1,19 +1,12 @@
 package com.mycheva.app.forum.main.domain
 
-import com.mycheva.app.core.network.ApiServices
-import com.mycheva.app.core.preferences.AppPreferences
+import com.mycheva.app.forum.core.data.Forum
 import kotlinx.coroutines.flow.Flow
-import javax.inject.Inject
 
-class ForumRepository @Inject constructor(
-    private val apiServices: ApiServices,
-    private val appPreferences: AppPreferences
-) {
+interface ForumRepository {
 
-    fun getToken(): Flow<String> {
-        return appPreferences.getToken()
-    }
+    fun getToken(): Flow<String>
 
-    fun getForums(token: String) = apiServices.getForums(token)
+    suspend fun getForums(token: String): Result<List<Forum>>
 
 }

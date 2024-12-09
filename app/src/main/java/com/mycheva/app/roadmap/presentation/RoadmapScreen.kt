@@ -47,13 +47,14 @@ fun SharedTransitionScope.RoadMapScreen(
     state: RoadMapState,
     onEvent: (RoadMapEvent) -> Unit,
     animationVisibility: AnimatedVisibilityScope,
-    onNavigateBack: () -> Unit
+    onNavigateBack: () -> Unit,
+    divisionId: String
 ) {
     val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior()
 
-    LaunchedEffect(key1 = state.token) {
-        if (state.token.isNotBlank())
-            onEvent(RoadMapEvent.OnLoadData(token = state.token, divisionId = ""))
+    LaunchedEffect(key1 = state.token, key2 = divisionId) {
+        if (state.token.isNotBlank() && divisionId.isNotBlank())
+            onEvent(RoadMapEvent.OnLoadData(token = state.token, divisionId = divisionId))
     }
 
     LaunchedEffect(key1 = state.notificationMessage) {

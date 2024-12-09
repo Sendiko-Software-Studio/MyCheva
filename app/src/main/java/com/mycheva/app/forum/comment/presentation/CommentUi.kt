@@ -1,6 +1,6 @@
 package com.mycheva.app.forum.comment.presentation
 
-import com.mycheva.app.forum.core.data.RepliesItem
+import com.mycheva.app.forum.core.data.Replies
 
 data class CommentUi(
     val id: String,
@@ -8,15 +8,17 @@ data class CommentUi(
     val username: String,
     val time: String,
     val content: String,
+    val role: String
 ) {
     companion object {
-        fun toCommentUi(repliesItem: RepliesItem): CommentUi {
+        fun toCommentUi(replies: Replies): CommentUi {
             return CommentUi(
-                id = repliesItem.id.toString(),
-                profileUrl = repliesItem.user.profileUrl,
-                username = repliesItem.user.name,
-                time = repliesItem.createdAt,
-                content = repliesItem.content
+                id = replies.id.toString(),
+                profileUrl = if (replies.user.profileUrl.isNullOrBlank()) " " else replies.user.profileUrl,
+                username = replies.user.name,
+                time = replies.createdAt,
+                content = replies.content,
+                role = replies.user.role.name
             )
         }
     }

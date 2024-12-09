@@ -305,7 +305,7 @@ fun SharedTransitionScope.DashboardScreen(
                                     icon = Icons.Rounded.Map,
                                     label = "Roadmap",
                                     enabled = !state.isLoading,
-                                    onClick = { onNavigate(RoadmapScreen("0")) }
+                                    onClick = { onNavigate(RoadmapScreen(state.divisionId)) }
                                 )
                             }
                             Spacer(modifier = Modifier.height(8.dp))
