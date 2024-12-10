@@ -47,7 +47,11 @@ class AttendanceScreenViewModel @Inject constructor(
     }
 
     private fun postAttendance(token: String, eventId: String, userId: String) = viewModelScope.launch(Dispatchers.IO) {
-        _state.update { it.copy(isLoading = true) }
+        if (state.value.isScanning) {
+            _state.update { it.copy(notificationMessage = "Attendance successfully recorded.") }
+            return@launch
+        }
+        _state.update { it.copy(isLoading = true, isScanning = true) }
         val data = AttendanceRequest(
             eventId = eventId,
             userId = userId,

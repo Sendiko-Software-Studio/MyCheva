@@ -8,4 +8,5 @@ data class AttendanceScreenState(
     val eventId: String = "",
     val token: String = "",
     val isRequestSuccess: Boolean = false,
+    val isScanning: Boolean = false
 )
