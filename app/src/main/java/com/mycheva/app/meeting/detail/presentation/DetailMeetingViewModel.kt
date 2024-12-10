@@ -2,17 +2,15 @@ package com.mycheva.app.meeting.detail.presentation
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.mycheva.app.meeting.detail.data.GetMeetingResponse
 import com.mycheva.app.meeting.detail.domain.DetailMeetingRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
@@ -34,46 +32,31 @@ class DetailMeetingViewModel @Inject constructor(
     }
 
     private fun clearState() {
-        _state.update { it.copy(
-            notificationMessage = "",
-            isLoading = false,
-            isRequestFailed = false
-        ) }
+        _state.update {
+            it.copy(
+                notificationMessage = "",
+                isLoading = false,
+                isRequestFailed = false
+            )
+        }
     }
 
-    private fun loadSchedule(token: String, eventId: String) {
-        _state.update { it.copy(isLoading = true) }
-        val request = repository.getEvent(token = "Bearer $token", eventId = eventId)
-        request.enqueue(
-            object : Callback<GetMeetingResponse> {
-                override fun onResponse(
-                    call: Call<GetMeetingResponse>,
-                    response: Response<GetMeetingResponse>
-                ) {
-                    _state.update { it.copy(isLoading = false) }
-                    when (response.code()) {
-                        200 -> {
-                            _state.update { it.copy(
-                                eventsItem = response.body()!!.event
-                            ) }
-                        }
-
-                        else -> _state.update { it.copy(
+    private fun loadSchedule(token: String, eventId: String) =
+        viewModelScope.launch(Dispatchers.IO) {
+            _state.update { it.copy(isLoading = true) }
+            repository.getEvent(token = "Bearer $token", eventId = eventId)
+                .onSuccess { result ->
+                    _state.update { it.copy(eventsItem = result.event, isLoading = false) }
+                }
+                .onFailure { error ->
+                    _state.update {
+                        it.copy(
+                            isLoading = false,
                             isRequestFailed = true,
-                            notificationMessage = "Server error."
-                        ) }
+                            notificationMessage = error.message.toString()
+                        )
                     }
                 }
-
-                override fun onFailure(call: Call<GetMeetingResponse>, throwable: Throwable) {
-                    _state.update { it.copy(
-                        isRequestFailed = true,
-                        notificationMessage = "Server error."
-                    ) }
-                }
-
-            }
-        )
-    }
+        }
 
 }

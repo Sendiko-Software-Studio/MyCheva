@@ -2,19 +2,16 @@ package com.mycheva.app.forum.comment.presentation
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.mycheva.app.forum.comment.data.GetForumResponse
 import com.mycheva.app.forum.comment.data.PostReplyRequest
-import com.mycheva.app.forum.comment.data.PostReplyResponse
 import com.mycheva.app.forum.comment.domain.CommentRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
@@ -61,93 +58,45 @@ class CommentViewModel @Inject constructor(
         }
     }
 
-    private fun postReply(token: String, userId: String, forumId: String) {
-        _state.update { it.copy(isLoading = true) }
-        val data = PostReplyRequest(
-            userId = userId.toInt(),
-            forumId = forumId.toInt(),
-            content = state.value.commentText
-        )
-        val request = repository.postReply(token = "Bearer $token", request = data)
-        request.enqueue(
-            object : Callback<PostReplyResponse> {
-                override fun onResponse(
-                    call: Call<PostReplyResponse>,
-                    response: Response<PostReplyResponse>
-                ) {
-                    _state.update { it.copy(isLoading = false) }
-                    when (response.code()) {
-                        201 -> _state.update {
-                            it.copy(
-                                isCommentPosted = true,
-                                notificationMessage = response.body()!!.message,
-                            )
-                        }
-
-                        else -> _state.update {
-                            it.copy(
-                                isError = true,
-                                notificationMessage = "Server error."
-                            )
-                        }
-                    }
+    private fun postReply(token: String, userId: String, forumId: String) =
+        viewModelScope.launch(Dispatchers.IO) {
+            _state.update { it.copy(isLoading = true) }
+            val data = PostReplyRequest(
+                userId = userId.toInt(),
+                forumId = forumId.toInt(),
+                content = state.value.commentText
+            )
+            repository.postReply(token = "Bearer $token", request = data)
+                .onSuccess { result ->
+                    _state.update { it.copy(isLoading = false, isCommentPosted = true) }
                 }
-
-                override fun onFailure(p0: Call<PostReplyResponse>, p1: Throwable) {
+                .onFailure { error ->
                     _state.update {
                         it.copy(
+                            isLoading = false,
                             isError = true,
-                            notificationMessage = "Server error."
+                            notificationMessage = error.message.toString()
                         )
                     }
                 }
 
-            }
-        )
-    }
+        }
 
-    private fun loadData(token: String, forumId: String) {
+    private fun loadData(token: String, forumId: String) = viewModelScope.launch(Dispatchers.IO) {
         _state.update { it.copy(isLoading = true) }
-        val request = repository.loadData("Bearer $token", forumId)
-        request.enqueue(
-            object : Callback<GetForumResponse> {
-                override fun onResponse(
-                    call: Call<GetForumResponse>,
-                    response: Response<GetForumResponse>
-                ) {
-                    _state.update { it.copy(isLoading = false) }
-                    when (response.code()) {
-                        200 -> _state.update {
-                            val replyEmpty = response.body()?.forum?.replies == null
-                            val totalReplies = if (replyEmpty) 0 else response.body()!!.forum.replies.size
-                            it.copy(
-                                comments = response.body()!!.forum.replies,
-                                totalComment = totalReplies,
-                                post = response.body()!!.forum,
-                                isCommentPosted = false
-                            )
-                        }
-
-                        else -> _state.update {
-                            it.copy(
-                                isError = true,
-                                notificationMessage = "Server error."
-                            )
-                        }
-                    }
-                }
-
-                override fun onFailure(p0: Call<GetForumResponse>, p1: Throwable) {
-                    _state.update {
-                        it.copy(
-                            isError = true,
-                            notificationMessage = "Server error."
-                        )
-                    }
-                }
-
+        repository.loadData("Bearer $token", forumId)
+            .onSuccess { result ->
+                _state.update { it.copy(comments = result.forum.replies, isLoading = false) }
             }
-        )
+            .onFailure { error ->
+                _state.update {
+                    it.copy(
+                        isLoading = false,
+                        isError = true,
+                        notificationMessage = error.message.toString()
+                    )
+                }
+            }
     }
 
 
