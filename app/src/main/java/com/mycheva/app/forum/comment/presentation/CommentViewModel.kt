@@ -60,6 +60,9 @@ class CommentViewModel @Inject constructor(
 
     private fun postReply(token: String, userId: String, forumId: String) =
         viewModelScope.launch(Dispatchers.IO) {
+            if (_state.value.commentText.isBlank()) {
+                _state.update { it.copy(isError = true, notificationMessage = "Comment can't be empty.") }
+            }
             _state.update { it.copy(isLoading = true) }
             val data = PostReplyRequest(
                 userId = userId.toInt(),
@@ -86,7 +89,7 @@ class CommentViewModel @Inject constructor(
         _state.update { it.copy(isLoading = true) }
         repository.loadData("Bearer $token", forumId)
             .onSuccess { result ->
-                _state.update { it.copy(comments = result.forum.replies, isLoading = false) }
+                _state.update { it.copy(comments = result.forum.replies.reversed(), isLoading = false) }
             }
             .onFailure { error ->
                 _state.update {

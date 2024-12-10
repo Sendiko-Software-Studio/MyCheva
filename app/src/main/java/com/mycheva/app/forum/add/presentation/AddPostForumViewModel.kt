@@ -55,6 +55,10 @@ class AddPostForumViewModel @Inject constructor(
 
     private fun post(token: String, userId: String, content: String) =
         viewModelScope.launch(Dispatchers.IO) {
+            if (_state.value.postText.isBlank()) {
+                _state.update { it.copy(isRequestError = true, notificationMessage = "Post can't be empty.") }
+                return@launch
+            }
             _state.update { it.copy(isLoading = true) }
             val data = ForumPostRequest(
                 userId = userId.toInt(),
