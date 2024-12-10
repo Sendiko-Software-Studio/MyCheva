@@ -16,7 +16,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class CommentViewModel @Inject constructor(
-    private val repository: CommentRepository
+    private val repository: CommentRepositoryImpl
 ) : ViewModel() {
 
     private val _token = repository.getToken()

@@ -2,7 +2,7 @@ package com.mycheva.app.meeting.detail.presentation
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.mycheva.app.meeting.detail.domain.DetailMeetingRepository
+import com.mycheva.app.meeting.detail.domain.DetailMeetingRepositoryImpl
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -15,7 +15,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class DetailMeetingViewModel @Inject constructor(
-    private val repository: DetailMeetingRepository
+    private val repository: DetailMeetingRepositoryImpl
 ) : ViewModel() {
 
     private val _token = repository.getToken()
