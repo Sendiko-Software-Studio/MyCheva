@@ -61,7 +61,13 @@ class CommentViewModel @Inject constructor(
     private fun postReply(token: String, userId: String, forumId: String) =
         viewModelScope.launch(Dispatchers.IO) {
             if (_state.value.commentText.isBlank()) {
-                _state.update { it.copy(isError = true, notificationMessage = "Comment can't be empty.") }
+                _state.update {
+                    it.copy(
+                        isError = true,
+                        notificationMessage = "Comment can't be empty."
+                    )
+                }
+                return@launch
             }
             _state.update { it.copy(isLoading = true) }
             val data = PostReplyRequest(
@@ -71,7 +77,13 @@ class CommentViewModel @Inject constructor(
             )
             repository.postReply(token = "Bearer $token", request = data)
                 .onSuccess { result ->
-                    _state.update { it.copy(isLoading = false, isCommentPosted = true, notificationMessage = result.message) }
+                    _state.update {
+                        it.copy(
+                            isLoading = false,
+                            isCommentPosted = true,
+                            notificationMessage = result.message
+                        )
+                    }
                 }
                 .onFailure { error ->
                     _state.update {
@@ -89,7 +101,14 @@ class CommentViewModel @Inject constructor(
         _state.update { it.copy(isLoading = true) }
         repository.loadData("Bearer $token", forumId)
             .onSuccess { result ->
-                _state.update { it.copy(comments = result.forum.replies.reversed(), isLoading = false, post = result.forum) }
+                _state.update {
+                    it.copy(
+                        comments = result.forum.replies.reversed(),
+                        isLoading = false,
+                        post = result.forum,
+                        totalComment = result.forum.replies.size
+                    )
+                }
             }
             .onFailure { error ->
                 _state.update {
