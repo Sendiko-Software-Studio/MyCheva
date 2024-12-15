@@ -3,7 +3,7 @@ package com.mycheva.app.forum.comment.presentation
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.mycheva.app.forum.comment.data.PostReplyRequest
-import com.mycheva.app.forum.comment.domain.CommentRepository
+import com.mycheva.app.forum.comment.domain.CommentRepositoryImpl
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -71,7 +71,7 @@ class CommentViewModel @Inject constructor(
             )
             repository.postReply(token = "Bearer $token", request = data)
                 .onSuccess { result ->
-                    _state.update { it.copy(isLoading = false, isCommentPosted = true) }
+                    _state.update { it.copy(isLoading = false, isCommentPosted = true, notificationMessage = result.message) }
                 }
                 .onFailure { error ->
                     _state.update {
@@ -89,7 +89,7 @@ class CommentViewModel @Inject constructor(
         _state.update { it.copy(isLoading = true) }
         repository.loadData("Bearer $token", forumId)
             .onSuccess { result ->
-                _state.update { it.copy(comments = result.forum.replies.reversed(), isLoading = false) }
+                _state.update { it.copy(comments = result.forum.replies.reversed(), isLoading = false, post = result.forum) }
             }
             .onFailure { error ->
                 _state.update {
