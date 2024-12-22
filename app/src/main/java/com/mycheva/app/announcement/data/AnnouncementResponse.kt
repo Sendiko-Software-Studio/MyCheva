@@ -17,22 +17,19 @@ data class AnnouncementResponse(
 data class User(
 
 	@field:SerializedName("profileUrl")
-	val profileUrl: String,
-
-	@field:SerializedName("createdAt")
-	val createdAt: String,
+	val profileUrl: String?,
 
 	@field:SerializedName("password")
 	val password: String,
+
+	@field:SerializedName("roleId")
+	val roleId: Int,
 
 	@field:SerializedName("name")
 	val name: String,
 
 	@field:SerializedName("id")
-	val id: Int,
-
-	@field:SerializedName("updatedAt")
-	val updatedAt: String
+	val id: Int
 )
 
 data class AnnouncementsItem(
@@ -41,7 +38,7 @@ data class AnnouncementsItem(
 	val createdAt: String,
 
 	@field:SerializedName("imageUrl")
-	val imageUrl: String,
+	val imageUrl: String?,
 
 	@field:SerializedName("id")
 	val id: Int,

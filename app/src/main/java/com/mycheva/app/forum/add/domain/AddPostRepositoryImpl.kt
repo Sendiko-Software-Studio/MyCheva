@@ -36,7 +36,7 @@ class AddPostRepositoryImpl@Inject constructor(
                             response: Response<ForumPostResponse>
                         ) {
                             when(response.code()) {
-                                200 -> continuation.resume(Result.success(response.body()!!))
+                                201 -> continuation.resume(Result.success(response.body()!!))
                                 401 -> continuation.resume(Result.failure(Exception(UNAUTHORIZED)))
                                 else -> continuation.resume(Result.failure(Exception(SERVER_ERROR)))
                             }

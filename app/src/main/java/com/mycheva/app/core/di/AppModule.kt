@@ -5,7 +5,7 @@ import androidx.room.Room
 import com.mycheva.app.core.database.AppDatabase
 import com.mycheva.app.core.database.BookmarkDao
 import com.mycheva.app.core.network.ApiServices
-import com.mycheva.app.core.network.NGROK_SERVER
+import com.mycheva.app.core.network.LIVE_SERVER
 import com.mycheva.app.core.preferences.AppPreferences
 import com.mycheva.app.core.preferences.dataStore
 import dagger.Module
@@ -52,7 +52,7 @@ object AppModule {
     @Provides
     fun provideRetrofit(okHttpClient: OkHttpClient): Retrofit {
         return Retrofit.Builder()
-            .baseUrl(NGROK_SERVER)
+            .baseUrl(LIVE_SERVER)
             .client(okHttpClient)
             .addConverterFactory(GsonConverterFactory.create())
             .build()
