@@ -36,6 +36,7 @@ fun ForumPostCard(
     forum: ForumUi,
     onNavigate: (String) -> Unit,
 ) {
+    val url = forum.profileUrl.replace("http://", "https://")
     Surface(
         onClick = { onNavigate(forum.id) }
     ) {
@@ -52,7 +53,7 @@ fun ForumPostCard(
                     modifier = Modifier
                         .size(48.dp)
                         .clip(CircleShape),
-                    model = forum.profileUrl.ifBlank { defaultProfile },
+                    model = url.ifBlank { defaultProfile },
                     contentDescription = "Profile Picture",
                     contentScale = ContentScale.Crop,
                 )

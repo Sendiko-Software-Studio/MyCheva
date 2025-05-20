@@ -36,6 +36,7 @@ import com.mycheva.app.core.ui.components.formatDateString
 import com.mycheva.app.core.ui.theme.Neutral900
 import com.mycheva.app.core.ui.theme.Primary300
 import com.mycheva.app.core.ui.theme.poppinsFamily
+import com.mycheva.app.meeting.detail.domain.isValidUrl
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalSharedTransitionApi::class)
 @Composable
@@ -135,7 +136,7 @@ fun DetailMeetingScreen(
                         ) {
                             DetailSection(
                                 details = state.eventsItem!!.details,
-                                type = state.eventsItem!!.type
+                                type = state.eventsItem.type
                             )
                         }
                     }
@@ -180,7 +181,7 @@ fun DetailSection(
             fontSize = 16.sp,
             fontFamily = poppinsFamily,
             modifier = Modifier.clickable {
-                if (type == "online")
+                if (type == "online" && isValidUrl(details))
                     uriHandler.openUri(details)
             }
         )

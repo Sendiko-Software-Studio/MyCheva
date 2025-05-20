@@ -1,26 +1,23 @@
 package com.mycheva.app.meeting.main.presentation
 
-import android.os.Build
-import androidx.annotation.RequiresApi
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.mycheva.app.core.data.GetEventsResponse
 import com.mycheva.app.meeting.main.domain.MeetingsRepository
+import com.mycheva.app.meeting.main.domain.MeetingsRepositoryImpl
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class MeetingsViewModel @Inject constructor(
-    private val repository: MeetingsRepository
-): ViewModel() {
+    private val repository: MeetingsRepositoryImpl
+) : ViewModel() {
 
     private val _token = repository.getToken()
     private val _state = MutableStateFlow(MeetingsState())
@@ -58,41 +55,22 @@ class MeetingsViewModel @Inject constructor(
         }
     }
 
-    private fun loadSchedule(token: String) {
+    private fun loadSchedule(token: String) = viewModelScope.launch(Dispatchers.IO) {
         _state.update { it.copy(isLoading = true) }
-        val request = repository.getEvents("Bearer $token")
-        request.enqueue(
-            object : Callback<GetEventsResponse> {
-                @RequiresApi(Build.VERSION_CODES.O)
-                override fun onResponse(
-                    call: Call<GetEventsResponse>,
-                    response: Response<GetEventsResponse>
-                ) {
-                    _state.update { it.copy(isLoading = false) }
-                    when (response.code()) {
-                       200 -> {
-                            val events = response.body()!!.events
-                           _state.update {
-                               it.copy(
-                                   events = events
-                               )
-                           }
-                       }
-
-                        else -> _state.update {
-                            it.copy(isRequestFailed = true, notificationMessage = "Server error.")
-                        }
-                    }
-                }
-
-                override fun onFailure(call: Call<GetEventsResponse>, throwable: Throwable) {
-                    _state.update {
-                        it.copy(isRequestFailed = true, notificationMessage = "Server error.")
-                    }
-                }
-
+        repository.getEvents("Bearer $token")
+            .onSuccess { result ->
+                _state.update { it.copy(events = result.events, isLoading = false) }
             }
-        )
+            .onFailure { error ->
+                _state.update {
+                    it.copy(
+                        isLoading = false,
+                        isRequestFailed = true,
+                        notificationMessage = error.message.toString()
+                    )
+                }
+            }
+
         _state.update {
             it.copy(searchText = "")
         }

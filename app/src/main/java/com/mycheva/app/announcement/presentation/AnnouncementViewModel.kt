@@ -38,10 +38,10 @@ class AnnouncementViewModel @Inject constructor(
 
     private fun addBookmark(announcement: AnnouncementsItem) {
         val data = BookmarkEntity(
-            profileUrl = announcement.user.profileUrl,
+            profileUrl = announcement.user.profileUrl.toString(),
             name = announcement.user.name,
             timeStamp = announcement.createdAt,
-            imageUrl = if (announcement.imageUrl == null) "" else announcement.imageUrl,
+            imageUrl = announcement.imageUrl.toString(),
             title = announcement.title,
             content = announcement.content
         )
