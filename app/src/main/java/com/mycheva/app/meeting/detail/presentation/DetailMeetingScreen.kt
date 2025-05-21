@@ -27,6 +27,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.substring
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -61,7 +62,7 @@ fun DetailMeetingScreen(
         Scaffold(
             topBar = {
                 LargeTopBar(
-                    title = state.eventsItem?.name ?: "",
+                    title = (state.eventsItem?.name ?: ""),
                     navigationIcon = Icons.AutoMirrored.Rounded.ArrowBack,
                     navigationAction = { onNavigateBack() }
                 )
