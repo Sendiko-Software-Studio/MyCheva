@@ -32,6 +32,7 @@ fun CommentCard(
     modifier: Modifier = Modifier,
     comment: CommentUi,
 ) {
+    val url = comment.profileUrl.replace("http://", "https://")
     Column(
         modifier = modifier
             .padding(horizontal = 16.dp),
@@ -47,7 +48,7 @@ fun CommentCard(
                 horizontalArrangement = Arrangement.spacedBy(8.dp)
             ) {
                 AsyncImage(
-                    model = comment.profileUrl.ifBlank { defaultProfile },
+                    model = url.ifBlank { defaultProfile },
                     modifier = Modifier
                         .size(36.dp)
                         .clip(CircleShape),

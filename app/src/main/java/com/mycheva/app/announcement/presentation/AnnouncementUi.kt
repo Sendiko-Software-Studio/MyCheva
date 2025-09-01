@@ -12,8 +12,8 @@ data class AnnouncementUi(
     companion object {
         fun toAnnouncementUi(announcementsItem: AnnouncementsItem): AnnouncementUi {
             return AnnouncementUi(
-                id = announcementsItem.toString(),
-                profileUrl = announcementsItem.user.profileUrl,
+                id = announcementsItem.id.toString(),
+                profileUrl = announcementsItem.user.profileUrl.toString(),
                 username = announcementsItem.user.name,
                 time = announcementsItem.createdAt,
                 content = announcementsItem.content

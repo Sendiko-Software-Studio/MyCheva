@@ -34,6 +34,7 @@ fun PostCard(
     modifier: Modifier = Modifier,
     forum: ForumUi
 ) {
+    val url = forum.profileUrl.replace("http://", "https://")
     Column(
         modifier = modifier,
         verticalArrangement = Arrangement.spacedBy(8.dp),
@@ -48,7 +49,7 @@ fun PostCard(
                 modifier = Modifier
                     .size(48.dp)
                     .clip(CircleShape),
-                model = forum.profileUrl?.ifBlank { defaultProfile },
+                model = url.ifBlank { defaultProfile },
                 contentDescription = "Profile Picture",
                 contentScale = ContentScale.Crop,
             )

@@ -3,22 +3,20 @@ package com.mycheva.app.forum.add.presentation
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.mycheva.app.forum.add.data.ForumPostRequest
-import com.mycheva.app.forum.add.data.ForumPostResponse
-import com.mycheva.app.forum.add.domain.AddPostRepository
+import com.mycheva.app.forum.add.domain.AddPostRepositoryImpl
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class AddPostForumViewModel @Inject constructor(
-    private val repository: AddPostRepository
+    private val repository: AddPostRepositoryImpl
 ) : ViewModel() {
 
     private val _token = repository.getToken()
@@ -55,45 +53,37 @@ class AddPostForumViewModel @Inject constructor(
         }
     }
 
-    private fun post(token: String, userId: String, content: String) {
-        _state.update { it.copy(isLoading = true) }
-        val data = ForumPostRequest(
-            userId = userId.toInt(),
-            content = content
-        )
-        val request = repository.postForum("Bearer $token", data)
-        request.enqueue(
-            object : Callback<ForumPostResponse> {
-                override fun onResponse(
-                    call: Call<ForumPostResponse>,
-                    response: Response<ForumPostResponse>
-                ) {
-                    _state.update { it.copy(isLoading = false) }
-                    when (response.code()) {
-                        201 -> _state.update {
-                            it.copy(
-                                isRequestSuccess = true,
-                                 notificationMessage = "Posted successfully."
-                            )
-                        }
-
-                        else -> _state.update { it.copy(
+    private fun post(token: String, userId: String, content: String) =
+        viewModelScope.launch(Dispatchers.IO) {
+            if (_state.value.postText.isBlank()) {
+                _state.update { it.copy(isRequestError = true, notificationMessage = "Post can't be empty.") }
+                return@launch
+            }
+            _state.update { it.copy(isLoading = true) }
+            val data = ForumPostRequest(
+                userId = userId.toInt(),
+                content = content
+            )
+            repository.postForum("Bearer $token", data)
+                .onSuccess { result ->
+                    _state.update {
+                        it.copy(
+                            isLoading = false,
+                            isRequestSuccess = true,
+                            notificationMessage = result.message
+                        )
+                    }
+                }
+                .onFailure { error ->
+                    _state.update {
+                        it.copy(
+                            isLoading = false,
                             isRequestError = true,
-                            notificationMessage = "Server error."
-                        ) }
+                            notificationMessage = error.message.toString()
+                        )
                     }
                 }
 
-                override fun onFailure(p0: Call<ForumPostResponse>, p1: Throwable) {
-                    _state.update { it.copy(
-                        isRequestError = true,
-                        notificationMessage = "Server error."
-                    ) }
-                }
-
-            }
-        )
-
-    }
+        }
 
 }

@@ -10,6 +10,7 @@ import androidx.compose.material3.TopAppBarScrollBehavior
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.text.style.TextOverflow
 import com.mycheva.app.core.navigation.BookmarkScreen
 import com.mycheva.app.core.ui.theme.Neutral200
 import com.mycheva.app.core.ui.theme.poppinsFamily
@@ -27,7 +28,13 @@ fun LargeTopBar(
 ) {
     LargeTopAppBar(
         modifier = modifier,
-        title = { Text(text = title, fontFamily = poppinsFamily) },
+        title = {
+            Text(
+                text = title,
+                fontFamily = poppinsFamily,
+                overflow = TextOverflow.Ellipsis
+            )
+        },
         scrollBehavior = scrollBehavior,
         colors = TopAppBarDefaults.largeTopAppBarColors(
             scrolledContainerColor = Neutral200

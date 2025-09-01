@@ -72,7 +72,7 @@ class ForumViewModel @Inject constructor(
                 _state.update {
                     it.copy(
                         isLoading = false,
-                        forums = result
+                        forums = result.reversed()
                     )
                 }
             }
