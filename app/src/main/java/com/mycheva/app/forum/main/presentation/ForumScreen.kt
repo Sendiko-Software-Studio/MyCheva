@@ -159,7 +159,7 @@ fun SharedTransitionScope.ForumScreen(
                         }
                     }
                     item {
-                        (1..5).forEach {
+                        (1..5).forEach { _ ->
                             AnimatedVisibility(
                                 visible = state.isLoading && state.forums.isEmpty(),
                                 enter = expandVertically(),
@@ -173,7 +173,7 @@ fun SharedTransitionScope.ForumScreen(
                             }
                         }
                     }
-                    items(state.forums) { post ->
+                    items(state.forums.reversed()) { post ->
                         if (state.forums.first() != post) {
                             HorizontalDivider(modifier = Modifier.fillMaxWidth())
                         }

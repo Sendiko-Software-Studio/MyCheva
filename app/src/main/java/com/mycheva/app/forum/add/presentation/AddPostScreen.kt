@@ -16,7 +16,10 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.FocusRequester
+import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.text.font.FontWeight.Companion.Bold
 import androidx.compose.ui.unit.dp
 import com.mycheva.app.core.ui.components.LargeTopBar
@@ -33,6 +36,11 @@ fun AddPostScreen(
     onEvent: (AddPostForumEvent) -> Unit,
     onNavigateBack: () -> Unit,
 ) {
+    val focusRequester = remember { FocusRequester() }
+
+    LaunchedEffect(true) {
+        focusRequester.requestFocus()
+    }
 
     LaunchedEffect(key1 = state.notificationMessage) {
         if (state.notificationMessage.isNotBlank()) {
@@ -72,7 +80,8 @@ fun AddPostScreen(
                 ) {
                     item {
                         PlainTextField(
-                            modifier = Modifier.fillMaxWidth(),
+                            modifier = Modifier.fillMaxWidth()
+                                .focusRequester(focusRequester),
                             value = state.postText,
                             placeholder = "Apa yang ingin ditanyakan?",
                             onValueChange = {
