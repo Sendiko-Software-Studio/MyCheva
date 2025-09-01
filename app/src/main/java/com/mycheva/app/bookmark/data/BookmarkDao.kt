@@ -1,4 +1,4 @@
-package com.mycheva.app.core.database
+package com.mycheva.app.bookmark.data
 
 import androidx.room.Dao
 import androidx.room.Delete

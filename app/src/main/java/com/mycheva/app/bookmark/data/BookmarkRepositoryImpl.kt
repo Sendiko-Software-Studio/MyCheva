@@ -1,30 +1,31 @@
-package com.mycheva.app.bookmark.domain
+package com.mycheva.app.bookmark.data
 
-import com.mycheva.app.core.database.BookmarkDao
-import com.mycheva.app.core.database.BookmarkEntity
+import com.mycheva.app.bookmark.domain.Bookmark
+import com.mycheva.app.bookmark.domain.BookmarkRepository
 import kotlinx.coroutines.flow.Flow
-import javax.inject.Inject
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.map
 import kotlin.coroutines.resume
 import kotlin.coroutines.suspendCoroutine
 
-class BookmarkRepositoryImpl @Inject constructor(
+class BookmarkRepositoryImpl(
     private val dao: BookmarkDao
 ): BookmarkRepository {
 
-    override suspend fun addBookmark(bookmarkEntity: BookmarkEntity): Result<Boolean> {
+    override suspend fun addBookmark(bookmark: Bookmark): Result<Boolean> {
         return suspendCoroutine { continuation ->
             try {
-                dao.addBookmark(bookmarkEntity)
+                dao.addBookmark(bookmark.toEntity())
             } catch (exception: Exception) {
                 continuation.resume(Result.failure(exception))
             }
         }
     }
 
-    override suspend fun removeBookmark(bookmarkEntity: BookmarkEntity): Result<Boolean> {
+    override suspend fun removeBookmark(bookmark: Bookmark): Result<Boolean> {
         return suspendCoroutine { continuation ->
             try {
-                dao.removeBookmarks(bookmarkEntity)
+                dao.removeBookmarks(bookmark.toEntity())
                 continuation.resume(Result.success(true))
             } catch (exception: Exception) {
                 continuation.resume(Result.failure(exception))
@@ -32,8 +33,8 @@ class BookmarkRepositoryImpl @Inject constructor(
         }
     }
 
-    override fun getBookmarks(): Flow<List<BookmarkEntity>> {
-        return dao.getBookmarks()
+    override fun getBookmarks(): Flow<List<Bookmark>> {
+        return dao.getBookmarks().map { it.map { it.toBookmark() } }
     }
 
 
