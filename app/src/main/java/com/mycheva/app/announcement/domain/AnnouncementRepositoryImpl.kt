@@ -10,7 +10,6 @@ import com.mycheva.app.core.network.SERVER_ERROR
 import com.mycheva.app.core.network.UNAUTHORIZED
 import com.mycheva.app.core.preferences.AppPreferences
 import kotlinx.coroutines.flow.Flow
-import okhttp3.Callback
 import retrofit2.Call
 import retrofit2.Response
 import javax.inject.Inject

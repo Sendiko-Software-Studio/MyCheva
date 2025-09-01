@@ -27,6 +27,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.substring
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -36,6 +37,7 @@ import com.mycheva.app.core.ui.components.formatDateString
 import com.mycheva.app.core.ui.theme.Neutral900
 import com.mycheva.app.core.ui.theme.Primary300
 import com.mycheva.app.core.ui.theme.poppinsFamily
+import com.mycheva.app.meeting.detail.domain.isValidUrl
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalSharedTransitionApi::class)
 @Composable
@@ -60,7 +62,7 @@ fun DetailMeetingScreen(
         Scaffold(
             topBar = {
                 LargeTopBar(
-                    title = state.eventsItem?.name ?: "",
+                    title = (state.eventsItem?.name ?: ""),
                     navigationIcon = Icons.AutoMirrored.Rounded.ArrowBack,
                     navigationAction = { onNavigateBack() }
                 )
@@ -135,7 +137,7 @@ fun DetailMeetingScreen(
                         ) {
                             DetailSection(
                                 details = state.eventsItem!!.details,
-                                type = state.eventsItem!!.type
+                                type = state.eventsItem.type
                             )
                         }
                     }
@@ -180,7 +182,7 @@ fun DetailSection(
             fontSize = 16.sp,
             fontFamily = poppinsFamily,
             modifier = Modifier.clickable {
-                if (type == "online")
+                if (type == "online" && isValidUrl(details))
                     uriHandler.openUri(details)
             }
         )
