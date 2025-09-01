@@ -2,6 +2,7 @@ package com.mycheva.app.announcement.data
 
 import android.util.Log
 import com.mycheva.app.announcement.data.dto.AnnouncementResponse
+import com.mycheva.app.announcement.domain.Announcement
 import com.mycheva.app.announcement.domain.AnnouncementRepository
 import com.mycheva.app.core.database.BookmarkDao
 import com.mycheva.app.core.database.BookmarkEntity
@@ -25,9 +26,17 @@ class AnnouncementRepositoryImpl(
         return client.getAnnouncements(token)
     }
 
-    override suspend fun addBookmark(bookmark: BookmarkEntity): Boolean {
+    override suspend fun addBookmark(announcement: Announcement): Boolean {
         try {
-            dao.addBookmark(bookmark)
+            val data = BookmarkEntity(
+                profileUrl = announcement.profileUrl,
+                name = announcement.username,
+                timeStamp = announcement.timeStamp,
+                imageUrl = announcement.imageUrl,
+                title = announcement.title,
+                content = announcement.content
+            )
+            dao.addBookmark(data)
             return true
         } catch (e: Exception) {
             Log.e("BOOKMARK", "addBookmark: Error saving to bookmark", e)

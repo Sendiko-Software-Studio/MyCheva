@@ -2,8 +2,8 @@ package com.mycheva.app.announcement.presentation
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.mycheva.app.announcement.data.dto.AnnouncementsItem
 import com.mycheva.app.announcement.data.AnnouncementRepositoryImpl
+import com.mycheva.app.announcement.domain.Announcement
 import com.mycheva.app.core.database.BookmarkEntity
 import com.mycheva.app.core.network.utils.onError
 import com.mycheva.app.core.network.utils.onSuccess
@@ -40,18 +40,10 @@ class AnnouncementViewModel @Inject constructor(
         }
     }
 
-    private fun addBookmark(announcement: AnnouncementsItem) {
-        val data = BookmarkEntity(
-            profileUrl = announcement.user.profileUrl.toString(),
-            name = announcement.user.name,
-            timeStamp = announcement.createdAt,
-            imageUrl = announcement.imageUrl.toString(),
-            title = announcement.title,
-            content = announcement.content
-        )
+    private fun addBookmark(announcement: Announcement) {
 
         viewModelScope.launch(Dispatchers.IO) {
-            val save = repo.addBookmark(data)
+            val save = repo.addBookmark(announcement)
             if (save)
                 _state.update {
                     it.copy(
@@ -84,7 +76,7 @@ class AnnouncementViewModel @Inject constructor(
                 .onSuccess { result ->
                     _state.update {
                         it.copy(
-                            announcements = result.announcements,
+                            announcements = result.announcements.map { AnnouncementUi.from(it) },
                             isLoading = false
                         )
                     }

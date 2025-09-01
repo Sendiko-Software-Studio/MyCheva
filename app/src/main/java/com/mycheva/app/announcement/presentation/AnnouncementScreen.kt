@@ -141,9 +141,9 @@ fun SharedTransitionScope.AnnouncementScreen(
                     }
                     items(state.announcements) { announcement ->
                         AnnouncementCard(
-                            announcement = AnnouncementUi.toAnnouncementUi(announcement),
+                            announcement = announcement,
                             onAddBookMark = {
-                                onEvent(AnnouncementEvent.OnAddBookmark(announcement))
+                                onEvent(AnnouncementEvent.OnAddBookmark(AnnouncementUi.to(announcement)))
                             },
                             modifier = Modifier.padding(horizontal = 16.dp)
                         )

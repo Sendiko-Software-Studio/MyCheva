@@ -12,6 +12,6 @@ interface AnnouncementRepository {
 
     suspend fun getAnnouncements(token: String): Result<AnnouncementResponse, DataError.Remote>
 
-    suspend fun addBookmark(bookmark: BookmarkEntity): Boolean
+    suspend fun addBookmark(announcement: Announcement): Boolean
 
 }
