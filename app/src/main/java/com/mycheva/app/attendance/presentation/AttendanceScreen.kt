@@ -60,8 +60,8 @@ import java.util.concurrent.Executors
 @Composable
 fun SharedTransitionScope.AttendanceScreen(
     modifier: Modifier = Modifier,
-    state: AttendanceScreenState,
-    onEvent: (AttendanceScreenEvent) -> Unit,
+    state: AttendanceState,
+    onEvent: (AttendanceEvent) -> Unit,
     onNavigateBack: () -> Unit,
     animatedContentScope: AnimatedContentScope
 ) {
@@ -81,7 +81,7 @@ fun SharedTransitionScope.AttendanceScreen(
     LaunchedEffect(key1 = state.notificationMessage) {
         if (state.notificationMessage.isNotEmpty()) {
             delay(2000)
-            onEvent(AttendanceScreenEvent.OnClearState)
+            onEvent(AttendanceEvent.OnClearState)
         }
     }
 
@@ -166,7 +166,7 @@ fun SharedTransitionScope.AttendanceScreen(
                                     barcodes.forEach { barcode ->
                                         barcode.rawValue?.let { barcodeValue ->
                                             if (state.eventId.isBlank())
-                                                onEvent(AttendanceScreenEvent.OnEventIdRead(state.token, barcodeValue, state.userId))
+                                                onEvent(AttendanceEvent.OnEventIdRead(state.token, barcodeValue, state.userId))
                                         }
                                     }
                                 }

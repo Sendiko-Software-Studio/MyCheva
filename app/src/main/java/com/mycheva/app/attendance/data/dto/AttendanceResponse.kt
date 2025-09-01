@@ -1,4 +1,4 @@
-package com.mycheva.app.attendance.data
+package com.mycheva.app.attendance.data.dto
 
 import com.google.gson.annotations.SerializedName
 

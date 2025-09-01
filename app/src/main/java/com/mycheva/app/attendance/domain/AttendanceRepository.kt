@@ -1,7 +1,9 @@
 package com.mycheva.app.attendance.domain
 
-import com.mycheva.app.attendance.data.AttendanceRequest
-import com.mycheva.app.attendance.data.AttendanceResponse
+import com.mycheva.app.attendance.data.dto.AttendanceRequest
+import com.mycheva.app.attendance.data.dto.AttendanceResponse
+import com.mycheva.app.core.network.utils.DataError
+import com.mycheva.app.core.network.utils.Result
 import kotlinx.coroutines.flow.Flow
 
 interface AttendanceRepository {
@@ -10,6 +12,6 @@ interface AttendanceRepository {
 
     fun getUserId(): Flow<String>
 
-    suspend fun postAttendance(token: String, request: AttendanceRequest): Result<AttendanceResponse>
+    suspend fun postAttendance(token: String, eventId: String, userId: String): Result<AttendanceResponse, DataError.Remote>
 
 }
