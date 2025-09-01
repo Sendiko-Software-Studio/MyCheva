@@ -2,9 +2,13 @@ package com.mycheva.app.announcement.presentation
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.mycheva.app.announcement.data.AnnouncementsItem
-import com.mycheva.app.announcement.domain.AnnouncementRepositoryImpl
+import com.mycheva.app.announcement.data.dto.AnnouncementsItem
+import com.mycheva.app.announcement.data.AnnouncementRepositoryImpl
 import com.mycheva.app.core.database.BookmarkEntity
+import com.mycheva.app.core.network.utils.onError
+import com.mycheva.app.core.network.utils.onSuccess
+import com.mycheva.app.core.ui.utils.UiText
+import com.mycheva.app.core.ui.utils.asUiText
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -48,8 +52,18 @@ class AnnouncementViewModel @Inject constructor(
 
         viewModelScope.launch(Dispatchers.IO) {
             val save = repo.addBookmark(data)
-            if (save) _state.update { it.copy(notificationMessage = "Successfully saved to bookmark.") }
-            else _state.update { it.copy(notificationMessage = "Can't save to bookmark", isRequestError = true) }
+            if (save)
+                _state.update {
+                    it.copy(
+                        notificationMessage = UiText.DynamicString("Successfully saved to bookmark.")
+                    )
+                }
+            else _state.update {
+                it.copy(
+                    notificationMessage = UiText.DynamicString("Can't save to bookmark"),
+                    isRequestError = true
+                )
+            }
         }
     }
 
@@ -57,7 +71,7 @@ class AnnouncementViewModel @Inject constructor(
         _state.update {
             it.copy(
                 isLoading = false,
-                notificationMessage = "",
+                notificationMessage = UiText.DynamicString(""),
                 isRequestError = false,
             )
         }
@@ -70,15 +84,15 @@ class AnnouncementViewModel @Inject constructor(
                 .onSuccess { result ->
                     _state.update {
                         it.copy(
-                            announcements = result,
+                            announcements = result.announcements,
                             isLoading = false
                         )
                     }
                 }
-                .onFailure { error ->
+                .onError { error ->
                     _state.update {
                         it.copy(
-                            notificationMessage = error.message.toString(),
+                            notificationMessage = error.asUiText(),
                             isRequestError = true,
                             isLoading = false
                         )

@@ -1,6 +1,6 @@
 package com.mycheva.app.announcement.presentation
 
-import com.mycheva.app.announcement.data.AnnouncementsItem
+import com.mycheva.app.announcement.data.dto.AnnouncementsItem
 
 data class AnnouncementUi(
     val id: String,
