@@ -12,7 +12,7 @@ import com.mycheva.app.core.preferences.AppPreferences
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
-class AnnouncementRepositoryImpl @Inject constructor(
+class AnnouncementRepositoryImpl(
     private val client: KtorClient,
     private val appPreferences: AppPreferences,
     private val dao: BookmarkDao
