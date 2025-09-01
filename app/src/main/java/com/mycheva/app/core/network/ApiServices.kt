@@ -1,9 +1,12 @@
 package com.mycheva.app.core.network
 
-import com.mycheva.app.announcement.data.AnnouncementResponse
+import com.mycheva.app.announcement.data.dto.AnnouncementResponse
 import com.mycheva.app.attendance.data.AttendanceRequest
 import com.mycheva.app.attendance.data.AttendanceResponse
 import com.mycheva.app.core.data.GetEventsResponse
+import com.mycheva.app.core.data.GetUserResponse
+import com.mycheva.app.core.network.utils.DataError
+import com.mycheva.app.core.network.utils.Result
 import com.mycheva.app.forum.add.data.ForumPostRequest
 import com.mycheva.app.forum.add.data.ForumPostResponse
 import com.mycheva.app.forum.comment.data.GetForumResponse
@@ -12,109 +15,87 @@ import com.mycheva.app.forum.comment.data.PostReplyResponse
 import com.mycheva.app.forum.main.data.GetForumsResponse
 import com.mycheva.app.login.data.LoginRequest
 import com.mycheva.app.login.data.LoginResponse
+import com.mycheva.app.meeting.detail.data.GetMeetingResponse
 import com.mycheva.app.profile.main.data.ChangePasswordRequest
 import com.mycheva.app.profile.main.data.ChangePasswordResponse
 import com.mycheva.app.profile.main.data.ChangeUsernameRequest
 import com.mycheva.app.profile.main.data.ChangeUsernameResponse
-import com.mycheva.app.core.data.GetUserResponse
 import com.mycheva.app.profile.main.data.LogoutResponse
 import com.mycheva.app.reset_password.data.ResetPasswordRequest
 import com.mycheva.app.reset_password.data.ResetPasswordResponse
 import com.mycheva.app.roadmap.data.GetRoadMapResponse
-import com.mycheva.app.meeting.detail.data.GetMeetingResponse
-import retrofit2.Call
-import retrofit2.http.Body
-import retrofit2.http.GET
-import retrofit2.http.Header
-import retrofit2.http.POST
-import retrofit2.http.Path
 
 interface ApiServices {
 
-    @POST("login")
-    fun login(
-        @Body loginRequest: LoginRequest
-    ): Call<LoginResponse>
+    suspend fun login(
+        loginRequest: LoginRequest
+    ): Result<LoginResponse, DataError.Remote>
 
-    @GET("userdata/{id}")
-    fun getUser(
-        @Header("Authorization") token: String,
-        @Path("id") id: String
-    ): Call<GetUserResponse>
+    suspend fun getUser(
+        token: String,
+        id: String
+    ): Result<GetUserResponse, DataError.Remote>
 
-    @GET("event")
-    fun getEvents(
-        @Header("Authorization") token: String,
-    ): Call<GetEventsResponse>
+    suspend fun getEvents(
+        token: String,
+    ): Result<GetEventsResponse, DataError.Remote>
 
-    @GET("event/{id}")
-    fun getEvent(
-        @Header("Authorization") token: String,
-        @Path("id") eventId: String
-    ): Call<GetMeetingResponse>
+    suspend fun getEvent(
+        token: String,
+        eventId: String
+    ): Result<GetMeetingResponse, DataError.Remote>
 
-    @POST("attendance")
-    fun postAttendance(
-        @Header("Authorization") token: String,
-        @Body attendanceRequest: AttendanceRequest
-    ): Call<AttendanceResponse>
+    suspend fun postAttendance(
+        token: String,
+        request: AttendanceRequest
+    ): Result<AttendanceResponse, DataError.Remote>
 
-    @POST("reset_password")
-    fun resetPassword(
-        @Header("Authorization") token: String,
-        @Body request: ResetPasswordRequest
-    ): Call<ResetPasswordResponse>
+    suspend fun resetPassword(
+        token: String,
+        request: ResetPasswordRequest
+    ): Result<ResetPasswordResponse, DataError.Remote>
 
-    @POST("change_password/{id}")
-    fun changePassword(
-        @Header("Authorization") token: String,
-        @Path("id") userId: String,
-        @Body request: ChangePasswordRequest
-    ): Call<ChangePasswordResponse>
+    suspend fun changePassword(
+        token: String,
+        userId: String,
+        request: ChangePasswordRequest
+    ): Result<ChangePasswordResponse, DataError.Remote>
 
-    @POST("change_username/{id}")
-    fun changeUsername(
-        @Header("Authorization") token: String,
-        @Path("id") userId: String,
-        @Body request: ChangeUsernameRequest
-    ): Call<ChangeUsernameResponse>
+    suspend fun changeUsername(
+        token: String,
+        userId: String,
+        request: ChangeUsernameRequest
+    ): Result<ChangeUsernameResponse, DataError.Remote>
 
-    @GET("announcement")
-    fun getAnnouncements(
-        @Header("Authorization") token: String,
-    ): Call<AnnouncementResponse>
+    suspend fun getAnnouncements(
+        token: String,
+    ): Result<AnnouncementResponse, DataError.Remote>
 
-    @GET("forum")
-    fun getForums(
-        @Header("Authorization") token: String,
-    ): Call<GetForumsResponse>
+    suspend fun getForums(
+        token: String,
+    ): Result<GetForumsResponse, DataError.Remote>
 
-    @POST("forum")
-    fun postForum(
-        @Header("Authorization") token: String,
-        @Body request: ForumPostRequest
-    ): Call<ForumPostResponse>
+    suspend fun postForum(
+        token: String,
+        request: ForumPostRequest
+    ): Result<ForumPostResponse, DataError.Remote>
 
-    @GET("forum/{id}")
-    fun getForum(
-        @Header("Authorization") token: String,
-        @Path("id") forumId: String
-    ): Call<GetForumResponse>
+    suspend fun getForum(
+        token: String,
+        forumId: String
+    ): Result<GetForumResponse, DataError.Remote>
 
-    @POST("replies")
-    fun postReply(
-        @Header("Authorization") token: String,
-        @Body request: PostReplyRequest
-    ): Call<PostReplyResponse>
+    suspend fun postReply(
+        token: String,
+        request: PostReplyRequest
+    ): Result<PostReplyResponse, DataError.Remote>
 
-    @GET("roadmap")
-    fun getRoadMap(
-        @Header("Authorization") token: String,
-    ): Call<GetRoadMapResponse>
+    suspend fun getRoadMap(
+        token: String,
+    ): Result<GetRoadMapResponse, DataError.Remote>
 
-    @GET("logout")
-    fun logout(
-        @Header("Authorization") token: String
-    ): Call<LogoutResponse>
+    suspend fun logout(
+        token: String
+    ): Result<LogoutResponse, DataError.Remote>
 
 }
