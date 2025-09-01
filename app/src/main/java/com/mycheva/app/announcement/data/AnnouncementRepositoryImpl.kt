@@ -2,6 +2,7 @@ package com.mycheva.app.announcement.data
 
 import android.util.Log
 import com.mycheva.app.announcement.data.dto.AnnouncementResponse
+import com.mycheva.app.announcement.data.dto.toDomain
 import com.mycheva.app.announcement.domain.Announcement
 import com.mycheva.app.announcement.domain.AnnouncementRepository
 import com.mycheva.app.core.database.BookmarkDao
@@ -22,8 +23,18 @@ class AnnouncementRepositoryImpl(
         return appPreferences.getToken()
     }
 
-    override suspend fun getAnnouncements(token: String): Result<AnnouncementResponse, DataError.Remote> {
-        return client.getAnnouncements(token)
+    override suspend fun getAnnouncements(token: String): Result<List<Announcement>, DataError.Remote> {
+        val response = client.getAnnouncements(token)
+
+        return when (response) {
+            is Result.Success -> {
+                val data = response.data
+                Result.Success(data.announcements.map { it.toDomain() })
+            }
+            is Result.Error -> {
+                Result.Error(response.error)
+            }
+        }
     }
 
     override suspend fun addBookmark(announcement: Announcement): Boolean {

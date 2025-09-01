@@ -29,16 +29,16 @@ data class AnnouncementsItem(
 
     @field:SerializedName("updatedAt")
     val updatedAt: String
-) {
-    fun to(announcementsItem: AnnouncementsItem): Announcement {
-        return Announcement(
-            id = announcementsItem.id,
-            profileUrl = announcementsItem.user.profileUrl ?: "",
-            username = announcementsItem.user.name,
-            timeStamp = announcementsItem.createdAt,
-            content = announcementsItem.content,
-            title = announcementsItem.title,
-            imageUrl = announcementsItem.imageUrl ?: ""
-        )
-    }
+)
+
+fun AnnouncementsItem.toDomain(): Announcement {
+    return Announcement(
+        id = this.id,
+        profileUrl = this.user.profileUrl ?: "",
+        username = this.user.name,
+        timeStamp = this.createdAt,
+        title = this.title,
+        content = this.content,
+        imageUrl = this.imageUrl ?: ""
+    )
 }

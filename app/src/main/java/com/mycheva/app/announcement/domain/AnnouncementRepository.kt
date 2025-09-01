@@ -10,7 +10,7 @@ interface AnnouncementRepository {
 
     fun getToken(): Flow<String>
 
-    suspend fun getAnnouncements(token: String): Result<AnnouncementResponse, DataError.Remote>
+    suspend fun getAnnouncements(token: String): Result<List<Announcement>, DataError.Remote>
 
     suspend fun addBookmark(announcement: Announcement): Boolean
 

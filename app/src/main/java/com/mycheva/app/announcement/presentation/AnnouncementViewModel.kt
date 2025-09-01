@@ -72,11 +72,11 @@ class AnnouncementViewModel @Inject constructor(
     private fun loadAnnouncements(token: String) {
         _state.update { it.copy(isLoading = true) }
         viewModelScope.launch(Dispatchers.IO) {
-            repo.getAnnouncements("Bearer $token")
+            repo.getAnnouncements(token)
                 .onSuccess { result ->
-                    _state.update {
-                        it.copy(
-                            announcements = result.announcements.map { AnnouncementUi.from(it) },
+                    _state.update { state ->
+                        state.copy(
+                            announcements = result.map { AnnouncementUi.from(it) },
                             isLoading = false
                         )
                     }
