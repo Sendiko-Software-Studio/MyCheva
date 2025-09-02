@@ -2,9 +2,8 @@ package com.mycheva.app.announcement.presentation
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.mycheva.app.announcement.data.AnnouncementRepositoryImpl
 import com.mycheva.app.announcement.domain.Announcement
-import com.mycheva.app.core.database.BookmarkEntity
+import com.mycheva.app.announcement.domain.AnnouncementRepository
 import com.mycheva.app.core.network.utils.onError
 import com.mycheva.app.core.network.utils.onSuccess
 import com.mycheva.app.core.ui.utils.UiText
@@ -21,8 +20,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class AnnouncementViewModel @Inject constructor(
-    private val repo: AnnouncementRepositoryImpl
-): ViewModel() {
+    private val repo: AnnouncementRepository,
+) : ViewModel() {
 
     private val _token = repo.getToken()
     private val _state = MutableStateFlow(AnnouncementState())
@@ -31,7 +30,7 @@ class AnnouncementViewModel @Inject constructor(
     }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), AnnouncementState())
 
     fun onEvent(event: AnnouncementEvent) {
-        when(event) {
+        when (event) {
             AnnouncementEvent.OnClearState -> clearState()
 
             is AnnouncementEvent.OnAddBookmark -> addBookmark(event.announcement)

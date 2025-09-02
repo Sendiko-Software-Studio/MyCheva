@@ -1,18 +1,16 @@
 package com.mycheva.app.announcement.data
 
 import android.util.Log
-import com.mycheva.app.announcement.data.dto.AnnouncementResponse
 import com.mycheva.app.announcement.data.dto.toDomain
 import com.mycheva.app.announcement.domain.Announcement
 import com.mycheva.app.announcement.domain.AnnouncementRepository
-import com.mycheva.app.core.database.BookmarkDao
-import com.mycheva.app.core.database.BookmarkEntity
+import com.mycheva.app.bookmark.data.BookmarkDao
+import com.mycheva.app.bookmark.data.BookmarkEntity
 import com.mycheva.app.core.network.KtorClient
 import com.mycheva.app.core.network.utils.DataError
 import com.mycheva.app.core.network.utils.Result
 import com.mycheva.app.core.preferences.AppPreferences
 import kotlinx.coroutines.flow.Flow
-import javax.inject.Inject
 
 class AnnouncementRepositoryImpl(
     private val client: KtorClient,

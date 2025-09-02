@@ -1,7 +1,5 @@
 package com.mycheva.app.announcement.domain
 
-import com.mycheva.app.announcement.data.dto.AnnouncementResponse
-import com.mycheva.app.core.database.BookmarkEntity
 import com.mycheva.app.core.network.utils.DataError
 import com.mycheva.app.core.network.utils.Result
 import kotlinx.coroutines.flow.Flow
