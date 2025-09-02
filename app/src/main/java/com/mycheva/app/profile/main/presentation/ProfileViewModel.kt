@@ -144,7 +144,7 @@ class ProfileViewModel(
                             nim = user.data.nim,
                             faculty = user.data.faculty,
                             major = user.data.major,
-                            division = user.data.division,
+                            division = user.data.division.name,
                             imageUrl = user.profileUrl,
                             email = user.data.email
                         )

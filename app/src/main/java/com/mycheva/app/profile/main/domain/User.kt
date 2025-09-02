@@ -13,5 +13,5 @@ data class UserData(
     val email: String,
     val major: String,
     val faculty: String,
-    val division: String
+    val division: Division
 )

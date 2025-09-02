@@ -1,5 +1,6 @@
 package com.mycheva.app.profile.main.presentation
 
+import com.mycheva.app.profile.main.domain.Division
 import com.mycheva.app.profile.main.domain.User
 import com.mycheva.app.profile.main.domain.UserData
 
@@ -12,7 +13,7 @@ data class UserUi(
     val email: String,
     val major: String,
     val faculty: String,
-    val division: String
+    val division: Division
 ) {
     fun toUser(): User {
         return User(

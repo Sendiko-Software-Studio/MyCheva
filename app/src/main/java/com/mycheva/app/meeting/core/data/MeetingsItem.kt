@@ -43,7 +43,8 @@ fun MeetingsItem.toDomain(): Meeting {
         time = time,
         type = type,
         place = details,
-        id = id.toString()
+        id = id.toString(),
+        divisionId = divisionId
     )
 }
 

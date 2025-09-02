@@ -17,7 +17,8 @@ data class MeetingUi(
             time = time,
             type = type,
             place = place,
-            id = id
+            id = id,
+            divisionId = 0
         )
     }
 

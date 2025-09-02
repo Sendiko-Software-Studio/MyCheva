@@ -7,4 +7,5 @@ data class Meeting(
     val time: String,
     val type: String,
     val place: String,
+    val divisionId: Int
 )
