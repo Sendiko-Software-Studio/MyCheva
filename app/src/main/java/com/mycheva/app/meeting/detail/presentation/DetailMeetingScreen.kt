@@ -27,7 +27,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.substring
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -43,26 +42,26 @@ import com.mycheva.app.meeting.detail.domain.isValidUrl
 @Composable
 fun DetailMeetingScreen(
     state: DetailMeetingState,
-    eventId: String,
-    onEvent: (DetailMeetingAction) -> Unit,
+    meetingId: String,
+    onEvent: (DetailMeetingEvent) -> Unit,
     onNavigateBack: () -> Unit
 ) {
 
-    LaunchedEffect(key1 = eventId, key2 = state.token) {
-        if (eventId.isNotBlank() && state.token.isNotBlank()) {
-            onEvent(DetailMeetingAction.OnLoadSchedule(state.token, eventId))
+    LaunchedEffect(key1 = meetingId, key2 = state.token) {
+        if (meetingId.isNotBlank() && state.token.isNotBlank()) {
+            onEvent(DetailMeetingEvent.OnLoadSchedule(state.token, meetingId))
         }
     }
 
     NotificationBox(
-        message = state.notificationMessage,
+        message = state.notificationMessage.asString(),
         isLoading = state.isLoading,
         isErrorNotification = state.isRequestFailed
     ) {
         Scaffold(
             topBar = {
                 LargeTopBar(
-                    title = (state.eventsItem?.name ?: ""),
+                    title = (state.meeting?.name ?: ""),
                     navigationIcon = Icons.AutoMirrored.Rounded.ArrowBack,
                     navigationAction = { onNavigateBack() }
                 )
@@ -79,7 +78,7 @@ fun DetailMeetingScreen(
                 ) {
                     item {
                         AnimatedVisibility(
-                            visible = state.eventsItem != null,
+                            visible = state.meeting != null,
                             enter = fadeIn(),
                             exit = fadeOut()
                         ) {
@@ -90,19 +89,19 @@ fun DetailMeetingScreen(
                             ) {
                                 DateSection(
                                     modifier = Modifier.weight(1f),
-                                    date = state.eventsItem!!.date.substring(0, 10),
+                                    date = state.meeting!!.date.substring(0, 10),
                                 )
                                 Spacer(modifier = Modifier.width(16.dp))
                                 LocationSection(
                                     modifier = Modifier.weight(1f),
-                                    type = state.eventsItem!!.type.uppercase(),
+                                    type = state.meeting.type.uppercase(),
                                 )
                             }
                         }
                     }
                     item {
                         AnimatedVisibility(
-                            visible = state.eventsItem != null,
+                            visible = state.meeting != null,
                             enter = fadeIn(),
                             exit = fadeOut()
                         ) {
@@ -113,31 +112,31 @@ fun DetailMeetingScreen(
                             ) {
                                 TimeSection(
                                     modifier = Modifier.fillMaxWidth(1/2f),
-                                    time = state.eventsItem!!.time,
+                                    time = state.meeting!!.time,
                                 )
                             }
                         }
                     }
                     item {
                         AnimatedVisibility(
-                            visible = state.eventsItem != null,
+                            visible = state.meeting != null,
                             enter = fadeIn(),
                             exit = fadeOut()
                         ) {
                             DescriptionSection(
-                                description = state.eventsItem!!.desc
+                                description = state.meeting!!.place
                             )
                         }
                     }
                     item {
                         AnimatedVisibility(
-                            visible = state.eventsItem != null,
+                            visible = state.meeting != null,
                             enter = fadeIn(),
                             exit = fadeOut()
                         ) {
                             DetailSection(
-                                details = state.eventsItem!!.details,
-                                type = state.eventsItem.type
+                                details = state.meeting!!.place,
+                                type = state.meeting.type
                             )
                         }
                     }
@@ -284,7 +283,7 @@ fun TimeSection(
 private fun DetailScheduleScreenPrev() {
     DetailMeetingScreen(
         state = DetailMeetingState(),
-        eventId = "0",
+        meetingId = "0",
         onEvent = {}
     ) {
 
