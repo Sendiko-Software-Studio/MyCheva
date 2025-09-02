@@ -34,7 +34,8 @@ fun RepliesItem.toDomain(): Replies {
         userId = userId,
         forumId = forumId,
         content = content,
-        user = userItemWithRole.toDomain()
+        user = userItemWithRole.toDomain(),
+        time = createdAt
     )
 }
 
