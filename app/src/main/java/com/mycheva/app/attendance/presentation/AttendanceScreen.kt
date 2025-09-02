@@ -59,7 +59,6 @@ import java.util.concurrent.Executors
 )
 @Composable
 fun SharedTransitionScope.AttendanceScreen(
-    modifier: Modifier = Modifier,
     state: AttendanceState,
     onEvent: (AttendanceEvent) -> Unit,
     onNavigateBack: () -> Unit,
