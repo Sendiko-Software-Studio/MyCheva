@@ -58,9 +58,9 @@ class AttendanceViewModel(
             }
             _state.update { it.copy(isLoading = true, isScanning = true) }
             repository.postAttendance(
-                token = "Bearer $token",
-                eventId = state.value.eventId,
-                userId = state.value.userId,
+                token = token,
+                eventId = eventId,
+                userId = userId,
             ).onSuccess { response ->
                 _state.update {
                     it.copy(

@@ -56,14 +56,6 @@ import org.koin.androidx.compose.koinViewModel
 fun RootNavGraph(
     navController: NavHostController,
 ) {
-    val navBackStackEntry by navController.currentBackStackEntryAsState()
-    val isVisible =
-        navBackStackEntry?.destination?.route?.contains(DashboardScreen.toString()) ?: false || navBackStackEntry?.destination?.route?.contains(
-            ScheduleScreen.toString()
-        ) ?: false || navBackStackEntry?.destination?.route?.contains(ProfileScreen.toString()) ?: false
-    var currentRoute by remember {
-        mutableStateOf(DashboardScreen.toString())
-    }
     SharedTransitionLayout {
         NavHost(
             navController = navController,
@@ -140,7 +132,6 @@ fun RootNavGraph(
                         onEvent = viewModel::onEvent,
                         onNavigate = {
                             if (it is SplashScreen) {
-                                currentRoute = DashboardScreen.toString()
                                 navController.navigate(it) { popUpTo(it) { inclusive = false } }
                             } else {
                                 navController.navigate(it)
@@ -219,7 +210,6 @@ fun RootNavGraph(
                     )
                 }
                 composable<PostScreen> {
-                    val args = it.toRoute<PostScreen>()
                     val viewModel = koinViewModel<AddPostForumViewModel>()
                     val state by viewModel.state.collectAsStateWithLifecycle()
                     AddPostScreen(
