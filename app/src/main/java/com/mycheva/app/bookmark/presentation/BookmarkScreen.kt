@@ -48,9 +48,9 @@ fun BookmarkScreen(
             ) {
                 items(state.bookmarks) {
                     BookmarkCard(
-                        bookmark = BookmarkUi.toBookmarkUi(it),
+                        bookmark = it,
                         onRemoveBookmark = {
-                            onEvent(BookmarkEvent.OnRemoveBookmark(it))
+                            onEvent(BookmarkEvent.OnRemoveBookmark(it.toDomain()))
                         },
                     )
                 }

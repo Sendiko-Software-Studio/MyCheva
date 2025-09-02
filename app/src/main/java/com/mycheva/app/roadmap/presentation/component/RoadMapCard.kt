@@ -16,12 +16,13 @@ import androidx.compose.ui.unit.sp
 import com.mycheva.app.core.ui.theme.Neutral900
 import com.mycheva.app.core.ui.theme.Primary300
 import com.mycheva.app.core.ui.theme.poppinsFamily
-import com.mycheva.app.roadmap.data.RoadmapsItem
+import com.mycheva.app.roadmap.data.dto.RoadmapsItem
+import com.mycheva.app.roadmap.presentation.RoadMapUi
 
 @Composable
 fun RoadMapCard(
     modifier: Modifier = Modifier,
-    roadMapItem: RoadmapsItem
+    roadmap: RoadMapUi
 ) {
     Card(
         colors = CardDefaults.cardColors(
@@ -35,13 +36,13 @@ fun RoadMapCard(
             verticalArrangement = Arrangement.spacedBy(8.dp)
         ) {
             Text(
-                text = roadMapItem.title,
+                text = roadmap.title,
                 fontFamily = poppinsFamily,
                 fontWeight = FontWeight.Bold,
                 fontSize = 16.sp
             )
             Text(
-                text = roadMapItem.desc,
+                text = roadmap.desc,
                 fontFamily = poppinsFamily,
             )
         }
@@ -52,14 +53,11 @@ fun RoadMapCard(
 @Composable
 private fun RoadMapCardPrev() {
     Surface {
-        val data = RoadmapsItem(
-            createdAt = "",
-            updatedAt = "",
-            id = 0,
+        val data = RoadMapUi(
             divisionId = 0,
             title = "Lorem Ipsum",
             desc = "Lorem ipsum dolot sir amet adios forosum el kontole"
         )
-        RoadMapCard(roadMapItem = data, modifier = Modifier.padding(16.dp))
+        RoadMapCard(roadmap = data, modifier = Modifier.padding(16.dp))
     }
 }

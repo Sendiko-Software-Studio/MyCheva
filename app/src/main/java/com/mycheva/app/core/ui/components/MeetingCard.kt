@@ -25,13 +25,13 @@ import com.mycheva.app.core.ui.theme.Neutral50
 import com.mycheva.app.core.ui.theme.Neutral900
 import com.mycheva.app.core.ui.theme.Primary300
 import com.mycheva.app.core.ui.theme.poppinsFamily
-import com.mycheva.app.core.data.EventsItem
+import com.mycheva.app.meeting.main.presentation.MeetingUi
 
 @Composable
 fun MeetingCard(
     modifier: Modifier = Modifier,
-    eventsItem: EventsItem,
-    onClick: (eventId: String) -> Unit,
+    meeting: MeetingUi,
+    onClick: (meetingId: String) -> Unit,
 ) {
     ElevatedCard(
         modifier = modifier,
@@ -39,7 +39,7 @@ fun MeetingCard(
             containerColor = Primary300,
             contentColor = Neutral900,
         ),
-        onClick = { onClick(eventsItem.id.toString()) }
+        onClick = { onClick(meeting.id) }
     ) {
         Column(
             modifier = Modifier.padding(16.dp),
@@ -51,7 +51,7 @@ fun MeetingCard(
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Text(
-                    text = eventsItem.name,
+                    text = meeting.name,
                     fontFamily = poppinsFamily,
                     fontSize = 18.sp,
                     modifier = Modifier.weight(1f)
@@ -61,7 +61,7 @@ fun MeetingCard(
                     shape = RoundedCornerShape(8.dp)
                 ) {
                     Text(
-                        text = eventsItem.type.uppercase(),
+                        text = meeting.type.uppercase(),
                         fontFamily = poppinsFamily,
                         fontSize = 12.sp,
                         modifier = Modifier
@@ -80,7 +80,14 @@ fun MeetingCard(
                     contentDescription = "event"
                 )
                 Text(
-                    text = "${formatDateString(eventsItem.date.toString().substring(0, 10))}, ${eventsItem.time.substring(0, 5)}",
+                    text = "${
+                        formatDateString(
+                            meeting.date.substring(
+                                0,
+                                10
+                            )
+                        )
+                    }, ${meeting.time.substring(0, 5)}",
                     fontFamily = poppinsFamily
                 )
             }
@@ -94,7 +101,7 @@ fun MeetingCard(
                     contentDescription = "event"
                 )
                 Text(
-                    text = eventsItem.details,
+                    text = meeting.place,
                     fontFamily = poppinsFamily
                 )
             }
@@ -105,18 +112,14 @@ fun MeetingCard(
 @Preview
 @Composable
 private fun MeetingCardPrev() {
-    val data = EventsItem(
+    val data = MeetingUi(
         date = "2005-07-26",
-        createdAt = "",
         name = "Pertemuan 2: Introduction to Android Development",
-        details = "Indonesia",
-        id = 0,
+        id = "0",
         time = "00.00",
-        divisionId = 0,
         type = "ONSITE",
-        desc = "The day where gifted son born, destinied to take eveything",
-        updatedAt = ""
+        place = "Indonesia",
     )
 
-    MeetingCard(eventsItem = data, onClick = {})
+    MeetingCard(meeting = data, onClick = {})
 }

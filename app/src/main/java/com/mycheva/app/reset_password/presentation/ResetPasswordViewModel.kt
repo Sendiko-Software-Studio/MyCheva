@@ -2,11 +2,11 @@ package com.mycheva.app.reset_password.presentation
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.mycheva.app.core.network.NOT_FOUND
-import com.mycheva.app.core.network.SERVER_ERROR
-import com.mycheva.app.reset_password.data.ResetPasswordRequest
-import com.mycheva.app.reset_password.domain.ResetPasswordRepositoryImpl
-import dagger.hilt.android.lifecycle.HiltViewModel
+import com.mycheva.app.core.network.utils.onError
+import com.mycheva.app.core.network.utils.onSuccess
+import com.mycheva.app.core.ui.utils.UiText
+import com.mycheva.app.core.ui.utils.asUiText
+import com.mycheva.app.reset_password.data.ResetPasswordRepositoryImpl
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
@@ -14,11 +14,9 @@ import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import javax.inject.Inject
 
-@HiltViewModel
-class ResetPasswordViewModel @Inject constructor(
-    private val repository: ResetPasswordRepositoryImpl
+class ResetPasswordViewModel(
+    private val repository: ResetPasswordRepositoryImpl,
 ) : ViewModel() {
 
     private val _token = repository.getToken()
@@ -31,7 +29,7 @@ class ResetPasswordViewModel @Inject constructor(
         when (event) {
             is ResetPasswordEvent.OnEmailTextChange -> changeEmail(event.email)
             is ResetPasswordEvent.OnResetPassword -> resetPassword(event.token, event.email)
-            ResetPasswordEvent.OnEmailCleared -> clearEmailText ()
+            ResetPasswordEvent.OnEmailCleared -> clearEmailText()
             ResetPasswordEvent.ClearState -> clearState()
         }
     }
@@ -42,27 +40,21 @@ class ResetPasswordViewModel @Inject constructor(
 
     private fun resetPassword(token: String, email: String) {
         _state.update { it.copy(isLoading = true) }
-        val data = ResetPasswordRequest(email = email)
         viewModelScope.launch(Dispatchers.IO) {
-            repository.resetPassword(token, data)
+            repository.resetPassword(token, email)
                 .onSuccess { result ->
                     _state.update {
                         it.copy(
                             isRequestSuccess = true,
                             isLoading = false,
-                            notificationMessage = result.message
+                            notificationMessage = UiText.DynamicString(result)
                         )
                     }
                 }
-                .onFailure { error ->
+                .onError { error ->
                     _state.update { it.copy(isLoading = false) }
-                    when (error.message) {
-                        NOT_FOUND -> _state.update {
-                            it.copy(isRequestFailed = true, notificationMessage = "User not found.")
-                        }
-                        SERVER_ERROR -> _state.update {
-                            it.copy(isRequestFailed = true, notificationMessage = "Server error.")
-                        }
+                    _state.update {
+                        it.copy(isRequestFailed = true, notificationMessage = error.asUiText())
                     }
                 }
         }

@@ -59,14 +59,14 @@ fun LoginScreen(
     }
 
     LaunchedEffect(key1 = state.isSignInSuccessful) {
-        if (state.isSignInSuccessful){
+        if (state.isSignInSuccessful) {
             delay(1000)
             onNavigate(MainGraph)
         }
     }
 
     NotificationBox(
-        message = state.notificationMessage,
+        message = state.notificationMessage.asString(),
         isErrorNotification = state.isSignInFailed,
         isLoading = state.isLoading,
         content = {

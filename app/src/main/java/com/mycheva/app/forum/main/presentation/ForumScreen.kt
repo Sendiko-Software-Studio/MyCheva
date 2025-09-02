@@ -25,6 +25,7 @@ import androidx.compose.material.icons.rounded.Search
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
+import androidx.compose.material3.FloatingActionButtonDefaults
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -36,6 +37,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import com.mycheva.app.R
@@ -51,16 +53,16 @@ import com.mycheva.app.core.ui.theme.poppinsFamily
 import com.mycheva.app.forum.main.presentation.component.ForumPostCard
 import kotlinx.coroutines.delay
 
-@RequiresApi(Build.VERSION_CODES.O)
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalSharedTransitionApi::class)
 @Composable
 fun SharedTransitionScope.ForumScreen(
     state: ForumState,
     onEvent: (ForumEvent) -> Unit,
     onNavigate: (destination: Any?) -> Unit,
-    animatedContentScope: AnimatedContentScope
+    animatedContentScope: AnimatedContentScope,
 ) {
     val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior()
+    val context = LocalContext.current
 
     LaunchedEffect(key1 = state.token) {
         if (state.token.isNotBlank()) {
@@ -70,14 +72,14 @@ fun SharedTransitionScope.ForumScreen(
     }
 
     LaunchedEffect(key1 = state.notificationMessage) {
-        if (state.notificationMessage.isNotBlank()) {
+        if (state.notificationMessage.asString(context).isNotBlank()) {
             delay(2000)
             onEvent(ForumEvent.OnClearNotification)
         }
     }
 
     NotificationBox(
-        message = state.notificationMessage,
+        message = state.notificationMessage.asString(),
         isLoading = false,
         isErrorNotification = state.isRequestError
     ) {
@@ -118,7 +120,8 @@ fun SharedTransitionScope.ForumScreen(
             },
             content = { paddingValues ->
                 val padding = PaddingValues(
-                    top = paddingValues.calculateTopPadding()
+                    top = paddingValues.calculateTopPadding(),
+                    bottom = (FloatingActionButtonDefaults.LargeIconSize.value * 3).toInt().dp
                 )
                 LazyColumn(
                     contentPadding = padding,
@@ -173,12 +176,12 @@ fun SharedTransitionScope.ForumScreen(
                             }
                         }
                     }
-                    items(state.forums.reversed()) { post ->
+                    items(state.forums) { post ->
                         if (state.forums.first() != post) {
                             HorizontalDivider(modifier = Modifier.fillMaxWidth())
                         }
                         ForumPostCard(
-                            forum = ForumUi.toForumUi(post),
+                            forum = ForumUi.fromDomain(post),
                             modifier = Modifier.padding(bottom = 16.dp),
                             onNavigate = {
                                 onNavigate(CommentScreen(forumId = it))

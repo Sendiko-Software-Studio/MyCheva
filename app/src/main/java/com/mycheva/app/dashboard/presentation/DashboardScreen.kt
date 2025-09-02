@@ -1,7 +1,5 @@
 package com.mycheva.app.dashboard.presentation
 
-import android.os.Build
-import androidx.annotation.RequiresApi
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.AnimatedContentScope
 import androidx.compose.animation.ExperimentalSharedTransitionApi
@@ -46,6 +44,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.input.nestedscroll.nestedScroll
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -58,6 +57,7 @@ import com.mycheva.app.core.navigation.ForumScreen
 import com.mycheva.app.core.navigation.ProfileScreen
 import com.mycheva.app.core.navigation.RoadmapScreen
 import com.mycheva.app.core.navigation.ScheduleScreen
+import com.mycheva.app.core.ui.components.MeetingCard
 import com.mycheva.app.core.ui.components.NotificationBox
 import com.mycheva.app.core.ui.theme.Neutral400
 import com.mycheva.app.core.ui.theme.Neutral50
@@ -65,22 +65,21 @@ import com.mycheva.app.core.ui.theme.Neutral900
 import com.mycheva.app.core.ui.theme.Primary500
 import com.mycheva.app.core.ui.theme.poppinsFamily
 import com.mycheva.app.dashboard.presentation.component.EmptyMeetingCard
-import com.mycheva.app.core.ui.components.MeetingCard
 import com.mycheva.app.dashboard.presentation.component.MenuCard
 import kotlinx.coroutines.delay
 import java.time.LocalTime
 
-@RequiresApi(Build.VERSION_CODES.O)
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalSharedTransitionApi::class)
 @Composable
 fun SharedTransitionScope.DashboardScreen(
     state: DashboardState,
     onEvent: (DashboardEvent) -> Unit,
     onNavigate: (route: Any) -> Unit,
-    animatedContentScope: AnimatedContentScope
+    animatedContentScope: AnimatedContentScope,
 ) {
     val topAppBarScrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior()
     val currentHour = LocalTime.now().hour
+    val context = LocalContext.current
 
     val greeting: String = when (currentHour) {
         in 0..11 -> "Selamat pagi,"
@@ -101,14 +100,14 @@ fun SharedTransitionScope.DashboardScreen(
     }
 
     LaunchedEffect(key1 = state.notificationMessage) {
-        if (state.notificationMessage.isNotBlank()) {
+        if (state.notificationMessage.asString(context).isNotBlank()) {
             delay(2000)
             onEvent(DashboardEvent.OnClearState)
         }
     }
 
     NotificationBox(
-        message = state.notificationMessage,
+        message = state.notificationMessage.asString(),
         isErrorNotification = state.isRequestFailed
     ) {
         Scaffold(
@@ -142,12 +141,6 @@ fun SharedTransitionScope.DashboardScreen(
                 )
             },
         ) {
-            val contentPadding = PaddingValues(
-                top = it.calculateTopPadding(),
-                bottom = it.calculateBottomPadding(),
-                start = 16.dp,
-                end = 16.dp
-            )
             Column(
                 Modifier.padding(top = it.calculateTopPadding())
             ) {
@@ -251,7 +244,7 @@ fun SharedTransitionScope.DashboardScreen(
                                         if (state.latestEvent != null) {
                                             MeetingCard(
                                                 modifier = Modifier.fillMaxWidth(),
-                                                eventsItem = state.latestEvent,
+                                                meeting = state.latestEvent,
                                                 onClick = { eventId ->
                                                     onNavigate(DetailSchedule(eventId))
                                                 }

@@ -2,6 +2,8 @@ package com.mycheva.app.core.database
 
 import androidx.room.Database
 import androidx.room.RoomDatabase
+import com.mycheva.app.bookmark.data.BookmarkDao
+import com.mycheva.app.bookmark.data.BookmarkEntity
 
 @Database(
     entities = [

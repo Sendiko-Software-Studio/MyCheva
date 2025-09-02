@@ -2,23 +2,22 @@ package com.mycheva.app.login.presentation
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.mycheva.app.core.network.NOT_FOUND
-import com.mycheva.app.core.network.SERVER_ERROR
-import com.mycheva.app.core.network.UNAUTHORIZED
+import com.mycheva.app.core.network.utils.DataError
+import com.mycheva.app.core.network.utils.onError
+import com.mycheva.app.core.network.utils.onSuccess
 import com.mycheva.app.core.ui.data.TextFieldError
-import com.mycheva.app.login.data.LoginRequest
-import com.mycheva.app.login.domain.LoginRepositoryImpl
-import dagger.hilt.android.lifecycle.HiltViewModel
+import com.mycheva.app.core.ui.utils.UiText
+import com.mycheva.app.core.ui.utils.asUiText
+import com.mycheva.app.login.data.LoginRepositoryImpl
+import com.mycheva.app.login.domain.LoginRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import javax.inject.Inject
 
-@HiltViewModel
-class LoginViewModel @Inject constructor(
-    private val repository: LoginRepositoryImpl
+class LoginViewModel(
+    private val repository: LoginRepository,
 ) : ViewModel() {
 
     private val _state = MutableStateFlow(LoginState())
@@ -38,7 +37,7 @@ class LoginViewModel @Inject constructor(
     private fun clearState() {
         _state.update {
             it.copy(
-                notificationMessage = "",
+                notificationMessage = UiText.DynamicString(""),
                 isLoading = false,
                 isSignInFailed = false,
             )
@@ -69,44 +68,40 @@ class LoginViewModel @Inject constructor(
             return
         }
         _state.update { it.copy(isLoading = true) }
-        val data = LoginRequest(
-                name = state.value.usernameText,
-                password = state.value.passwordText
-            )
         viewModelScope.launch(Dispatchers.IO) {
-            repository.login(data)
+            repository.login(state.value.usernameText, state.value.passwordText)
                 .onSuccess { result ->
                     repository.saveToken(result.token)
-                    repository.saveUserId(result.user.id.toString())
+                    repository.saveUserId(result.id.toString())
                     _state.update {
                         it.copy(
                             isLoading = false,
                             isSignInSuccessful = true,
-                            notificationMessage = "Selamat datang, ${result.user.name}"
+                            notificationMessage = UiText.DynamicString("Selamat datang, ${result.name}")
                         )
                     }
                 }
-                .onFailure { code ->
-                    when (code.message) {
-                        UNAUTHORIZED -> _state.update {
+                .onError { error ->
+                    when (error) {
+                        DataError.Remote.NOT_FOUND -> _state.update {
                             it.copy(
                                 isLoading = false,
                                 isSignInFailed = true,
-                                notificationMessage = "Password didn't match."
+                                notificationMessage = UiText.DynamicString("User not found.")
                             )
                         }
-                        NOT_FOUND -> _state.update {
+                        DataError.Remote.UNAUTHORIZED -> _state.update {
                             it.copy(
                                 isLoading = false,
                                 isSignInFailed = true,
-                                notificationMessage = "Account not found"
+                                notificationMessage = UiText.DynamicString("Password not matched.")
                             )
                         }
-                        SERVER_ERROR -> _state.update {
+                        else -> _state.update {
                             it.copy(
                                 isLoading = false,
                                 isSignInFailed = true,
-                                notificationMessage = "Server error."
+                                notificationMessage = error.asUiText()
                             )
                         }
                     }

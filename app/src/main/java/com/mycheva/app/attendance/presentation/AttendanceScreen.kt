@@ -59,9 +59,8 @@ import java.util.concurrent.Executors
 )
 @Composable
 fun SharedTransitionScope.AttendanceScreen(
-    modifier: Modifier = Modifier,
-    state: AttendanceScreenState,
-    onEvent: (AttendanceScreenEvent) -> Unit,
+    state: AttendanceState,
+    onEvent: (AttendanceEvent) -> Unit,
     onNavigateBack: () -> Unit,
     animatedContentScope: AnimatedContentScope
 ) {
@@ -79,9 +78,9 @@ fun SharedTransitionScope.AttendanceScreen(
     )
 
     LaunchedEffect(key1 = state.notificationMessage) {
-        if (state.notificationMessage.isNotEmpty()) {
+        if (state.notificationMessage.asString(context).isNotEmpty()) {
             delay(2000)
-            onEvent(AttendanceScreenEvent.OnClearState)
+            onEvent(AttendanceEvent.OnClearState)
         }
     }
 
@@ -93,7 +92,7 @@ fun SharedTransitionScope.AttendanceScreen(
     }
 
     NotificationBox(
-        message = state.notificationMessage,
+        message = state.notificationMessage.asString(context),
         isLoading = state.isLoading,
         isErrorNotification = state.isRequestFailed
     ) {
@@ -158,7 +157,7 @@ fun SharedTransitionScope.AttendanceScreen(
                         cameraProviderFuture.addListener(
                             {
                                 preview = Preview.Builder().build().also {
-                                    it.setSurfaceProvider(previewView.surfaceProvider)
+                                    it.surfaceProvider = previewView.surfaceProvider
                                 }
                                 val cameraProvider: ProcessCameraProvider =
                                     cameraProviderFuture.get()
@@ -166,7 +165,7 @@ fun SharedTransitionScope.AttendanceScreen(
                                     barcodes.forEach { barcode ->
                                         barcode.rawValue?.let { barcodeValue ->
                                             if (state.eventId.isBlank())
-                                                onEvent(AttendanceScreenEvent.OnEventIdRead(state.token, barcodeValue, state.userId))
+                                                onEvent(AttendanceEvent.OnEventIdRead(state.token, barcodeValue, state.userId))
                                         }
                                     }
                                 }
@@ -183,16 +182,12 @@ fun SharedTransitionScope.AttendanceScreen(
 
                                 try {
                                     cameraProvider.unbindAll()
-                                    val camera = cameraProvider.bindToLifecycle(
+                                    cameraProvider.bindToLifecycle(
                                         lifecycleOwner,
                                         cameraSelector,
                                         preview,
                                         imageAnalysis
                                     )
-//                                isFlashOn.observe(lifecycleOwner) {
-//                                    Log.i("DEBUG", "FlashState: $it")
-//                                    toggleFash(camera, it)
-//                                }
                                 } catch (e: Exception) {
                                     Log.d("TAG", "CameraPreview: ${e.localizedMessage}")
                                 }

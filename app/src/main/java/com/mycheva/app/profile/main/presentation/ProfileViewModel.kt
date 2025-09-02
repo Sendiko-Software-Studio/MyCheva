@@ -1,15 +1,14 @@
 package com.mycheva.app.profile.main.presentation
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.mycheva.app.core.network.NOT_FOUND
-import com.mycheva.app.core.network.SERVER_ERROR
-import com.mycheva.app.core.network.UNAUTHORIZED
-import com.mycheva.app.profile.main.data.ChangePasswordRequest
-import com.mycheva.app.profile.main.data.ChangeUsernameRequest
-import com.mycheva.app.profile.main.domain.ProfileRepositoryImpl
-import dagger.hilt.android.lifecycle.HiltViewModel
+import com.mycheva.app.core.network.utils.DataError.Remote.NOT_FOUND
+import com.mycheva.app.core.network.utils.DataError.Remote.UNAUTHORIZED
+import com.mycheva.app.core.network.utils.onError
+import com.mycheva.app.core.network.utils.onSuccess
+import com.mycheva.app.core.ui.utils.UiText
+import com.mycheva.app.core.ui.utils.asUiText
+import com.mycheva.app.profile.main.domain.ProfileRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -18,11 +17,9 @@ import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import javax.inject.Inject
 
-@HiltViewModel
-class ProfileViewModel @Inject constructor(
-    private val repository: ProfileRepositoryImpl
+class ProfileViewModel(
+    private val repository: ProfileRepository
 ) : ViewModel() {
 
     private val _token = repository.getToken()
@@ -49,7 +46,7 @@ class ProfileViewModel @Inject constructor(
     }
 
     private fun clearMessage() {
-        _state.update { it.copy(notificationMessage = "", isError = false) }
+        _state.update { it.copy(notificationMessage = UiText.DynamicString(""), isError = false) }
     }
 
     private fun usernameSheetToggle(visible: Boolean) {
@@ -70,34 +67,23 @@ class ProfileViewModel @Inject constructor(
 
     private fun editUsername(username: String) {
         _state.update { it.copy(isLoadingUsername = true) }
-        val bearerToken = "Bearer ${state.value.token}"
-        val request = ChangeUsernameRequest(name = username)
         viewModelScope.launch(Dispatchers.IO) {
             repository.changeUsername(
-                token = bearerToken,
+                token = state.value.token,
                 userId = state.value.id,
-                request = request
+                username = username,
             ).onSuccess { result ->
-                Log.i("LOADING_USERNAME", "editUsername: ${state.value.isLoading && !state.value.isEditingUsername}")
                 _state.update {
                     it.copy(
                         isLoadingUsername = false,
-                        notificationMessage = result,
+                        notificationMessage = UiText.DynamicString(result),
                         isEditUsernameSuccess = true,
                         isEditingUsername = true
                     )
                 }
-            }.onFailure { error ->
-                when (error.message) {
-                    NOT_FOUND -> _state.update {
-                        it.copy(isError = true, notificationMessage = "User not found.")
-                    }
-                    UNAUTHORIZED -> _state.update {
-                        it.copy(isError = true, notificationMessage = "Unauthorized, please login again.")
-                    }
-                    SERVER_ERROR -> _state.update {
-                        it.copy(isError = true, notificationMessage = "Server error, try again later.")
-                    }
+            }.onError { error ->
+                _state.update {
+                    it.copy(isError = true, notificationMessage = error.asUiText(), isLoading = false)
                 }
             }
         }
@@ -105,34 +91,24 @@ class ProfileViewModel @Inject constructor(
 
     private fun editPassword(password: String, oldPassword: String) {
         _state.update { it.copy(isLoadingPassword = true) }
-        val bearerToken = "Bearer ${state.value.token}"
-        val data = ChangePasswordRequest(password, oldPassword)
         viewModelScope.launch(Dispatchers.IO) {
-            repository.changePassword(bearerToken, state.value.id, data)
+            repository.changePassword(state.value.token, state.value.id, password, oldPassword)
                 .onSuccess { result ->
                     _state.update {
                         it.copy(
                             isLoadingPassword = false,
-                            notificationMessage = result,
+                            notificationMessage = UiText.DynamicString(result),
                             isChangingPasswordSuccess = true
                         )
                     }
                 }
-                .onFailure { error ->
-                    when (error.message) {
-                        NOT_FOUND -> _state.update {
-                            it.copy(isPasswordNotMatch = true, notificationMessage = "User not found.")
+                .onError { error ->
+                    when (error) {
+                        UNAUTHORIZED -> _state.update {
+                            it.copy(isPasswordNotMatch = true, isError = true, notificationMessage = UiText.DynamicString("Password not matched."))
                         }
-                        UNAUTHORIZED -> viewModelScope.launch {
-                            _state.update {
-                                it.copy(isPasswordNotMatch = true, notificationMessage = "Password didn't match.")
-                                delay(1000)
-                                it.copy(isPasswordNotMatch = true, isLoadingPassword = false)
-                            }
-                        }
-
-                        SERVER_ERROR -> _state.update {
-                            it.copy(isPasswordNotMatch = true, notificationMessage = "Server error, try again later.")
+                        else -> _state.update {
+                            it.copy(isError = true, notificationMessage = error.asUiText())
                         }
                     }
                 }
@@ -148,7 +124,7 @@ class ProfileViewModel @Inject constructor(
                 it.copy(
                     isLoading = false,
                     isError = false,
-                    notificationMessage = "Logout success.",
+                    notificationMessage = UiText.DynamicString("Logout success."),
                     isLogoutSuccess = true
                 )
             }
@@ -157,48 +133,30 @@ class ProfileViewModel @Inject constructor(
 
     private fun getProfile(token: String, userId: String) {
         _state.update { it.copy(isLoading = true) }
-        val bearerToken = "Bearer $token"
         viewModelScope.launch(Dispatchers.IO) {
-            repository.getUser(bearerToken, userId)
+            repository.getUser(token, userId)
                 .onSuccess { user ->
                     _state.update {
                         it.copy(
                             isLoading = false,
-                            name = user.userDatum.fullName,
+                            name = user.data.fullName,
                             username = user.name,
-                            nim = user.userDatum.nim,
-                            faculty = user.userDatum.faculty,
-                            major = user.userDatum.major,
-                            division = user.userDatum.division.name,
-                            imageUrl = user.profileUrl?:"",
-                            email = user.userDatum.email
+                            nim = user.data.nim,
+                            faculty = user.data.faculty,
+                            major = user.data.major,
+                            division = user.data.division.name,
+                            imageUrl = user.profileUrl,
+                            email = user.data.email
                         )
                     }
                 }
-                .onFailure { error ->
-                    when (error.message) {
-                        UNAUTHORIZED -> _state.update {
-                            it.copy(
-                                isLoading = false,
-                                isError = true,
-                                notificationMessage = "Password didn't match."
-                            )
-                        }
-
+                .onError { error ->
+                    when (error) {
                         NOT_FOUND -> _state.update {
-                            it.copy(
-                                isLoading = false,
-                                isError = true,
-                                notificationMessage = "Account not found."
-                            )
+                            it.copy(isError = true, isLoading = false, notificationMessage = UiText.DynamicString("User not found."))
                         }
-
-                        SERVER_ERROR -> _state.update {
-                            it.copy(
-                                isLoading = false,
-                                isError = true,
-                                notificationMessage = "Server error."
-                            )
+                        else -> _state.update {
+                            it.copy(isError = true, isLoading = false, notificationMessage = error.asUiText())
                         }
                     }
                 }
@@ -209,7 +167,7 @@ class ProfileViewModel @Inject constructor(
         _state.update {
             it.copy(
                 isLoading = false,
-                notificationMessage = "",
+                notificationMessage = UiText.DynamicString(""),
                 isError = false,
                 isEditingUsername = false,
                 isEditUsernameSuccess = false,

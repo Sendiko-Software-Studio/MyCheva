@@ -1,8 +1,6 @@
 package com.mycheva.app.core.navigation
 
 import android.annotation.SuppressLint
-import android.os.Build
-import androidx.annotation.RequiresApi
 import androidx.compose.animation.AnimatedContentTransitionScope
 import androidx.compose.animation.ExperimentalSharedTransitionApi
 import androidx.compose.animation.SharedTransitionLayout
@@ -11,32 +9,27 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.navigation
 import androidx.navigation.toRoute
 import com.mycheva.app.announcement.presentation.AnnouncementScreen
 import com.mycheva.app.announcement.presentation.AnnouncementViewModel
 import com.mycheva.app.attendance.presentation.AttendanceScreen
-import com.mycheva.app.attendance.presentation.AttendanceScreenViewModel
+import com.mycheva.app.attendance.presentation.AttendanceViewModel
 import com.mycheva.app.bookmark.presentation.BookmarkScreen
 import com.mycheva.app.bookmark.presentation.BookmarkViewModel
 import com.mycheva.app.dashboard.presentation.DashboardScreen
 import com.mycheva.app.dashboard.presentation.DashboardViewModel
 import com.mycheva.app.forum.add.presentation.AddPostForumViewModel
 import com.mycheva.app.forum.add.presentation.AddPostScreen
-import com.mycheva.app.forum.comment.presentation.CommentScreen
-import com.mycheva.app.forum.comment.presentation.CommentViewModel
 import com.mycheva.app.forum.main.presentation.ForumScreen
 import com.mycheva.app.forum.main.presentation.ForumViewModel
+import com.mycheva.app.forum.replies.presentation.RepliesScreen
+import com.mycheva.app.forum.replies.presentation.RepliesViewModel
 import com.mycheva.app.login.presentation.LoginScreen
 import com.mycheva.app.login.presentation.LoginViewModel
 import com.mycheva.app.meeting.detail.presentation.DetailMeetingScreen
@@ -51,23 +44,14 @@ import com.mycheva.app.roadmap.presentation.RoadMapScreen
 import com.mycheva.app.roadmap.presentation.RoadMapViewModel
 import com.mycheva.app.splashscreen.presentation.SplashScreen
 import com.mycheva.app.splashscreen.presentation.SplashScreenViewModel
+import org.koin.androidx.compose.koinViewModel
 
-@RequiresApi(Build.VERSION_CODES.O)
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @OptIn(ExperimentalSharedTransitionApi::class)
 @Composable
 fun RootNavGraph(
-    modifier: Modifier = Modifier,
-    navController: NavHostController
+    navController: NavHostController,
 ) {
-    val navBackStackEntry by navController.currentBackStackEntryAsState()
-    val isVisible =
-        navBackStackEntry?.destination?.route?.contains(DashboardScreen.toString()) ?: false || navBackStackEntry?.destination?.route?.contains(
-            ScheduleScreen.toString()
-        ) ?: false || navBackStackEntry?.destination?.route?.contains(ProfileScreen.toString()) ?: false
-    var currentRoute by remember {
-        mutableStateOf(DashboardScreen.toString())
-    }
     SharedTransitionLayout {
         NavHost(
             navController = navController,
@@ -88,7 +72,7 @@ fun RootNavGraph(
                 startDestination = SplashScreen
             ) {
                 composable<SplashScreen> {
-                    val viewModel = hiltViewModel<SplashScreenViewModel>()
+                    val viewModel = koinViewModel<SplashScreenViewModel>()
                     val state by viewModel.state.collectAsStateWithLifecycle()
                     SplashScreen(
                         animatedVisibilityScope = this,
@@ -99,7 +83,7 @@ fun RootNavGraph(
                     )
                 }
                 composable<LoginScreen> {
-                    val viewModel = hiltViewModel<LoginViewModel>()
+                    val viewModel = koinViewModel<LoginViewModel>()
                     val state by viewModel.state.collectAsStateWithLifecycle()
                     LoginScreen(
                         state = state,
@@ -110,7 +94,7 @@ fun RootNavGraph(
                     )
                 }
                 composable<ResetPasswordScreen> {
-                    val viewModel = hiltViewModel<ResetPasswordViewModel>()
+                    val viewModel = koinViewModel<ResetPasswordViewModel>()
                     val state by viewModel.state.collectAsStateWithLifecycle()
                     ResetPasswordScreen(
                         state = state,
@@ -125,7 +109,7 @@ fun RootNavGraph(
                 startDestination = DashboardScreen,
             ) {
                 composable<DashboardScreen> {
-                    val viewModel = hiltViewModel<DashboardViewModel>()
+                    val viewModel = koinViewModel<DashboardViewModel>()
                     val state by viewModel.state.collectAsStateWithLifecycle()
                     DashboardScreen(
                         state = state,
@@ -137,14 +121,13 @@ fun RootNavGraph(
                     )
                 }
                 composable<ProfileScreen> {
-                    val viewModel = hiltViewModel<ProfileViewModel>()
+                    val viewModel = koinViewModel<ProfileViewModel>()
                     val state by viewModel.state.collectAsStateWithLifecycle()
                     ProfileScreen(
                         state = state,
                         onEvent = viewModel::onEvent,
                         onNavigate = {
                             if (it is SplashScreen) {
-                                currentRoute = DashboardScreen.toString()
                                 navController.navigate(it) { popUpTo(it) { inclusive = false } }
                             } else {
                                 navController.navigate(it)
@@ -153,7 +136,7 @@ fun RootNavGraph(
                     )
                 }
                 composable<ScheduleScreen> {
-                    val viewModel = hiltViewModel<MeetingsViewModel>()
+                    val viewModel = koinViewModel<MeetingsViewModel>()
                     val state by viewModel.state.collectAsStateWithLifecycle()
                     MeetingsScreen(
                         state = state,
@@ -168,10 +151,10 @@ fun RootNavGraph(
                 }
                 composable<DetailSchedule> {
                     val args = it.toRoute<DetailSchedule>()
-                    val viewModel = hiltViewModel<DetailMeetingViewModel>()
+                    val viewModel = koinViewModel<DetailMeetingViewModel>()
                     val state by viewModel.state.collectAsStateWithLifecycle()
                     DetailMeetingScreen(
-                        eventId = args.eventId,
+                        meetingId = args.eventId,
                         state = state,
                         onEvent = viewModel::onEvent,
                         onNavigateBack = {
@@ -180,7 +163,7 @@ fun RootNavGraph(
                     )
                 }
                 composable<AttendanceScreen> {
-                    val viewModel = hiltViewModel<AttendanceScreenViewModel>()
+                    val viewModel = koinViewModel<AttendanceViewModel>()
                     val state by viewModel.state.collectAsStateWithLifecycle()
                     AttendanceScreen(
                         state = state,
@@ -192,7 +175,7 @@ fun RootNavGraph(
                     )
                 }
                 composable<AnnouncementScreen> {
-                    val viewModel = hiltViewModel<AnnouncementViewModel>()
+                    val viewModel = koinViewModel<AnnouncementViewModel>()
                     val state by viewModel.state.collectAsStateWithLifecycle()
                     AnnouncementScreen(
                         state = state,
@@ -206,7 +189,7 @@ fun RootNavGraph(
                     )
                 }
                 composable<ForumScreen> {
-                    val viewModel = hiltViewModel<ForumViewModel>()
+                    val viewModel = koinViewModel<ForumViewModel>()
                     val state by viewModel.state.collectAsStateWithLifecycle()
                     ForumScreen(
                         state = state,
@@ -223,8 +206,7 @@ fun RootNavGraph(
                     )
                 }
                 composable<PostScreen> {
-                    val args = it.toRoute<PostScreen>()
-                    val viewModel = hiltViewModel<AddPostForumViewModel>()
+                    val viewModel = koinViewModel<AddPostForumViewModel>()
                     val state by viewModel.state.collectAsStateWithLifecycle()
                     AddPostScreen(
                         state = state,
@@ -236,9 +218,9 @@ fun RootNavGraph(
                 }
                 composable<CommentScreen> {
                     val args = it.toRoute<CommentScreen>()
-                    val viewModel = hiltViewModel<CommentViewModel>()
+                    val viewModel = koinViewModel<RepliesViewModel>()
                     val state by viewModel.state.collectAsStateWithLifecycle()
-                    CommentScreen(
+                    RepliesScreen(
                         state = state,
                         onEvent = viewModel::onEvent,
                         forumId = args.forumId,
@@ -248,7 +230,7 @@ fun RootNavGraph(
                     )
                 }
                 composable<BookmarkScreen> {
-                    val viewModel = hiltViewModel<BookmarkViewModel>()
+                    val viewModel = koinViewModel<BookmarkViewModel>()
                     val state by viewModel.state.collectAsStateWithLifecycle()
                     BookmarkScreen(
                         state = state,
@@ -262,7 +244,7 @@ fun RootNavGraph(
                 }
                 composable<RoadmapScreen> {
                     val args = it.toRoute<RoadmapScreen>()
-                    val viewModel = hiltViewModel<RoadMapViewModel>()
+                    val viewModel = koinViewModel<RoadMapViewModel>()
                     val state by viewModel.state.collectAsStateWithLifecycle()
                     RoadMapScreen(
                         divisionId = args.divisionId,

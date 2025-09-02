@@ -3,7 +3,6 @@ plugins {
     alias(libs.plugins.jetbrains.kotlin.android)
     alias(libs.plugins.kotlin.serialization)
     alias(libs.plugins.compose.compiler)
-    alias(libs.plugins.dagger.hilt.android)
     alias(libs.plugins.google.devtools.ksp)
 }
 
@@ -40,15 +39,14 @@ android {
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_17
         targetCompatibility = JavaVersion.VERSION_17
+        isCoreLibraryDesugaringEnabled = true // Enable it here
     }
     kotlinOptions {
         jvmTarget = "17"
+        freeCompilerArgs = listOf("-XXLanguage:+PropertyParamAnnotationDefaultTargetMode")
     }
     buildFeatures {
         compose = true
-    }
-    composeOptions {
-        kotlinCompilerExtensionVersion = "1.5.1"
     }
     packaging {
         resources {
@@ -60,6 +58,7 @@ android {
 
 dependencies {
 
+    /* Core Libraries */
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.androidx.activity.compose)
@@ -70,26 +69,43 @@ dependencies {
     implementation(libs.androidx.material3)
     implementation(libs.androidx.navigation.compose)
     implementation(libs.androidx.lifecycle.viewmodel.compose)
-    implementation(libs.androidx.material.icons.extended)
-    implementation(libs.androidx.camera.camera2)
-    implementation(libs.androidx.camera.lifecycle)
-    implementation(libs.androidx.camera.view)
     implementation(libs.com.google.mlkit.barcode.scanning)
     implementation(libs.com.google.accompanist.permission)
     implementation(libs.kotlinx.serialization.json)
+    coreLibraryDesugaring(libs.desugar.jdk.libs)
+
+    /* Datastore */
     implementation(libs.androidx.datastore.preferences)
-    implementation(libs.com.google.dagger.hilt.android)
-    implementation(libs.androidx.hilt.navigation.compose)
-    ksp(libs.com.google.dagger.hilt.android.compiler)
+
+    /* CameraX */
+    implementation(libs.androidx.camera.camera2)
+    implementation(libs.androidx.camera.lifecycle)
+    implementation(libs.androidx.camera.view)
+
+    /* UI Libraries */
+    implementation(libs.various.cards)
     implementation(libs.coil.compose)
     implementation(libs.content.box.with.notification)
-    implementation(libs.com.squareup.retrofit2.retrofit)
-    implementation(libs.com.squareup.retrofit2.converter.gson)
-    implementation(libs.com.squareup.okhttp3.okhttp)
-    implementation(libs.com.squareup.okhttp3.logging.interceptor)
-    implementation(libs.various.cards)
+    implementation(libs.androidx.material.icons.extended)
+
+    /* Room Database */
     implementation(libs.androidx.room.ktx)
     ksp(libs.androidx.room.compiler)
+
+    /* Koin Android */
+    implementation(libs.koin.android)
+    implementation(libs.koin.androidx.compose)
+    implementation(libs.koin.compose.viewmodel)
+
+    /* Ktor OkHttp */
+    implementation(libs.ktor.client.okhttp)
+    implementation(libs.ktor.client.core)
+    implementation(libs.ktor.client.logging)
+    implementation(libs.ktor.serialization.kotlinx.json)
+    implementation(libs.ktor.client.content.negotiation)
+    implementation(libs.ktor.client.auth)
+
+    /* Test Libraries */
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)

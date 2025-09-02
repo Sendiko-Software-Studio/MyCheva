@@ -1,12 +1,14 @@
 package com.mycheva.app.dashboard.presentation
 
-import android.os.Build
-import androidx.annotation.RequiresApi
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.mycheva.app.core.data.EventsItem
-import com.mycheva.app.dashboard.domain.DashboardRepositoryImpl
-import dagger.hilt.android.lifecycle.HiltViewModel
+import com.mycheva.app.core.network.utils.onError
+import com.mycheva.app.core.network.utils.onSuccess
+import com.mycheva.app.core.ui.utils.UiText
+import com.mycheva.app.core.ui.utils.asUiText
+import com.mycheva.app.dashboard.domain.DashboardRepository
+import com.mycheva.app.meeting.core.domain.Meeting
+import com.mycheva.app.meeting.main.presentation.MeetingUi
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
@@ -15,15 +17,13 @@ import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import java.time.LocalDate
-import javax.inject.Inject
 
-@HiltViewModel
-class DashboardViewModel @Inject constructor(
-    private val repo: DashboardRepositoryImpl
+class DashboardViewModel(
+    private val repository: DashboardRepository,
 ) : ViewModel() {
 
-    private val _token = repo.getToken()
-    private val _userId = repo.getUserId()
+    private val _token = repository.getToken()
+    private val _userId = repository.getUserId()
     private val _state = MutableStateFlow(DashboardState())
     val state = combine(_token, _userId, _state) { token, userId, state ->
         state.copy(
@@ -54,13 +54,12 @@ class DashboardViewModel @Inject constructor(
             it.copy(
                 isLoading = false,
                 isRequestFailed = false,
-                notificationMessage = ""
+                notificationMessage = UiText.DynamicString("")
             )
         }
     }
 
-    @RequiresApi(Build.VERSION_CODES.O)
-    fun filterEvents(events: List<EventsItem>, userDivisionId: Int): List<EventsItem> {
+    fun filterEvents(events: List<Meeting>, userDivisionId: Int): List<Meeting> {
         val today = LocalDate.now()
         val nextWeek = today.plusDays(7)
 
@@ -68,32 +67,31 @@ class DashboardViewModel @Inject constructor(
             event.divisionId == userDivisionId &&
                     LocalDate.parse(event.date.substringBefore("T")) in today..nextWeek
         }
-
         return filteredEvents.ifEmpty { emptyList() }
     }
 
-    @RequiresApi(Build.VERSION_CODES.O)
     private fun getEventData(token: String) {
         _state.update { it.copy(isLoading = true) }
         viewModelScope.launch {
-            repo.getEvents(token)
+            repository.getEvents(token)
                 .onSuccess { result ->
-                    val event = if (filterEvents(result, _state.value.divisionId.toInt()).isNotEmpty())
-                        filterEvents(result, _state.value.divisionId.toInt()).first()
-                    else null
+                    val meeting =
+                        if (filterEvents(result, _state.value.divisionId.toInt()).isNotEmpty())
+                            filterEvents(result, _state.value.divisionId.toInt()).first()
+                        else null
                     _state.update {
                         it.copy(
-                            latestEvent = event,
+                            latestEvent = if (meeting != null) MeetingUi.fromDomain(meeting) else null,
                             isLoading = false
                         )
                     }
                 }
-                .onFailure { error ->
+                .onError { error ->
                     _state.update {
                         it.copy(
                             isRequestFailed = true,
                             isLoading = false,
-                            notificationMessage = error.message ?: "Server error."
+                            notificationMessage = error.asUiText()
                         )
                     }
                 }
@@ -103,21 +101,21 @@ class DashboardViewModel @Inject constructor(
     private fun getUserData(token: String, userId: String) {
         _state.update { it.copy(isLoading = true) }
         viewModelScope.launch(Dispatchers.IO) {
-            repo.getUser(token, userId)
+            repository.getUser(token, userId)
                 .onSuccess { user ->
                     _state.update {
                         it.copy(
                             name = user.name,
                             isLoading = false,
-                            divisionId = user.userDatum.divisionId.toString()
+                            divisionId = user.data.division.id.toString()
                         )
                     }
-                }.onFailure { error ->
+                }.onError { error ->
                     _state.update {
                         it.copy(
                             isLoading = false,
                             isRequestFailed = true,
-                            notificationMessage = error.message ?: "Server error."
+                            notificationMessage = error.asUiText()
                         )
                     }
                 }

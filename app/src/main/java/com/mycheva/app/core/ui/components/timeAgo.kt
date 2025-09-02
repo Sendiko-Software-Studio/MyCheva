@@ -7,7 +7,6 @@ import java.time.OffsetDateTime
 import java.time.ZoneOffset
 import java.time.format.DateTimeFormatter
 
-@RequiresApi(Build.VERSION_CODES.O)
 fun timeAgo(timestamp: String): String {
     val dateTime = OffsetDateTime.parse(timestamp, DateTimeFormatter.ISO_OFFSET_DATE_TIME)
     val now = OffsetDateTime.now(ZoneOffset.UTC)

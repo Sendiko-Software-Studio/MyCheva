@@ -2,10 +2,12 @@ package com.mycheva.app.announcement.presentation
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.mycheva.app.announcement.data.AnnouncementsItem
-import com.mycheva.app.announcement.domain.AnnouncementRepositoryImpl
-import com.mycheva.app.core.database.BookmarkEntity
-import dagger.hilt.android.lifecycle.HiltViewModel
+import com.mycheva.app.announcement.domain.Announcement
+import com.mycheva.app.announcement.domain.AnnouncementRepository
+import com.mycheva.app.core.network.utils.onError
+import com.mycheva.app.core.network.utils.onSuccess
+import com.mycheva.app.core.ui.utils.UiText
+import com.mycheva.app.core.ui.utils.asUiText
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
@@ -13,12 +15,11 @@ import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import javax.inject.Inject
 
-@HiltViewModel
-class AnnouncementViewModel @Inject constructor(
-    private val repo: AnnouncementRepositoryImpl
-): ViewModel() {
+
+class AnnouncementViewModel(
+    private val repo: AnnouncementRepository,
+) : ViewModel() {
 
     private val _token = repo.getToken()
     private val _state = MutableStateFlow(AnnouncementState())
@@ -27,7 +28,7 @@ class AnnouncementViewModel @Inject constructor(
     }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), AnnouncementState())
 
     fun onEvent(event: AnnouncementEvent) {
-        when(event) {
+        when (event) {
             AnnouncementEvent.OnClearState -> clearState()
 
             is AnnouncementEvent.OnAddBookmark -> addBookmark(event.announcement)
@@ -36,20 +37,22 @@ class AnnouncementViewModel @Inject constructor(
         }
     }
 
-    private fun addBookmark(announcement: AnnouncementsItem) {
-        val data = BookmarkEntity(
-            profileUrl = announcement.user.profileUrl.toString(),
-            name = announcement.user.name,
-            timeStamp = announcement.createdAt,
-            imageUrl = announcement.imageUrl.toString(),
-            title = announcement.title,
-            content = announcement.content
-        )
+    private fun addBookmark(announcement: Announcement) {
 
         viewModelScope.launch(Dispatchers.IO) {
-            val save = repo.addBookmark(data)
-            if (save) _state.update { it.copy(notificationMessage = "Successfully saved to bookmark.") }
-            else _state.update { it.copy(notificationMessage = "Can't save to bookmark", isRequestError = true) }
+            val save = repo.addBookmark(announcement)
+            if (save)
+                _state.update {
+                    it.copy(
+                        notificationMessage = UiText.DynamicString("Successfully saved to bookmark.")
+                    )
+                }
+            else _state.update {
+                it.copy(
+                    notificationMessage = UiText.DynamicString("Can't save to bookmark"),
+                    isRequestError = true
+                )
+            }
         }
     }
 
@@ -57,7 +60,7 @@ class AnnouncementViewModel @Inject constructor(
         _state.update {
             it.copy(
                 isLoading = false,
-                notificationMessage = "",
+                notificationMessage = UiText.DynamicString(""),
                 isRequestError = false,
             )
         }
@@ -66,19 +69,19 @@ class AnnouncementViewModel @Inject constructor(
     private fun loadAnnouncements(token: String) {
         _state.update { it.copy(isLoading = true) }
         viewModelScope.launch(Dispatchers.IO) {
-            repo.getAnnouncements("Bearer $token")
+            repo.getAnnouncements(token)
                 .onSuccess { result ->
-                    _state.update {
-                        it.copy(
-                            announcements = result,
+                    _state.update { state ->
+                        state.copy(
+                            announcements = result.map { AnnouncementUi.fromDomain(it) },
                             isLoading = false
                         )
                     }
                 }
-                .onFailure { error ->
+                .onError { error ->
                     _state.update {
                         it.copy(
-                            notificationMessage = error.message.toString(),
+                            notificationMessage = error.asUiText(),
                             isRequestError = true,
                             isLoading = false
                         )

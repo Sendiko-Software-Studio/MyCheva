@@ -31,6 +31,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import com.mycheva.app.R
@@ -52,6 +53,7 @@ fun SharedTransitionScope.AnnouncementScreen(
     animatedContentScope: AnimatedContentScope
 ) {
     val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior()
+    val context = LocalContext.current
 
     LaunchedEffect(key1 = state.token) {
         if (state.token.isNotBlank()) {
@@ -61,7 +63,7 @@ fun SharedTransitionScope.AnnouncementScreen(
     }
 
     LaunchedEffect(key1 = state.notificationMessage) {
-        if (state.notificationMessage.isNotBlank()) {
+        if (state.notificationMessage.asString(context).isNotBlank()) {
             delay(2000)
             onEvent(AnnouncementEvent.OnClearState)
         }
@@ -69,7 +71,7 @@ fun SharedTransitionScope.AnnouncementScreen(
 
 
     NotificationBox(
-        message = state.notificationMessage,
+        message = state.notificationMessage.asString(context),
         isLoading = false,
         isErrorNotification = state.isRequestError
     ) {
@@ -139,15 +141,15 @@ fun SharedTransitionScope.AnnouncementScreen(
                     }
                     items(state.announcements) { announcement ->
                         AnnouncementCard(
-                            announcement = AnnouncementUi.toAnnouncementUi(announcement),
+                            announcement = announcement,
                             onAddBookMark = {
-                                onEvent(AnnouncementEvent.OnAddBookmark(announcement))
+                                onEvent(AnnouncementEvent.OnAddBookmark(announcement.toDomain()))
                             },
                             modifier = Modifier.padding(horizontal = 16.dp)
                         )
                     }
                     item {
-                        (1..5).forEach {
+                        (1..5).forEach { _ ->
                             AnimatedVisibility(
                                 visible = state.isLoading && state.announcements.isEmpty(),
                                 enter = expandVertically(),

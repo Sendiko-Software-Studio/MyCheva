@@ -32,6 +32,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import com.mycheva.app.R
@@ -48,9 +49,10 @@ fun SharedTransitionScope.RoadMapScreen(
     onEvent: (RoadMapEvent) -> Unit,
     animationVisibility: AnimatedVisibilityScope,
     onNavigateBack: () -> Unit,
-    divisionId: String
+    divisionId: String,
 ) {
     val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior()
+    val context = LocalContext.current
 
     LaunchedEffect(key1 = state.token, key2 = divisionId) {
         if (state.token.isNotBlank() && divisionId.isNotBlank())
@@ -58,14 +60,14 @@ fun SharedTransitionScope.RoadMapScreen(
     }
 
     LaunchedEffect(key1 = state.notificationMessage) {
-        if (state.notificationMessage.isNotBlank()) {
+        if (state.notificationMessage.asString(context).isNotBlank()) {
             delay(2000)
             onEvent(RoadMapEvent.OnClearState)
         }
     }
 
     NotificationBox(
-        message = state.notificationMessage,
+        message = state.notificationMessage.asString(),
         isLoading = false,
         isErrorNotification = state.isRequestFailed
     ) {
@@ -114,7 +116,7 @@ fun SharedTransitionScope.RoadMapScreen(
                         }
                     }
                     item {
-                        (1..5).forEach {
+                        (1..5).forEach { _ ->
                             AnimatedVisibility(
                                 visible = state.isLoading && state.roadMaps.isEmpty(),
                                 enter = expandVertically(),
@@ -130,8 +132,10 @@ fun SharedTransitionScope.RoadMapScreen(
                     }
                     items(state.roadMaps) { roadmap ->
                         RoadMapCard(
-                            roadMapItem = roadmap,
-                            modifier = Modifier.padding(bottom = 16.dp).fillMaxWidth(),
+                            roadmap = roadmap,
+                            modifier = Modifier
+                                .padding(bottom = 16.dp)
+                                .fillMaxWidth(),
                         )
                         if (state.roadMaps.last() != roadmap) {
                             Icon(
