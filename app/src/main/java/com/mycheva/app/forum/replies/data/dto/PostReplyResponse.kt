@@ -1,4 +1,4 @@
-package com.mycheva.app.forum.comment.data
+package com.mycheva.app.forum.replies.data.dto
 
 import com.google.gson.annotations.SerializedName
 

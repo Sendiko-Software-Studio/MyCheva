@@ -13,6 +13,8 @@ import com.mycheva.app.core.network.KtorClient
 import com.mycheva.app.core.preferences.DatastoreFactory
 import com.mycheva.app.forum.add.data.AddPostRepositoryImpl
 import com.mycheva.app.forum.add.presentation.AddPostForumViewModel
+import com.mycheva.app.forum.replies.data.RepliesRepositoryImpl
+import com.mycheva.app.forum.replies.presentation.RepliesViewModel
 import com.mycheva.app.meeting.detail.data.DetailMeetingRepositoryImpl
 import com.mycheva.app.meeting.detail.presentation.DetailMeetingViewModel
 import com.mycheva.app.meeting.main.data.MeetingsRepositoryImpl
@@ -23,7 +25,6 @@ import io.ktor.client.engine.HttpClientEngine
 import io.ktor.client.engine.okhttp.OkHttp
 import org.koin.android.ext.koin.androidContext
 import org.koin.core.module.dsl.singleOf
-import org.koin.core.scope.get
 import org.koin.dsl.bind
 import org.koin.dsl.module
 
@@ -43,6 +44,7 @@ val koinModules = module {
     singleOf(::MeetingsRepositoryImpl)
     singleOf(::DetailMeetingRepositoryImpl)
     singleOf(::AddPostRepositoryImpl)
+    singleOf(::RepliesRepositoryImpl)
 
     factory { AnnouncementViewModel(get()) }
     factory { AttendanceViewModel(get()) }
@@ -51,4 +53,5 @@ val koinModules = module {
     factory { MeetingsViewModel(get()) }
     factory { DetailMeetingViewModel(get()) }
     factory { AddPostForumViewModel(get()) }
+    factory { RepliesViewModel(get()) }
 }

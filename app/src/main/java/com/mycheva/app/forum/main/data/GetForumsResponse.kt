@@ -1,12 +1,12 @@
 package com.mycheva.app.forum.main.data
 
 import com.google.gson.annotations.SerializedName
-import com.mycheva.app.forum.core.data.Forum
+import com.mycheva.app.forum.core.data.ForumItems
 
 data class GetForumsResponse(
 
 	@field:SerializedName("forums")
-	val forums: List<Forum>,
+	val forumItems: List<ForumItems>,
 
 	@field:SerializedName("message")
 	val message: String,
