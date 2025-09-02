@@ -35,6 +35,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.input.nestedscroll.nestedScroll
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -65,6 +66,7 @@ fun ProfileScreen(
     onNavigate: (destination: Any) -> Unit,
 ) {
     val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior()
+    val context = LocalContext.current
 
     LaunchedEffect(key1 = state.token) {
         if (state.token.isNotBlank())
@@ -94,7 +96,7 @@ fun ProfileScreen(
     }
 
     LaunchedEffect(key1 = state.notificationMessage, key2 = state.isPasswordNotMatch) {
-        if (state.notificationMessage.isNotBlank() && !state.isPasswordNotMatch) {
+        if (state.notificationMessage.asString(context).isNotBlank() && !state.isPasswordNotMatch) {
             delay(2000)
             onEvent(ProfileEvent.OnClearState)
         }
@@ -108,7 +110,7 @@ fun ProfileScreen(
     }
 
     NotificationBox(
-        message = if (state.isPasswordNotMatch) "" else state.notificationMessage,
+        message = if (state.isPasswordNotMatch) "" else state.notificationMessage.asString(),
         isLoading = false,
         isErrorNotification = state.isError,
         content = {
@@ -273,7 +275,13 @@ fun ProfileScreen(
                 if (state.isChangingPassword) {
                     PasswordSheet(
                         onChange = { pass, newPass ->
-                            onEvent(ProfileEvent.OnPasswordEdit(password = newPass, oldPassword = pass)) },
+                            onEvent(
+                                ProfileEvent.OnPasswordEdit(
+                                    password = newPass,
+                                    oldPassword = pass
+                                )
+                            )
+                        },
                         onDismiss = {
                             onEvent(ProfileEvent.OnPasswordSheetToggle(false))
                         },

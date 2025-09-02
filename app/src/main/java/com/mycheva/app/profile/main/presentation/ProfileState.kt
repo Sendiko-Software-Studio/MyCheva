@@ -1,5 +1,7 @@
 package com.mycheva.app.profile.main.presentation
 
+import com.mycheva.app.core.ui.utils.UiText
+
 data class ProfileState(
     val id: String = "",
     val imageUrl: String = "",
@@ -14,7 +16,7 @@ data class ProfileState(
     val token: String = "",
     val isLoading: Boolean = false,
     val isError: Boolean = false,
-    val notificationMessage: String = "",
+    val notificationMessage: UiText = UiText.DynamicString(""),
     val isLogoutSuccess: Boolean = false,
     val isEditingUsername: Boolean = false,
     val isLoadingUsername: Boolean = false,

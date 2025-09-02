@@ -1,8 +1,7 @@
 package com.mycheva.app.profile.main.domain
 
-import com.mycheva.app.profile.main.data.ChangePasswordRequest
-import com.mycheva.app.profile.main.data.ChangeUsernameRequest
-import com.mycheva.app.core.data.User
+import com.mycheva.app.core.network.utils.DataError
+import com.mycheva.app.core.network.utils.Result
 import kotlinx.coroutines.flow.Flow
 
 interface ProfileRepository {
@@ -11,14 +10,26 @@ interface ProfileRepository {
 
     fun getUserId(): Flow<String>
 
-    suspend fun deleteToken(): Result<String>
+    suspend fun deleteToken()
 
-    suspend fun getUser(token: String, userId: String): Result<User>
+    suspend fun getUser(
+        token: String,
+        userId: String
+    ): Result<User, DataError.Remote>
 
-    suspend fun logout(token: String): Result<String>
+    suspend fun logout(token: String): Result<String, DataError.Remote>
 
-    suspend fun changeUsername(token: String, userId: String, request: ChangeUsernameRequest): Result<String>
+    suspend fun changeUsername(
+        token: String,
+        userId: String,
+        username: String
+    ): Result<String, DataError.Remote>
 
-    suspend fun changePassword(token: String, userId: String, request: ChangePasswordRequest): Result<String>
+    suspend fun changePassword(
+        token: String,
+        userId: String,
+        password: String,
+        oldPassword: String,
+    ): Result<String, DataError.Remote>
 
 }
