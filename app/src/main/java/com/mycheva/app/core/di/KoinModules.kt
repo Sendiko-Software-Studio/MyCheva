@@ -15,12 +15,16 @@ import com.mycheva.app.forum.add.data.AddPostRepositoryImpl
 import com.mycheva.app.forum.add.presentation.AddPostForumViewModel
 import com.mycheva.app.forum.replies.data.RepliesRepositoryImpl
 import com.mycheva.app.forum.replies.presentation.RepliesViewModel
+import com.mycheva.app.login.data.LoginRepositoryImpl
+import com.mycheva.app.login.presentation.LoginViewModel
 import com.mycheva.app.meeting.detail.data.DetailMeetingRepositoryImpl
 import com.mycheva.app.meeting.detail.presentation.DetailMeetingViewModel
 import com.mycheva.app.meeting.main.data.MeetingsRepositoryImpl
 import com.mycheva.app.meeting.main.presentation.MeetingsViewModel
 import com.mycheva.app.profile.main.data.ProfileRepositoryImpl
 import com.mycheva.app.profile.main.presentation.ProfileViewModel
+import com.mycheva.app.reset_password.data.ResetPasswordRepositoryImpl
+import com.mycheva.app.reset_password.presentation.ResetPasswordViewModel
 import io.ktor.client.engine.HttpClientEngine
 import io.ktor.client.engine.okhttp.OkHttp
 import org.koin.android.ext.koin.androidContext
@@ -45,6 +49,8 @@ val koinModules = module {
     singleOf(::DetailMeetingRepositoryImpl)
     singleOf(::AddPostRepositoryImpl)
     singleOf(::RepliesRepositoryImpl)
+    singleOf(::LoginRepositoryImpl)
+    singleOf(::ResetPasswordRepositoryImpl)
 
     factory { AnnouncementViewModel(get()) }
     factory { AttendanceViewModel(get()) }
@@ -54,4 +60,6 @@ val koinModules = module {
     factory { DetailMeetingViewModel(get()) }
     factory { AddPostForumViewModel(get()) }
     factory { RepliesViewModel(get()) }
+    factory { LoginViewModel(get()) }
+    factory { ResetPasswordViewModel(get()) }
 }

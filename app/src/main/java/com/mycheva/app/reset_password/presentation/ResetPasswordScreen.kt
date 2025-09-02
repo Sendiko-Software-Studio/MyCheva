@@ -20,6 +20,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.font.FontWeight.Companion.Bold
 import androidx.compose.ui.text.style.TextAlign
@@ -41,23 +42,24 @@ fun ResetPasswordScreen(
     onEvent: (ResetPasswordEvent) -> Unit,
     onNavigateBack: () -> Unit,
 ) {
+    val context = LocalContext.current
 
     LaunchedEffect(key1 = state.notificationMessage) {
-        if (state.notificationMessage.isNotEmpty()) {
+        if (state.notificationMessage.asString(context).isNotEmpty()) {
             delay(2000)
             onEvent(ResetPasswordEvent.ClearState)
         }
     }
 
     LaunchedEffect(key1 = state.isRequestSuccess) {
-        if (state.isRequestSuccess){
+        if (state.isRequestSuccess) {
             delay(2000)
             onNavigateBack()
         }
     }
 
     NotificationBox(
-        message = state.notificationMessage,
+        message = state.notificationMessage.asString(),
         isLoading = state.isLoading,
         isErrorNotification = state.isRequestFailed
     ) {
@@ -94,7 +96,7 @@ fun ResetPasswordScreen(
                 label = "Masukkan email anda",
                 value = state.emailText,
                 onValueChange = { onEvent(ResetPasswordEvent.OnEmailTextChange(it)) },
-                onClearClick = { /*TODO*/ },
+                onClearClick = { onEvent(ResetPasswordEvent.OnEmailTextChange("")) },
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(16.dp),

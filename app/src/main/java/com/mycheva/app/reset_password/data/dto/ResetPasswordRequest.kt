@@ -1,4 +1,4 @@
-package com.mycheva.app.reset_password.data
+package com.mycheva.app.reset_password.data.dto
 
 import com.google.gson.annotations.SerializedName
 

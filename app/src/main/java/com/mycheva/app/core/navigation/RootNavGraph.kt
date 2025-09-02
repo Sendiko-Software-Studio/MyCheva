@@ -26,15 +26,15 @@ import androidx.navigation.toRoute
 import com.mycheva.app.announcement.presentation.AnnouncementScreen
 import com.mycheva.app.announcement.presentation.AnnouncementViewModel
 import com.mycheva.app.attendance.presentation.AttendanceScreen
-import com.mycheva.app.attendance.presentation.AttendanceScreenViewModel
+import com.mycheva.app.attendance.presentation.AttendanceViewModel
 import com.mycheva.app.bookmark.presentation.BookmarkScreen
 import com.mycheva.app.bookmark.presentation.BookmarkViewModel
 import com.mycheva.app.dashboard.presentation.DashboardScreen
 import com.mycheva.app.dashboard.presentation.DashboardViewModel
 import com.mycheva.app.forum.add.presentation.AddPostForumViewModel
 import com.mycheva.app.forum.add.presentation.AddPostScreen
-import com.mycheva.app.forum.comment.presentation.CommentScreen
-import com.mycheva.app.forum.comment.presentation.CommentViewModel
+import com.mycheva.app.forum.replies.presentation.RepliesScreen
+import com.mycheva.app.forum.replies.presentation.RepliesViewModel
 import com.mycheva.app.forum.main.presentation.ForumScreen
 import com.mycheva.app.forum.main.presentation.ForumViewModel
 import com.mycheva.app.login.presentation.LoginScreen
@@ -171,7 +171,7 @@ fun RootNavGraph(
                     val viewModel = hiltViewModel<DetailMeetingViewModel>()
                     val state by viewModel.state.collectAsStateWithLifecycle()
                     DetailMeetingScreen(
-                        eventId = args.eventId,
+                        meetingId = args.eventId,
                         state = state,
                         onEvent = viewModel::onEvent,
                         onNavigateBack = {
@@ -180,7 +180,7 @@ fun RootNavGraph(
                     )
                 }
                 composable<AttendanceScreen> {
-                    val viewModel = hiltViewModel<AttendanceScreenViewModel>()
+                    val viewModel = hiltViewModel<AttendanceViewModel>()
                     val state by viewModel.state.collectAsStateWithLifecycle()
                     AttendanceScreen(
                         state = state,
@@ -236,9 +236,9 @@ fun RootNavGraph(
                 }
                 composable<CommentScreen> {
                     val args = it.toRoute<CommentScreen>()
-                    val viewModel = hiltViewModel<CommentViewModel>()
+                    val viewModel = hiltViewModel<RepliesViewModel>()
                     val state by viewModel.state.collectAsStateWithLifecycle()
-                    CommentScreen(
+                    RepliesScreen(
                         state = state,
                         onEvent = viewModel::onEvent,
                         forumId = args.forumId,
