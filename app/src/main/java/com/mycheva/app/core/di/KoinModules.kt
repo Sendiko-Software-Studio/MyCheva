@@ -25,6 +25,8 @@ import com.mycheva.app.profile.main.data.ProfileRepositoryImpl
 import com.mycheva.app.profile.main.presentation.ProfileViewModel
 import com.mycheva.app.reset_password.data.ResetPasswordRepositoryImpl
 import com.mycheva.app.reset_password.presentation.ResetPasswordViewModel
+import com.mycheva.app.roadmap.data.RoadMapRepositoryImpl
+import com.mycheva.app.roadmap.presentation.RoadMapViewModel
 import io.ktor.client.engine.HttpClientEngine
 import io.ktor.client.engine.okhttp.OkHttp
 import org.koin.android.ext.koin.androidContext
@@ -51,6 +53,7 @@ val koinModules = module {
     singleOf(::RepliesRepositoryImpl)
     singleOf(::LoginRepositoryImpl)
     singleOf(::ResetPasswordRepositoryImpl)
+    singleOf(::RoadMapRepositoryImpl)
 
     factory { AnnouncementViewModel(get()) }
     factory { AttendanceViewModel(get()) }
@@ -62,4 +65,5 @@ val koinModules = module {
     factory { RepliesViewModel(get()) }
     factory { LoginViewModel(get()) }
     factory { ResetPasswordViewModel(get()) }
+    factory { RoadMapViewModel(get()) }
 }

@@ -1,29 +1,29 @@
 package com.mycheva.app.core.network
 
 import com.mycheva.app.announcement.data.dto.AnnouncementResponse
-import com.mycheva.app.attendance.data.AttendanceRequest
-import com.mycheva.app.attendance.data.AttendanceResponse
-import com.mycheva.app.core.data.GetEventsResponse
-import com.mycheva.app.core.data.GetUserResponse
+import com.mycheva.app.attendance.data.dto.AttendanceRequest
+import com.mycheva.app.attendance.data.dto.AttendanceResponse
+import com.mycheva.app.meeting.core.data.GetMeetingsResponse
+import com.mycheva.app.profile.main.data.dto.getuser.GetUserResponse
 import com.mycheva.app.core.network.utils.DataError
 import com.mycheva.app.core.network.utils.Result
-import com.mycheva.app.forum.add.data.ForumPostRequest
-import com.mycheva.app.forum.add.data.ForumPostResponse
-import com.mycheva.app.forum.comment.data.GetForumResponse
-import com.mycheva.app.forum.comment.data.PostReplyRequest
-import com.mycheva.app.forum.comment.data.PostReplyResponse
-import com.mycheva.app.forum.main.data.GetForumsResponse
-import com.mycheva.app.login.data.LoginRequest
-import com.mycheva.app.login.data.LoginResponse
-import com.mycheva.app.meeting.detail.data.GetMeetingResponse
-import com.mycheva.app.profile.main.data.ChangePasswordRequest
-import com.mycheva.app.profile.main.data.ChangePasswordResponse
-import com.mycheva.app.profile.main.data.ChangeUsernameRequest
-import com.mycheva.app.profile.main.data.ChangeUsernameResponse
-import com.mycheva.app.profile.main.data.LogoutResponse
-import com.mycheva.app.reset_password.data.ResetPasswordRequest
-import com.mycheva.app.reset_password.data.ResetPasswordResponse
-import com.mycheva.app.roadmap.data.GetRoadMapResponse
+import com.mycheva.app.forum.add.data.dto.ForumPostRequest
+import com.mycheva.app.forum.add.data.dto.ForumPostResponse
+import com.mycheva.app.forum.replies.data.dto.GetForumResponse
+import com.mycheva.app.forum.replies.data.dto.PostReplyRequest
+import com.mycheva.app.forum.replies.data.dto.PostReplyResponse
+import com.mycheva.app.forum.main.data.dto.GetForumsResponse
+import com.mycheva.app.login.data.dto.LoginRequest
+import com.mycheva.app.login.data.dto.LoginResponse
+import com.mycheva.app.meeting.core.data.GetMeetingResponse
+import com.mycheva.app.profile.main.data.dto.changepassword.ChangePasswordRequest
+import com.mycheva.app.profile.main.data.dto.changepassword.ChangePasswordResponse
+import com.mycheva.app.profile.main.data.dto.changeusername.ChangeUsernameRequest
+import com.mycheva.app.profile.main.data.dto.changeusername.ChangeUsernameResponse
+import com.mycheva.app.profile.main.data.dto.LogoutResponse
+import com.mycheva.app.reset_password.data.dto.ResetPasswordRequest
+import com.mycheva.app.reset_password.data.dto.ResetPasswordResponse
+import com.mycheva.app.roadmap.data.dto.GetRoadMapResponse
 
 interface ApiServices {
 
@@ -36,11 +36,11 @@ interface ApiServices {
         id: String
     ): Result<GetUserResponse, DataError.Remote>
 
-    suspend fun getEvents(
+    suspend fun getMeetings(
         token: String,
-    ): Result<GetEventsResponse, DataError.Remote>
+    ): Result<GetMeetingsResponse, DataError.Remote>
 
-    suspend fun getEvent(
+    suspend fun getMeeting(
         token: String,
         eventId: String
     ): Result<GetMeetingResponse, DataError.Remote>
