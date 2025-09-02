@@ -1,7 +1,5 @@
 package com.mycheva.app.forum.main.presentation.component
 
-import android.os.Build
-import androidx.annotation.RequiresApi
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -23,13 +21,12 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
-import com.mycheva.app.core.network.defaultProfile
+import com.mycheva.app.core.network.utils.defaultProfile
 import com.mycheva.app.core.ui.components.timeAgo
 import com.mycheva.app.core.ui.theme.Neutral600
 import com.mycheva.app.core.ui.theme.poppinsFamily
 import com.mycheva.app.forum.main.presentation.ForumUi
 
-@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun ForumPostCard(
     modifier: Modifier = Modifier,
