@@ -41,7 +41,7 @@ fun UserDatum.toDomain(): UserData {
         nim = nim,
         major = major,
         faculty = faculty,
-        division = division.name,
+        division = division.toDomain(),
         email = email,
         fullName = fullName
     )
