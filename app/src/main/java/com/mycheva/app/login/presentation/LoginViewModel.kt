@@ -2,12 +2,11 @@ package com.mycheva.app.login.presentation
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.mycheva.app.core.network.utils.NOT_FOUND
-import com.mycheva.app.core.network.utils.SERVER_ERROR
-import com.mycheva.app.core.network.utils.UNAUTHORIZED
+import com.mycheva.app.core.network.utils.onError
 import com.mycheva.app.core.network.utils.onSuccess
 import com.mycheva.app.core.ui.data.TextFieldError
-import com.mycheva.app.login.data.dto.LoginRequest
+import com.mycheva.app.core.ui.utils.UiText
+import com.mycheva.app.core.ui.utils.asUiText
 import com.mycheva.app.login.data.LoginRepositoryImpl
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
@@ -19,7 +18,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class LoginViewModel @Inject constructor(
-    private val repository: LoginRepositoryImpl
+    private val repository: LoginRepositoryImpl,
 ) : ViewModel() {
 
     private val _state = MutableStateFlow(LoginState())
@@ -39,7 +38,7 @@ class LoginViewModel @Inject constructor(
     private fun clearState() {
         _state.update {
             it.copy(
-                notificationMessage = "",
+                notificationMessage = UiText.DynamicString(""),
                 isLoading = false,
                 isSignInFailed = false,
             )
@@ -73,39 +72,23 @@ class LoginViewModel @Inject constructor(
         viewModelScope.launch(Dispatchers.IO) {
             repository.login(state.value.usernameText, state.value.passwordText)
                 .onSuccess { result ->
-                    repository.saveToken(result)
-                    repository.saveUserId(result.user.id.toString())
+                    repository.saveToken(result.token)
+                    repository.saveUserId(result.id.toString())
                     _state.update {
                         it.copy(
                             isLoading = false,
                             isSignInSuccessful = true,
-                            notificationMessage = "Selamat datang, ${result.user.name}"
+                            notificationMessage = UiText.DynamicString("Selamat datang, ${result.name}")
                         )
                     }
                 }
-                .onFailure { code ->
-                    when (code.message) {
-                        UNAUTHORIZED -> _state.update {
-                            it.copy(
-                                isLoading = false,
-                                isSignInFailed = true,
-                                notificationMessage = "Password didn't match."
-                            )
-                        }
-                        NOT_FOUND -> _state.update {
-                            it.copy(
-                                isLoading = false,
-                                isSignInFailed = true,
-                                notificationMessage = "Account not found"
-                            )
-                        }
-                        SERVER_ERROR -> _state.update {
-                            it.copy(
-                                isLoading = false,
-                                isSignInFailed = true,
-                                notificationMessage = "Server error."
-                            )
-                        }
+                .onError { error ->
+                    _state.update {
+                        it.copy(
+                            isLoading = false,
+                            isSignInFailed = true,
+                            notificationMessage = error.asUiText()
+                        )
                     }
                 }
         }
