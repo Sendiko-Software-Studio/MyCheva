@@ -8,17 +8,15 @@ import com.mycheva.app.core.ui.data.TextFieldError
 import com.mycheva.app.core.ui.utils.UiText
 import com.mycheva.app.core.ui.utils.asUiText
 import com.mycheva.app.login.data.LoginRepositoryImpl
-import dagger.hilt.android.lifecycle.HiltViewModel
+import com.mycheva.app.login.domain.LoginRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import javax.inject.Inject
 
-@HiltViewModel
-class LoginViewModel @Inject constructor(
-    private val repository: LoginRepositoryImpl,
+class LoginViewModel(
+    private val repository: LoginRepository,
 ) : ViewModel() {
 
     private val _state = MutableStateFlow(LoginState())

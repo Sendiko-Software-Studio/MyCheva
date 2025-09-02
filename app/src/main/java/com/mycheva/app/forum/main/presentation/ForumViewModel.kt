@@ -6,7 +6,7 @@ import com.mycheva.app.core.network.utils.onError
 import com.mycheva.app.core.network.utils.onSuccess
 import com.mycheva.app.core.ui.utils.UiText
 import com.mycheva.app.core.ui.utils.asUiText
-import com.mycheva.app.forum.main.data.ForumRepositoryImpl
+import com.mycheva.app.forum.main.domain.ForumRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
@@ -18,7 +18,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class ForumViewModel @Inject constructor(
-    private val repository: ForumRepositoryImpl
+    private val repository: ForumRepository,
 ) : ViewModel() {
 
     private val _token = repository.getToken()
@@ -79,11 +79,13 @@ class ForumViewModel @Inject constructor(
                 }
             }
             .onError { error ->
-                _state.update { it.copy(
-                    notificationMessage = error.asUiText(),
-                    isRequestError = true,
-                    isLoading = false
-                ) }
+                _state.update {
+                    it.copy(
+                        notificationMessage = error.asUiText(),
+                        isRequestError = true,
+                        isLoading = false
+                    )
+                }
             }
     }
 

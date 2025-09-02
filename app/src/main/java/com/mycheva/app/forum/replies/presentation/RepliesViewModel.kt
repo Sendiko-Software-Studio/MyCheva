@@ -6,7 +6,7 @@ import com.mycheva.app.core.network.utils.onError
 import com.mycheva.app.core.network.utils.onSuccess
 import com.mycheva.app.core.ui.utils.UiText
 import com.mycheva.app.core.ui.utils.asUiText
-import com.mycheva.app.forum.replies.data.RepliesRepositoryImpl
+import com.mycheva.app.forum.replies.domain.RepliesRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
@@ -16,7 +16,7 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 class RepliesViewModel(
-    private val repository: RepliesRepositoryImpl,
+    private val repository: RepliesRepository,
 ) : ViewModel() {
 
     private val _token = repository.getToken()
