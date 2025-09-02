@@ -10,9 +10,8 @@ import com.mycheva.app.meeting.core.domain.Meeting
 import com.mycheva.app.profile.main.data.dto.getuser.toDomain
 import com.mycheva.app.profile.main.domain.User
 import kotlinx.coroutines.flow.Flow
-import javax.inject.Inject
 
-class DashboardRepositoryImpl @Inject constructor(
+class DashboardRepositoryImpl(
     private val client: KtorClient,
     private val appPreferences: AppPreferences,
 ) : DashboardRepository {

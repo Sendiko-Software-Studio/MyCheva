@@ -25,6 +25,7 @@ import androidx.compose.material.icons.rounded.Search
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
+import androidx.compose.material3.FloatingActionButtonDefaults
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -119,7 +120,8 @@ fun SharedTransitionScope.ForumScreen(
             },
             content = { paddingValues ->
                 val padding = PaddingValues(
-                    top = paddingValues.calculateTopPadding()
+                    top = paddingValues.calculateTopPadding(),
+                    bottom = (FloatingActionButtonDefaults.LargeIconSize.value * 3).toInt().dp
                 )
                 LazyColumn(
                     contentPadding = padding,
@@ -174,7 +176,7 @@ fun SharedTransitionScope.ForumScreen(
                             }
                         }
                     }
-                    items(state.forums.reversed()) { post ->
+                    items(state.forums) { post ->
                         if (state.forums.first() != post) {
                             HorizontalDivider(modifier = Modifier.fillMaxWidth())
                         }

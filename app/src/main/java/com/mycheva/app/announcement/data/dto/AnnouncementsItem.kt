@@ -2,8 +2,9 @@ package com.mycheva.app.announcement.data.dto
 
 import com.mycheva.app.announcement.domain.Announcement
 import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
 
-
+@Serializable
 data class AnnouncementsItem(
 
     @SerialName("createdAt")

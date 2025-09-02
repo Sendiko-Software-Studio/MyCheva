@@ -2,7 +2,9 @@ package com.mycheva.app.login.data.dto
 
 import com.mycheva.app.login.domain.UserWithToken
 import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
 
+@Serializable
 data class LoginResponse(
 
 	@SerialName("message")
@@ -18,13 +20,11 @@ data class LoginResponse(
 	val token: String,
 )
 
+@Serializable
 data class UserLoginItem(
 
 	@SerialName("profileUrl")
 	val profileUrl: String,
-
-	@SerialName("createdAt")
-	val createdAt: String,
 
 	@SerialName("password")
 	val password: String,
@@ -34,9 +34,6 @@ data class UserLoginItem(
 
 	@SerialName("id")
 	val id: Int,
-
-	@SerialName("updatedAt")
-	val updatedAt: String,
 )
 
 fun LoginResponse.toDomain(): UserWithToken {

@@ -1,8 +1,9 @@
 package com.mycheva.app.announcement.data.dto
 
 import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
 
-
+@Serializable
 data class User(
 
     @SerialName("profileUrl")

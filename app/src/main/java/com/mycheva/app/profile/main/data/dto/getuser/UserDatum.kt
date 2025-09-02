@@ -2,7 +2,9 @@ package com.mycheva.app.profile.main.data.dto.getuser
 
 import com.mycheva.app.profile.main.domain.UserData
 import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
 
+@Serializable
 data class UserDatum(
 
     @SerialName("nim")
@@ -12,7 +14,7 @@ data class UserDatum(
     val major: String,
 
     @SerialName("imageUrl")
-    val imageUrl: Any,
+    val imageUrl: String,
 
     @SerialName("fullName")
     val fullName: String,

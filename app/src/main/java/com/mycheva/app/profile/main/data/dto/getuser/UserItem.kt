@@ -2,7 +2,9 @@ package com.mycheva.app.profile.main.data.dto.getuser
 
 import com.mycheva.app.profile.main.domain.User
 import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
 
+@Serializable
 data class UserItem(
 
     @SerialName("profileUrl")

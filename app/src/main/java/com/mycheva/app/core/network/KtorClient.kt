@@ -57,7 +57,7 @@ class KtorClient(
 
     override suspend fun getMeetings(token: String): Result<GetMeetingsResponse, DataError.Remote> {
         return safeCall<GetMeetingsResponse> {
-            client.get("$LIVE_SERVER/events") {
+            client.get("$LIVE_SERVER/event") {
                 bearerAuth(token)
             }
         }
@@ -126,7 +126,7 @@ class KtorClient(
 
     override suspend fun getAnnouncements(token: String): Result<AnnouncementResponse, DataError.Remote> {
         return safeCall<AnnouncementResponse> {
-            client.get("$LIVE_SERVER/announcements") {
+            client.get("$LIVE_SERVER/announcement") {
                 bearerAuth(token)
             }
         }

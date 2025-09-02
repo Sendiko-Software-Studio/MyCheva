@@ -2,7 +2,9 @@ package com.mycheva.app.forum.core.data
 
 import com.mycheva.app.forum.core.domain.UserWithRole
 import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
 
+@Serializable
 data class UserItemWithRole(
 
     @SerialName("profileUrl")

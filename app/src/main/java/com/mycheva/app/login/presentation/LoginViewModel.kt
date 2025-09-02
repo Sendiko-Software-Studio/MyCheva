@@ -2,6 +2,7 @@ package com.mycheva.app.login.presentation
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.mycheva.app.core.network.utils.DataError
 import com.mycheva.app.core.network.utils.onError
 import com.mycheva.app.core.network.utils.onSuccess
 import com.mycheva.app.core.ui.data.TextFieldError
@@ -81,12 +82,28 @@ class LoginViewModel(
                     }
                 }
                 .onError { error ->
-                    _state.update {
-                        it.copy(
-                            isLoading = false,
-                            isSignInFailed = true,
-                            notificationMessage = error.asUiText()
-                        )
+                    when (error) {
+                        DataError.Remote.NOT_FOUND -> _state.update {
+                            it.copy(
+                                isLoading = false,
+                                isSignInFailed = true,
+                                notificationMessage = UiText.DynamicString("User not found.")
+                            )
+                        }
+                        DataError.Remote.UNAUTHORIZED -> _state.update {
+                            it.copy(
+                                isLoading = false,
+                                isSignInFailed = true,
+                                notificationMessage = UiText.DynamicString("Password not matched.")
+                            )
+                        }
+                        else -> _state.update {
+                            it.copy(
+                                isLoading = false,
+                                isSignInFailed = true,
+                                notificationMessage = error.asUiText()
+                            )
+                        }
                     }
                 }
         }

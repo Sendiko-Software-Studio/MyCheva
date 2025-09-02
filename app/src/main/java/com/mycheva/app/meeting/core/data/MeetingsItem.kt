@@ -2,7 +2,9 @@ package com.mycheva.app.meeting.core.data
 
 import com.mycheva.app.meeting.core.domain.Meeting
 import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
 
+@Serializable
 data class MeetingsItem(
 
     @SerialName("date")

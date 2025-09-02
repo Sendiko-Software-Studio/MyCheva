@@ -2,7 +2,9 @@ package com.mycheva.app.forum.core.data
 
 import com.mycheva.app.forum.core.domain.Forum
 import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
 
+@Serializable
 data class ForumItems(
 
     @SerialName("createdAt")
