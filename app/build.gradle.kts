@@ -40,6 +40,7 @@ android {
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_17
         targetCompatibility = JavaVersion.VERSION_17
+        isCoreLibraryDesugaringEnabled = true // Enable it here
     }
     kotlinOptions {
         jvmTarget = "17"
@@ -75,6 +76,7 @@ dependencies {
     implementation(libs.com.google.mlkit.barcode.scanning)
     implementation(libs.com.google.accompanist.permission)
     implementation(libs.kotlinx.serialization.json)
+    coreLibraryDesugaring(libs.desugar.jdk.libs) // Check for the latest version
 
     /* Datastore */
     implementation(libs.androidx.datastore.preferences)
