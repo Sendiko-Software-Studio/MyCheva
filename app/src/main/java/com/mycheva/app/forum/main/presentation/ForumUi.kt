@@ -1,6 +1,8 @@
 package com.mycheva.app.forum.main.presentation
 
-import com.mycheva.app.forum.core.data.Forum
+import com.mycheva.app.forum.core.domain.Forum
+import com.mycheva.app.forum.core.domain.Role
+import com.mycheva.app.forum.core.domain.UserWithRole
 
 data class ForumUi(
     val id: String,
@@ -11,15 +13,32 @@ data class ForumUi(
     val comment: String,
     val role: String,
 ) {
+    fun toForum(): Forum {
+        return Forum(
+            id = id,
+            profileUrl = profileUrl,
+            user = UserWithRole(
+                name = username,
+                profileUrl = profileUrl,
+                role = Role(
+                    id = 0,
+                    name = role
+                )
+            ),
+            time = time,
+            content = content,
+            comment = comment,
+        )
+    }
     companion object {
-        fun toForumUi(forum: Forum): ForumUi {
+        fun fromForum(forum: Forum): ForumUi {
             return ForumUi(
-                id = forum.id.toString(),
-                profileUrl = if (forum.user.profileUrl.isNullOrBlank()) " " else forum.user.profileUrl,
+                id = forum.id,
+                profileUrl = forum.user.profileUrl,
                 username = forum.user.name,
-                time = forum.createdAt,
+                time = forum.time,
                 content = forum.content,
-                comment = forum.replies.size.toString(),
+                comment = forum.comment,
                 role = forum.user.role.name
             )
         }

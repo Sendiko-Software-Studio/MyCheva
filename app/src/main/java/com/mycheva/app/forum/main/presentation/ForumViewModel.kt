@@ -2,9 +2,11 @@ package com.mycheva.app.forum.main.presentation
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.mycheva.app.core.network.SERVER_ERROR
-import com.mycheva.app.core.network.UNAUTHORIZED
-import com.mycheva.app.forum.main.domain.ForumRepositoryImpl
+import com.mycheva.app.core.network.utils.onError
+import com.mycheva.app.core.network.utils.onSuccess
+import com.mycheva.app.core.ui.utils.UiText
+import com.mycheva.app.core.ui.utils.asUiText
+import com.mycheva.app.forum.main.data.ForumRepositoryImpl
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
@@ -48,7 +50,7 @@ class ForumViewModel @Inject constructor(
             it.copy(
                 isLoading = false,
                 isRequestError = false,
-                notificationMessage = ""
+                notificationMessage = UiText.DynamicString("")
             )
         }
     }
@@ -67,7 +69,7 @@ class ForumViewModel @Inject constructor(
 
     private fun loadForums(token: String) = viewModelScope.launch {
         _state.update { it.copy(isLoading = true) }
-        repository.getForums("Bearer $token")
+        repository.getForums(token)
             .onSuccess { result ->
                 _state.update {
                     it.copy(
@@ -76,19 +78,12 @@ class ForumViewModel @Inject constructor(
                     )
                 }
             }
-            .onFailure { error ->
-                when(error.message) {
-                    UNAUTHORIZED -> _state.update { it.copy(
-                        notificationMessage = "Unauthorized.",
-                        isRequestError = true,
-                        isLoading = false
-                    ) }
-                    SERVER_ERROR -> _state.update { it.copy(
-                        notificationMessage = "Server error.",
-                        isRequestError = true,
-                        isLoading = false
-                    ) }
-                }
+            .onError { error ->
+                _state.update { it.copy(
+                    notificationMessage = error.asUiText(),
+                    isRequestError = true,
+                    isLoading = false
+                ) }
             }
     }
 

@@ -36,6 +36,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import com.mycheva.app.R
@@ -58,9 +59,10 @@ fun SharedTransitionScope.ForumScreen(
     state: ForumState,
     onEvent: (ForumEvent) -> Unit,
     onNavigate: (destination: Any?) -> Unit,
-    animatedContentScope: AnimatedContentScope
+    animatedContentScope: AnimatedContentScope,
 ) {
     val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior()
+    val context = LocalContext.current
 
     LaunchedEffect(key1 = state.token) {
         if (state.token.isNotBlank()) {
@@ -70,14 +72,14 @@ fun SharedTransitionScope.ForumScreen(
     }
 
     LaunchedEffect(key1 = state.notificationMessage) {
-        if (state.notificationMessage.isNotBlank()) {
+        if (state.notificationMessage.asString(context).isNotBlank()) {
             delay(2000)
             onEvent(ForumEvent.OnClearNotification)
         }
     }
 
     NotificationBox(
-        message = state.notificationMessage,
+        message = state.notificationMessage.asString(),
         isLoading = false,
         isErrorNotification = state.isRequestError
     ) {
@@ -178,7 +180,7 @@ fun SharedTransitionScope.ForumScreen(
                             HorizontalDivider(modifier = Modifier.fillMaxWidth())
                         }
                         ForumPostCard(
-                            forum = ForumUi.toForumUi(post),
+                            forum = ForumUi.fromForum(post),
                             modifier = Modifier.padding(bottom = 16.dp),
                             onNavigate = {
                                 onNavigate(CommentScreen(forumId = it))
