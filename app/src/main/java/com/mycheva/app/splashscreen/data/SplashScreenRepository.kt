@@ -1,4 +1,4 @@
-package com.mycheva.app.splashscreen.domain
+package com.mycheva.app.splashscreen.data
 
 import com.mycheva.app.core.preferences.AppPreferences
 import kotlinx.coroutines.flow.Flow

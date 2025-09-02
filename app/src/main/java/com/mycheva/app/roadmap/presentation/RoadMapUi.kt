@@ -8,7 +8,7 @@ data class RoadMapUi(
     val desc: String,
 ) {
     companion object {
-        fun fromRoadmap(roadMap: RoadMap): RoadMapUi {
+        fun fromDomain(roadMap: RoadMap): RoadMapUi {
             return RoadMapUi(
                 divisionId = roadMap.divisionId,
                 title = roadMap.title,

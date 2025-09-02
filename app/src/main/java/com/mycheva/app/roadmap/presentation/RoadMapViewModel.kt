@@ -40,7 +40,7 @@ class RoadMapViewModel(
                         state.copy(
                             roadMaps = result.filter { roadmaps ->
                                 roadmaps.divisionId.toString() == divisionId
-                            }.map { RoadMapUi.fromRoadmap(it) },
+                            }.map { RoadMapUi.fromDomain(it) },
                             isLoading = false
                         )
                     }

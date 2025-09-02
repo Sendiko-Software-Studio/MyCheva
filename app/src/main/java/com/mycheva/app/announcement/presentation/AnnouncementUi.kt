@@ -11,8 +11,21 @@ data class AnnouncementUi(
     val content: String,
     val isBookmarked: Boolean = false,
 ) {
+
+    fun toDomain(announcementUi: AnnouncementUi): Announcement {
+        return Announcement(
+            id = announcementUi.id.toInt(),
+            profileUrl = announcementUi.profileUrl,
+            username = announcementUi.username,
+            timeStamp = announcementUi.time,
+            title = announcementUi.time,
+            content = announcementUi.content,
+            isBookmarked = announcementUi.isBookmarked,
+            imageUrl = ""
+        )
+    }
     companion object {
-        fun from(announcement: Announcement): AnnouncementUi {
+        fun fromDomain(announcement: Announcement): AnnouncementUi {
             return AnnouncementUi(
                 id = announcement.id.toString(),
                 profileUrl = announcement.profileUrl,
@@ -21,19 +34,6 @@ data class AnnouncementUi(
                 content = announcement.content,
                 title = announcement.title,
                 isBookmarked = announcement.isBookmarked
-            )
-        }
-
-        fun to(announcementUi: AnnouncementUi): Announcement {
-            return Announcement(
-                id = announcementUi.id.toInt(),
-                profileUrl = announcementUi.profileUrl,
-                username = announcementUi.username,
-                timeStamp = announcementUi.time,
-                title = announcementUi.time,
-                content = announcementUi.content,
-                isBookmarked = announcementUi.isBookmarked,
-                imageUrl = ""
             )
         }
     }

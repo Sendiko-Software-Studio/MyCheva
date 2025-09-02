@@ -11,7 +11,7 @@ data class RepliesUi(
     val role: String,
 ) {
     companion object {
-        fun fromReply(replies: Replies): RepliesUi {
+        fun fromDomain(replies: Replies): RepliesUi {
             return RepliesUi(
                 id = replies.id.toString(),
                 profileUrl = replies.user.profileUrl,

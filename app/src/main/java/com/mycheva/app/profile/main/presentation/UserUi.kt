@@ -15,7 +15,7 @@ data class UserUi(
     val faculty: String,
     val division: Division
 ) {
-    fun toUser(): User {
+    fun toDomain(): User {
         return User(
             id = id,
             name = name,
@@ -32,7 +32,7 @@ data class UserUi(
     }
 
     companion object {
-        fun fromUser(user: User): UserUi {
+        fun fromDomain(user: User): UserUi {
             return UserUi(
                 id = user.id,
                 name = user.name,

@@ -13,7 +13,7 @@ data class ForumUi(
     val comment: String,
     val role: String,
 ) {
-    fun toForum(): Forum {
+    fun toDomain(): Forum {
         return Forum(
             id = id,
             profileUrl = profileUrl,
@@ -31,7 +31,7 @@ data class ForumUi(
         )
     }
     companion object {
-        fun fromForum(forum: Forum): ForumUi {
+        fun fromDomain(forum: Forum): ForumUi {
             return ForumUi(
                 id = forum.id,
                 profileUrl = forum.user.profileUrl,

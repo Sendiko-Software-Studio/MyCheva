@@ -109,7 +109,7 @@ fun RepliesScreen(
                                 enter = fadeIn(),
                                 exit = fadeOut()
                             ) {
-                                PostCard(forum = ForumUi.fromForum(state.post!!))
+                                PostCard(forum = ForumUi.fromDomain(state.post!!))
                             }
                         }
                         item {
@@ -160,7 +160,7 @@ fun RepliesScreen(
                         }
                         items(state.replies) {
                             RepliesCard(
-                                comment = RepliesUi.fromReply(it),
+                                comment = RepliesUi.fromDomain(it),
                                 modifier = Modifier.padding(8.dp)
                             )
                         }

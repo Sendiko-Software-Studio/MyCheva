@@ -75,7 +75,7 @@ class AnnouncementViewModel @Inject constructor(
                 .onSuccess { result ->
                     _state.update { state ->
                         state.copy(
-                            announcements = result.map { AnnouncementUi.from(it) },
+                            announcements = result.map { AnnouncementUi.fromDomain(it) },
                             isLoading = false
                         )
                     }
