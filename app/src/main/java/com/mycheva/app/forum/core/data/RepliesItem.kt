@@ -1,32 +1,32 @@
 package com.mycheva.app.forum.core.data
 
-import com.google.gson.annotations.SerializedName
 import com.mycheva.app.forum.replies.domain.Replies
+import kotlinx.serialization.SerialName
 
 data class RepliesItem(
 
-    @field:SerializedName("createdAt")
+    @SerialName("createdAt")
     val createdAt: String,
 
-    @field:SerializedName("id")
+    @SerialName("id")
     val id: Int,
 
-    @field:SerializedName("userId")
+    @SerialName("userId")
     val userId: Int,
 
-    @field:SerializedName("forumId")
+    @SerialName("forumId")
     val forumId: Int,
 
-    @field:SerializedName("content")
+    @SerialName("content")
     val content: String,
 
-    @field:SerializedName("updatedAt")
+    @SerialName("updatedAt")
     val updatedAt: String,
 
-    @field:SerializedName("user")
-    val userItemWithRole: UserItemWithRole
+    @SerialName("user")
+    val userItemWithRole: UserItemWithRole,
 
-)
+    )
 
 fun RepliesItem.toDomain(): Replies {
     return Replies(

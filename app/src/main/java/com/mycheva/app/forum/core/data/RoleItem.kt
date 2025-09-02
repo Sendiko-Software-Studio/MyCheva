@@ -1,20 +1,20 @@
 package com.mycheva.app.forum.core.data
 
-import com.google.gson.annotations.SerializedName
 import com.mycheva.app.forum.core.domain.Role
+import kotlinx.serialization.SerialName
 
 data class RoleItem(
 
-    @field:SerializedName("createdAt")
+    @SerialName("createdAt")
     val createdAt: String,
 
-    @field:SerializedName("name")
+    @SerialName("name")
     val name: String,
 
-    @field:SerializedName("id")
+    @SerialName("id")
     val id: Int,
 
-    @field:SerializedName("updatedAt")
+    @SerialName("updatedAt")
     val updatedAt: String
 
 )

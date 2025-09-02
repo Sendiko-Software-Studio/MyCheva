@@ -1,15 +1,15 @@
 package com.mycheva.app.profile.main.data.dto.getuser
 
-import com.google.gson.annotations.SerializedName
 import com.mycheva.app.profile.main.domain.Division
+import kotlinx.serialization.SerialName
 
 data class DivisionItem(
 
-    @field:SerializedName("name")
+    @SerialName("name")
     val name: String,
 
-    @field:SerializedName("id")
-    val id: Int
+    @SerialName("id")
+    val id: Int,
 )
 
 fun DivisionItem.toDomain(): Division {

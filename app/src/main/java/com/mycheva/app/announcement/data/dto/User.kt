@@ -1,22 +1,22 @@
 package com.mycheva.app.announcement.data.dto
 
-import com.google.gson.annotations.SerializedName
+import kotlinx.serialization.SerialName
 
 
 data class User(
 
-    @field:SerializedName("profileUrl")
+    @SerialName("profileUrl")
     val profileUrl: String?,
 
-    @field:SerializedName("password")
+    @SerialName("password")
     val password: String,
 
-    @field:SerializedName("roleId")
+    @SerialName("roleId")
     val roleId: Int,
 
-    @field:SerializedName("name")
+    @SerialName("name")
     val name: String,
 
-    @field:SerializedName("id")
-    val id: Int
+    @SerialName("id")
+    val id: Int,
 )

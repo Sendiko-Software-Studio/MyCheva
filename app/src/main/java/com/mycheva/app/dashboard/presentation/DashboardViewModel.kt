@@ -9,7 +9,6 @@ import com.mycheva.app.core.ui.utils.asUiText
 import com.mycheva.app.dashboard.domain.DashboardRepository
 import com.mycheva.app.meeting.core.domain.Meeting
 import com.mycheva.app.meeting.main.presentation.MeetingUi
-import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
@@ -19,7 +18,6 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import java.time.LocalDate
 
-@HiltViewModel
 class DashboardViewModel(
     private val repository: DashboardRepository,
 ) : ViewModel() {
@@ -67,7 +65,7 @@ class DashboardViewModel(
 
         val filteredEvents = events.filter { event ->
             event.divisionId == userDivisionId &&
-            LocalDate.parse(event.date.substringBefore("T")) in today..nextWeek
+                    LocalDate.parse(event.date.substringBefore("T")) in today..nextWeek
         }
         return filteredEvents.ifEmpty { emptyList() }
     }

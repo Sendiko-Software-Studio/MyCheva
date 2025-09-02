@@ -8,7 +8,6 @@ import com.mycheva.app.core.ui.utils.UiText
 import com.mycheva.app.core.ui.utils.asUiText
 import com.mycheva.app.meeting.detail.domain.DetailMeetingRepository
 import com.mycheva.app.meeting.main.presentation.MeetingUi
-import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
@@ -17,9 +16,8 @@ import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
-@HiltViewModel
 class DetailMeetingViewModel(
-    private val repository: DetailMeetingRepository
+    private val repository: DetailMeetingRepository,
 ) : ViewModel() {
 
     private val _token = repository.getToken()
@@ -50,7 +48,12 @@ class DetailMeetingViewModel(
             _state.update { it.copy(isLoading = true) }
             repository.getMeeting(token = token, meetingId = meetingId)
                 .onSuccess { result ->
-                    _state.update { it.copy(meeting = MeetingUi.fromDomain(result), isLoading = false) }
+                    _state.update {
+                        it.copy(
+                            meeting = MeetingUi.fromDomain(result),
+                            isLoading = false
+                        )
+                    }
                 }
                 .onError { error ->
                     _state.update {

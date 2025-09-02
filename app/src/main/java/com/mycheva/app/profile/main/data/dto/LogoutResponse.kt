@@ -1,12 +1,12 @@
 package com.mycheva.app.profile.main.data.dto
 
-import com.google.gson.annotations.SerializedName
+import kotlinx.serialization.SerialName
 
 data class LogoutResponse(
 
-	@field:SerializedName("message")
+	@SerialName("message")
 	val message: String,
 
-	@field:SerializedName("status")
-	val status: Boolean
+	@SerialName("status")
+	val status: Boolean,
 )

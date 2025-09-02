@@ -1,34 +1,34 @@
 package com.mycheva.app.announcement.data.dto
 
-import com.google.gson.annotations.SerializedName
 import com.mycheva.app.announcement.domain.Announcement
+import kotlinx.serialization.SerialName
 
 
 data class AnnouncementsItem(
 
-    @field:SerializedName("createdAt")
+    @SerialName("createdAt")
     val createdAt: String,
 
-    @field:SerializedName("imageUrl")
+    @SerialName("imageUrl")
     val imageUrl: String?,
 
-    @field:SerializedName("id")
+    @SerialName("id")
     val id: Int,
 
-    @field:SerializedName("title")
+    @SerialName("title")
     val title: String,
 
-    @field:SerializedName("userId")
+    @SerialName("userId")
     val userId: Int,
 
-    @field:SerializedName("user")
+    @SerialName("user")
     val user: User,
 
-    @field:SerializedName("content")
+    @SerialName("content")
     val content: String,
 
-    @field:SerializedName("updatedAt")
-    val updatedAt: String
+    @SerialName("updatedAt")
+    val updatedAt: String,
 )
 
 fun AnnouncementsItem.toDomain(): Announcement {

@@ -1,15 +1,15 @@
 package com.mycheva.app.attendance.data.dto
 
-import com.google.gson.annotations.SerializedName
+import kotlinx.serialization.SerialName
 
 data class AttendanceRequest(
 
-	@field:SerializedName("eventId")
+	@SerialName("eventId")
 	val eventId: String,
 
-	@field:SerializedName("userId")
+	@SerialName("userId")
 	val userId: String,
 
-	@field:SerializedName("status")
-	val status: String
+	@SerialName("status")
+	val status: String,
 )

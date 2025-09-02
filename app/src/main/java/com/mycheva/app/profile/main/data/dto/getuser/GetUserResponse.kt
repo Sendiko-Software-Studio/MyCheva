@@ -1,15 +1,15 @@
 package com.mycheva.app.profile.main.data.dto.getuser
 
-import com.google.gson.annotations.SerializedName
+import kotlinx.serialization.SerialName
 
 data class GetUserResponse(
 
-	@field:SerializedName("message")
+	@SerialName("message")
 	val message: String,
 
-	@field:SerializedName("user")
+	@SerialName("user")
 	val user: UserItem,
 
-	@field:SerializedName("status")
-	val status: Int
+	@SerialName("status")
+	val status: Int,
 )

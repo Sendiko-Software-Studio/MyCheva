@@ -1,16 +1,16 @@
 package com.mycheva.app.forum.replies.data.dto
 
-import com.google.gson.annotations.SerializedName
 import com.mycheva.app.forum.core.data.ForumItems
+import kotlinx.serialization.SerialName
 
 data class GetForumResponse(
 
-    @field:SerializedName("forum")
-	val forumItems: ForumItems,
+    @SerialName("forum")
+    val forumItems: ForumItems,
 
-    @field:SerializedName("message")
-	val message: String,
+    @SerialName("message")
+    val message: String,
 
-    @field:SerializedName("status")
-	val status: Int
+    @SerialName("status")
+    val status: Int,
 )

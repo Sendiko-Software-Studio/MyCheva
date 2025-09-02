@@ -3,17 +3,15 @@ package com.mycheva.app.splashscreen.presentation
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.mycheva.app.splashscreen.data.SplashScreenRepository
-import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.stateIn
-import javax.inject.Inject
 
-@HiltViewModel
-class SplashScreenViewModel @Inject constructor(
-    repository: SplashScreenRepository
-): ViewModel() {
+
+class SplashScreenViewModel(
+    repository: SplashScreenRepository,
+) : ViewModel() {
 
     private val _token = repository.getToken()
     private val _state = MutableStateFlow(SplashScreenState())

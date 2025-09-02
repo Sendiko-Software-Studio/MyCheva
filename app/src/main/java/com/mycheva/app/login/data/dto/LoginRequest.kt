@@ -1,12 +1,12 @@
 package com.mycheva.app.login.data.dto
 
-import com.google.gson.annotations.SerializedName
+import kotlinx.serialization.SerialName
 
 data class LoginRequest(
 
-	@field:SerializedName("password")
-	val password: String,
+    @SerialName("password")
+    val password: String,
 
-	@field:SerializedName("name")
-	val name: String
+    @SerialName("name")
+    val name: String,
 )

@@ -7,7 +7,6 @@ import com.mycheva.app.core.network.utils.onError
 import com.mycheva.app.core.network.utils.onSuccess
 import com.mycheva.app.core.ui.utils.UiText
 import com.mycheva.app.core.ui.utils.asUiText
-import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
@@ -15,11 +14,10 @@ import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import javax.inject.Inject
 
-class AttendanceViewModel @Inject constructor(
-    private val repository: AttendanceRepositoryImpl
-): ViewModel() {
+class AttendanceViewModel(
+    private val repository: AttendanceRepositoryImpl,
+) : ViewModel() {
 
     private val _token = repository.getToken()
     private val _userId = repository.getUserId()
@@ -34,7 +32,11 @@ class AttendanceViewModel @Inject constructor(
     fun onEvent(event: AttendanceEvent) {
         when (event) {
             AttendanceEvent.OnClearState -> clearState()
-            is AttendanceEvent.OnEventIdRead -> postAttendance(event.token, event.eventId, event.userId)
+            is AttendanceEvent.OnEventIdRead -> postAttendance(
+                event.token,
+                event.eventId,
+                event.userId
+            )
         }
     }
 
@@ -48,34 +50,35 @@ class AttendanceViewModel @Inject constructor(
         }
     }
 
-    private fun postAttendance(token: String, eventId: String, userId: String) = viewModelScope.launch(Dispatchers.IO) {
-        if (state.value.isScanning) {
-            _state.update { it.copy(notificationMessage = UiText.DynamicString("Attendance successfully recorded.")) }
-            return@launch
-        }
-        _state.update { it.copy(isLoading = true, isScanning = true) }
-        repository.postAttendance(
-            token = "Bearer $token",
-            eventId = state.value.eventId,
-            userId = state.value.userId,
-        ).onSuccess { response ->
-            _state.update {
-                it.copy(
-                    isLoading = false,
-                    isScanning = false,
-                    isRequestSuccess = true,
-                    notificationMessage = UiText.DynamicString(response.message)
-                )
+    private fun postAttendance(token: String, eventId: String, userId: String) =
+        viewModelScope.launch(Dispatchers.IO) {
+            if (state.value.isScanning) {
+                _state.update { it.copy(notificationMessage = UiText.DynamicString("Attendance successfully recorded.")) }
+                return@launch
             }
-        }.onError { error ->
-            _state.update {
-                it.copy(
-                    isLoading = false,
-                    isScanning = false,
-                    notificationMessage = error.asUiText()
-                )
+            _state.update { it.copy(isLoading = true, isScanning = true) }
+            repository.postAttendance(
+                token = "Bearer $token",
+                eventId = state.value.eventId,
+                userId = state.value.userId,
+            ).onSuccess { response ->
+                _state.update {
+                    it.copy(
+                        isLoading = false,
+                        isScanning = false,
+                        isRequestSuccess = true,
+                        notificationMessage = UiText.DynamicString(response.message)
+                    )
+                }
+            }.onError { error ->
+                _state.update {
+                    it.copy(
+                        isLoading = false,
+                        isScanning = false,
+                        notificationMessage = error.asUiText()
+                    )
+                }
             }
         }
-    }
 
 }

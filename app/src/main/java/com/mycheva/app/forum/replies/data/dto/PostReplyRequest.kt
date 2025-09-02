@@ -1,15 +1,15 @@
 package com.mycheva.app.forum.replies.data.dto
 
-import com.google.gson.annotations.SerializedName
+import kotlinx.serialization.SerialName
 
 data class PostReplyRequest(
 
-	@field:SerializedName("userId")
-	val userId: Int,
+    @SerialName("userId")
+    val userId: Int,
 
-	@field:SerializedName("forumId")
-	val forumId: Int,
+    @SerialName("forumId")
+    val forumId: Int,
 
-	@field:SerializedName("content")
-	val content: String
+    @SerialName("content")
+    val content: String,
 )

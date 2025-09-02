@@ -1,39 +1,39 @@
 package com.mycheva.app.meeting.core.data
 
-import com.google.gson.annotations.SerializedName
 import com.mycheva.app.meeting.core.domain.Meeting
+import kotlinx.serialization.SerialName
 
 data class MeetingsItem(
 
-    @field:SerializedName("date")
+    @SerialName("date")
     val date: String,
 
-    @field:SerializedName("createdAt")
+    @SerialName("createdAt")
     val createdAt: String,
 
-    @field:SerializedName("name")
+    @SerialName("name")
     val name: String,
 
-    @field:SerializedName("details")
+    @SerialName("details")
     val details: String,
 
-    @field:SerializedName("id")
+    @SerialName("id")
     val id: Int,
 
-    @field:SerializedName("time")
+    @SerialName("time")
     val time: String,
 
-    @field:SerializedName("divisionId")
+    @SerialName("divisionId")
     val divisionId: Int,
 
-    @field:SerializedName("type")
+    @SerialName("type")
     val type: String,
 
-    @field:SerializedName("desc")
+    @SerialName("desc")
     val desc: String,
 
-    @field:SerializedName("updatedAt")
-    val updatedAt: String
+    @SerialName("updatedAt")
+    val updatedAt: String,
 )
 
 fun MeetingsItem.toDomain(): Meeting {

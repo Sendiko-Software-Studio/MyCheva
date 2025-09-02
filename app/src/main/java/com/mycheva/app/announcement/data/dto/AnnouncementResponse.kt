@@ -1,15 +1,16 @@
 package com.mycheva.app.announcement.data.dto
 
-import com.google.gson.annotations.SerializedName
+import kotlinx.serialization.SerialName
+
 
 data class AnnouncementResponse(
 
-	@field:SerializedName("message")
+	@SerialName("message")
 	val message: String,
 
-	@field:SerializedName("announcements")
+	@SerialName("announcements")
 	val announcements: List<AnnouncementsItem>,
 
-	@field:SerializedName("status")
+	@SerialName("status")
 	val status: Int
 )

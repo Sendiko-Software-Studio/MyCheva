@@ -1,15 +1,15 @@
 package com.mycheva.app.meeting.core.data
 
-import com.google.gson.annotations.SerializedName
+import kotlinx.serialization.SerialName
 
 data class GetMeetingsResponse(
 
-	@field:SerializedName("message")
+	@SerialName("message")
 	val message: String,
 
-	@field:SerializedName("events")
+	@SerialName("events")
 	val events: List<MeetingsItem>,
 
-	@field:SerializedName("status")
-	val status: Int
+	@SerialName("status")
+	val status: Int,
 )

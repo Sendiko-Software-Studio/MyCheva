@@ -1,9 +1,9 @@
 package com.mycheva.app.profile.main.data.dto.changeusername
 
-import com.google.gson.annotations.SerializedName
+import kotlinx.serialization.SerialName
 
 data class ChangeUsernameRequest(
 
-	@field:SerializedName("username")
-	val name: String
+	@SerialName("username")
+	val name: String,
 )

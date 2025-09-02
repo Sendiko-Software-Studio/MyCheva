@@ -7,17 +7,14 @@ import com.mycheva.app.core.network.utils.onSuccess
 import com.mycheva.app.core.ui.utils.UiText
 import com.mycheva.app.core.ui.utils.asUiText
 import com.mycheva.app.forum.main.domain.ForumRepository
-import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import javax.inject.Inject
 
-@HiltViewModel
-class ForumViewModel @Inject constructor(
+class ForumViewModel(
     private val repository: ForumRepository,
 ) : ViewModel() {
 

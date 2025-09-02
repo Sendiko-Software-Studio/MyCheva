@@ -3,7 +3,6 @@ plugins {
     alias(libs.plugins.jetbrains.kotlin.android)
     alias(libs.plugins.kotlin.serialization)
     alias(libs.plugins.compose.compiler)
-    alias(libs.plugins.dagger.hilt.android)
     alias(libs.plugins.google.devtools.ksp)
 }
 
@@ -49,9 +48,6 @@ android {
     buildFeatures {
         compose = true
     }
-    composeOptions {
-        kotlinCompilerExtensionVersion = "1.5.1"
-    }
     packaging {
         resources {
             excludes += "/META-INF/{AL2.0,LGPL2.1}"
@@ -76,21 +72,10 @@ dependencies {
     implementation(libs.com.google.mlkit.barcode.scanning)
     implementation(libs.com.google.accompanist.permission)
     implementation(libs.kotlinx.serialization.json)
-    coreLibraryDesugaring(libs.desugar.jdk.libs) // Check for the latest version
+    coreLibraryDesugaring(libs.desugar.jdk.libs)
 
     /* Datastore */
     implementation(libs.androidx.datastore.preferences)
-
-    /* Dagger Hilt */
-    implementation(libs.androidx.hilt.navigation.compose)
-    implementation(libs.com.google.dagger.hilt.android)
-    ksp(libs.com.google.dagger.hilt.android.compiler)
-
-    /* Retrofit + OkHttp */
-    implementation(libs.com.squareup.retrofit2.retrofit)
-    implementation(libs.com.squareup.retrofit2.converter.gson)
-    implementation(libs.com.squareup.okhttp3.okhttp)
-    implementation(libs.com.squareup.okhttp3.logging.interceptor)
 
     /* CameraX */
     implementation(libs.androidx.camera.camera2)
@@ -120,6 +105,7 @@ dependencies {
     implementation(libs.ktor.client.content.negotiation)
     implementation(libs.ktor.client.auth)
 
+    /* Test Libraries */
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)

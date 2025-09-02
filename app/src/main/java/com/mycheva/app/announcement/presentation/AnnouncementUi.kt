@@ -12,15 +12,15 @@ data class AnnouncementUi(
     val isBookmarked: Boolean = false,
 ) {
 
-    fun toDomain(announcementUi: AnnouncementUi): Announcement {
+    fun toDomain(): Announcement {
         return Announcement(
-            id = announcementUi.id.toInt(),
-            profileUrl = announcementUi.profileUrl,
-            username = announcementUi.username,
-            timeStamp = announcementUi.time,
-            title = announcementUi.time,
-            content = announcementUi.content,
-            isBookmarked = announcementUi.isBookmarked,
+            id = id.toInt(),
+            profileUrl = profileUrl,
+            username = username,
+            timeStamp = time,
+            title = time,
+            content = content,
+            isBookmarked = isBookmarked,
             imageUrl = ""
         )
     }

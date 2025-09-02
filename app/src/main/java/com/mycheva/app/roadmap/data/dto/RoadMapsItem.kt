@@ -1,27 +1,27 @@
 package com.mycheva.app.roadmap.data.dto
 
-import com.google.gson.annotations.SerializedName
 import com.mycheva.app.roadmap.domain.RoadMap
+import kotlinx.serialization.SerialName
 
 data class RoadmapsItem(
 
-    @field:SerializedName("createdAt")
+    @SerialName("createdAt")
     val createdAt: String,
 
-    @field:SerializedName("id")
+    @SerialName("id")
     val id: Int,
 
-    @field:SerializedName("divisionId")
+    @SerialName("divisionId")
     val divisionId: Int,
 
-    @field:SerializedName("title")
+    @SerialName("title")
     val title: String,
 
-    @field:SerializedName("desc")
+    @SerialName("desc")
     val desc: String,
 
-    @field:SerializedName("updatedAt")
-    val updatedAt: String
+    @SerialName("updatedAt")
+    val updatedAt: String,
 )
 
 fun RoadmapsItem.toDomain(): RoadMap {

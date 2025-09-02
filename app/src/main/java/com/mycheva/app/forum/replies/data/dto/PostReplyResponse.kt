@@ -1,12 +1,12 @@
 package com.mycheva.app.forum.replies.data.dto
 
-import com.google.gson.annotations.SerializedName
+import kotlinx.serialization.SerialName
 
 data class PostReplyResponse(
 
-	@field:SerializedName("message")
+	@SerialName("message")
 	val message: String,
 
-	@field:SerializedName("status")
-	val status: Int
+	@SerialName("status")
+	val status: Int,
 )

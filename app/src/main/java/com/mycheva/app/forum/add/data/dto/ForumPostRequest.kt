@@ -1,12 +1,12 @@
 package com.mycheva.app.forum.add.data.dto
 
-import com.google.gson.annotations.SerializedName
+import kotlinx.serialization.SerialName
 
 data class ForumPostRequest(
 
-	@field:SerializedName("userId")
+	@SerialName("userId")
 	val userId: Int? = null,
 
-	@field:SerializedName("content")
+	@SerialName("content")
 	val content: String? = null
 )

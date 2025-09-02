@@ -1,15 +1,15 @@
 package com.mycheva.app.roadmap.data.dto
 
-import com.google.gson.annotations.SerializedName
+import kotlinx.serialization.SerialName
 
 data class GetRoadMapResponse(
 
-	@field:SerializedName("roadmaps")
+	@SerialName("roadmaps")
 	val roadmaps: List<RoadmapsItem>,
 
-	@field:SerializedName("message")
+	@SerialName("message")
 	val message: String,
 
-	@field:SerializedName("status")
-	val status: Int
+	@SerialName("status")
+	val status: Int,
 )

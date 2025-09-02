@@ -1,8 +1,6 @@
 package com.mycheva.app.core.navigation
 
 import android.annotation.SuppressLint
-import android.os.Build
-import androidx.annotation.RequiresApi
 import androidx.compose.animation.AnimatedContentTransitionScope
 import androidx.compose.animation.ExperimentalSharedTransitionApi
 import androidx.compose.animation.SharedTransitionLayout
@@ -15,7 +13,6 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
@@ -33,10 +30,10 @@ import com.mycheva.app.dashboard.presentation.DashboardScreen
 import com.mycheva.app.dashboard.presentation.DashboardViewModel
 import com.mycheva.app.forum.add.presentation.AddPostForumViewModel
 import com.mycheva.app.forum.add.presentation.AddPostScreen
-import com.mycheva.app.forum.replies.presentation.RepliesScreen
-import com.mycheva.app.forum.replies.presentation.RepliesViewModel
 import com.mycheva.app.forum.main.presentation.ForumScreen
 import com.mycheva.app.forum.main.presentation.ForumViewModel
+import com.mycheva.app.forum.replies.presentation.RepliesScreen
+import com.mycheva.app.forum.replies.presentation.RepliesViewModel
 import com.mycheva.app.login.presentation.LoginScreen
 import com.mycheva.app.login.presentation.LoginViewModel
 import com.mycheva.app.meeting.detail.presentation.DetailMeetingScreen
@@ -57,7 +54,7 @@ import org.koin.androidx.compose.koinViewModel
 @OptIn(ExperimentalSharedTransitionApi::class)
 @Composable
 fun RootNavGraph(
-    navController: NavHostController
+    navController: NavHostController,
 ) {
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val isVisible =

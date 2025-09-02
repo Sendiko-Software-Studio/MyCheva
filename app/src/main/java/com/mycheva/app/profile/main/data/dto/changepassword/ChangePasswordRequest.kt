@@ -1,12 +1,12 @@
 package com.mycheva.app.profile.main.data.dto.changepassword
 
-import com.google.gson.annotations.SerializedName
+import kotlinx.serialization.SerialName
 
 data class ChangePasswordRequest(
 
-	@field:SerializedName("password")
+	@SerialName("password")
 	val password: String,
 
-	@field:SerializedName("oldPassword")
-	val oldPassword: String
+	@SerialName("oldPassword")
+	val oldPassword: String,
 )

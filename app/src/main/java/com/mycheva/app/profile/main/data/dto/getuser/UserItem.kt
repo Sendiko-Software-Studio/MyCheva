@@ -1,24 +1,24 @@
 package com.mycheva.app.profile.main.data.dto.getuser
 
-import com.google.gson.annotations.SerializedName
 import com.mycheva.app.profile.main.domain.User
+import kotlinx.serialization.SerialName
 
 data class UserItem(
 
-    @field:SerializedName("profileUrl")
+    @SerialName("profileUrl")
     val profileUrl: String?,
 
-    @field:SerializedName("password")
+    @SerialName("password")
     val password: String,
 
-    @field:SerializedName("name")
+    @SerialName("name")
     val name: String,
 
-    @field:SerializedName("id")
+    @SerialName("id")
     val id: Int,
 
-    @field:SerializedName("UserDatum")
-    val userDatum: UserDatum
+    @SerialName("UserDatum")
+    val userDatum: UserDatum,
 )
 
 fun UserItem.toDomain(): User {

@@ -143,7 +143,7 @@ fun SharedTransitionScope.AnnouncementScreen(
                         AnnouncementCard(
                             announcement = announcement,
                             onAddBookMark = {
-                                onEvent(AnnouncementEvent.OnAddBookmark(AnnouncementUi.to(announcement)))
+                                onEvent(AnnouncementEvent.OnAddBookmark(announcement.toDomain()))
                             },
                             modifier = Modifier.padding(horizontal = 16.dp)
                         )

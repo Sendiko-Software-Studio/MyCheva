@@ -2,15 +2,11 @@ package com.mycheva.app.reset_password.presentation
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.mycheva.app.core.network.utils.NOT_FOUND
-import com.mycheva.app.core.network.utils.SERVER_ERROR
 import com.mycheva.app.core.network.utils.onError
 import com.mycheva.app.core.network.utils.onSuccess
 import com.mycheva.app.core.ui.utils.UiText
 import com.mycheva.app.core.ui.utils.asUiText
-import com.mycheva.app.reset_password.data.dto.ResetPasswordRequest
 import com.mycheva.app.reset_password.data.ResetPasswordRepositoryImpl
-import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
@@ -18,10 +14,9 @@ import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import javax.inject.Inject
 
 class ResetPasswordViewModel(
-    private val repository: ResetPasswordRepositoryImpl
+    private val repository: ResetPasswordRepositoryImpl,
 ) : ViewModel() {
 
     private val _token = repository.getToken()
@@ -34,7 +29,7 @@ class ResetPasswordViewModel(
         when (event) {
             is ResetPasswordEvent.OnEmailTextChange -> changeEmail(event.email)
             is ResetPasswordEvent.OnResetPassword -> resetPassword(event.token, event.email)
-            ResetPasswordEvent.OnEmailCleared -> clearEmailText ()
+            ResetPasswordEvent.OnEmailCleared -> clearEmailText()
             ResetPasswordEvent.ClearState -> clearState()
         }
     }

@@ -1,23 +1,23 @@
 package com.mycheva.app.forum.core.data
 
-import com.google.gson.annotations.SerializedName
 import com.mycheva.app.forum.core.domain.UserWithRole
+import kotlinx.serialization.SerialName
 
 data class UserItemWithRole(
 
-    @field:SerializedName("profileUrl")
+    @SerialName("profileUrl")
     val profileUrl: String,
 
-    @field:SerializedName("password")
+    @SerialName("password")
     val password: String,
 
-    @field:SerializedName("name")
+    @SerialName("name")
     val name: String,
 
-    @field:SerializedName("id")
+    @SerialName("id")
     val id: Int,
 
-    @field:SerializedName("Role")
+    @SerialName("Role")
     val roleItem: RoleItem
 )
 

@@ -1,49 +1,49 @@
 package com.mycheva.app.login.data.dto
 
-import com.google.gson.annotations.SerializedName
 import com.mycheva.app.login.domain.UserWithToken
+import kotlinx.serialization.SerialName
 
 data class LoginResponse(
 
-	@field:SerializedName("message")
+	@SerialName("message")
 	val message: String,
 
-	@field:SerializedName("user")
+	@SerialName("user")
 	val userLoginItem: UserLoginItem,
 
-	@field:SerializedName("status")
+	@SerialName("status")
 	val status: Int,
 
-	@field:SerializedName("token")
-	val token: String
+	@SerialName("token")
+	val token: String,
 )
 
 data class UserLoginItem(
 
-	@field:SerializedName("profileUrl")
+	@SerialName("profileUrl")
 	val profileUrl: String,
 
-	@field:SerializedName("createdAt")
+	@SerialName("createdAt")
 	val createdAt: String,
 
-	@field:SerializedName("password")
+	@SerialName("password")
 	val password: String,
 
-	@field:SerializedName("name")
+	@SerialName("name")
 	val name: String,
 
-	@field:SerializedName("id")
+	@SerialName("id")
 	val id: Int,
 
-	@field:SerializedName("updatedAt")
-	val updatedAt: String
+	@SerialName("updatedAt")
+	val updatedAt: String,
 )
 
 fun LoginResponse.toDomain(): UserWithToken {
-	return UserWithToken(
+    return UserWithToken(
         id = userLoginItem.id,
         name = userLoginItem.name,
         profileUrl = userLoginItem.profileUrl,
-		token = token
+        token = token
     )
 }
