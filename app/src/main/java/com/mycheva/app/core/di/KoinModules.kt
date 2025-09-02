@@ -11,6 +11,10 @@ import com.mycheva.app.core.network.ApiServices
 import com.mycheva.app.core.network.HttpClientFactory
 import com.mycheva.app.core.network.KtorClient
 import com.mycheva.app.core.preferences.DatastoreFactory
+import com.mycheva.app.meeting.detail.data.DetailMeetingRepositoryImpl
+import com.mycheva.app.meeting.detail.presentation.DetailMeetingViewModel
+import com.mycheva.app.meeting.main.data.MeetingsRepositoryImpl
+import com.mycheva.app.meeting.main.presentation.MeetingsViewModel
 import com.mycheva.app.profile.main.data.ProfileRepositoryImpl
 import com.mycheva.app.profile.main.presentation.ProfileViewModel
 import io.ktor.client.engine.HttpClientEngine
@@ -34,9 +38,13 @@ val koinModules = module {
     singleOf(::AttendanceRepositoryImpl)
     singleOf(::BookmarkRepositoryImpl)
     singleOf(::ProfileRepositoryImpl)
+    singleOf(::MeetingsRepositoryImpl)
+    singleOf(::DetailMeetingRepositoryImpl)
 
     factory { AnnouncementViewModel(get()) }
     factory { AttendanceViewModel(get()) }
     factory { BookmarkViewModel(get()) }
     factory { ProfileViewModel(get()) }
+    factory { MeetingsViewModel(get()) }
+    factory { DetailMeetingViewModel(get()) }
 }

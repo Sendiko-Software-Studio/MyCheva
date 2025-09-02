@@ -1,10 +1,10 @@
 package com.mycheva.app.core.network
 
 import com.mycheva.app.announcement.data.dto.AnnouncementResponse
-import com.mycheva.app.attendance.data.AttendanceRequest
-import com.mycheva.app.attendance.data.AttendanceResponse
-import com.mycheva.app.core.data.GetEventsResponse
-import com.mycheva.app.core.data.GetUserResponse
+import com.mycheva.app.attendance.data.dto.AttendanceRequest
+import com.mycheva.app.attendance.data.dto.AttendanceResponse
+import com.mycheva.app.meeting.core.data.GetMeetingsResponse
+import com.mycheva.app.profile.main.data.dto.getuser.GetUserResponse
 import com.mycheva.app.core.network.utils.DataError
 import com.mycheva.app.core.network.utils.LIVE_SERVER
 import com.mycheva.app.core.network.utils.Result
@@ -17,12 +17,12 @@ import com.mycheva.app.forum.comment.data.PostReplyResponse
 import com.mycheva.app.forum.main.data.GetForumsResponse
 import com.mycheva.app.login.data.LoginRequest
 import com.mycheva.app.login.data.LoginResponse
-import com.mycheva.app.meeting.detail.data.GetMeetingResponse
-import com.mycheva.app.profile.main.data.ChangePasswordRequest
-import com.mycheva.app.profile.main.data.ChangePasswordResponse
-import com.mycheva.app.profile.main.data.ChangeUsernameRequest
-import com.mycheva.app.profile.main.data.ChangeUsernameResponse
-import com.mycheva.app.profile.main.data.LogoutResponse
+import com.mycheva.app.meeting.core.data.GetMeetingResponse
+import com.mycheva.app.profile.main.data.dto.changepassword.ChangePasswordRequest
+import com.mycheva.app.profile.main.data.dto.changepassword.ChangePasswordResponse
+import com.mycheva.app.profile.main.data.dto.changeusername.ChangeUsernameRequest
+import com.mycheva.app.profile.main.data.dto.changeusername.ChangeUsernameResponse
+import com.mycheva.app.profile.main.data.dto.LogoutResponse
 import com.mycheva.app.reset_password.data.ResetPasswordRequest
 import com.mycheva.app.reset_password.data.ResetPasswordResponse
 import com.mycheva.app.roadmap.data.GetRoadMapResponse
@@ -55,15 +55,15 @@ class KtorClient(
         }
     }
 
-    override suspend fun getEvents(token: String): Result<GetEventsResponse, DataError.Remote> {
-        return safeCall<GetEventsResponse> {
+    override suspend fun getMeetings(token: String): Result<GetMeetingsResponse, DataError.Remote> {
+        return safeCall<GetMeetingsResponse> {
             client.get("$LIVE_SERVER/events") {
                 bearerAuth(token)
             }
         }
     }
 
-    override suspend fun getEvent(
+    override suspend fun getMeeting(
         token: String,
         eventId: String
     ): Result<GetMeetingResponse, DataError.Remote> {
