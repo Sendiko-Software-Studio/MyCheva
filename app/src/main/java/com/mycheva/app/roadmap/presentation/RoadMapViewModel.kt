@@ -5,8 +5,7 @@ import androidx.lifecycle.viewModelScope
 import com.mycheva.app.core.network.utils.onError
 import com.mycheva.app.core.network.utils.onSuccess
 import com.mycheva.app.core.ui.utils.asUiText
-import com.mycheva.app.roadmap.data.RoadMapRepositoryImpl
-import dagger.hilt.android.lifecycle.HiltViewModel
+import com.mycheva.app.roadmap.domain.RoadMapRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
@@ -14,11 +13,9 @@ import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import javax.inject.Inject
 
-@HiltViewModel
-class RoadMapViewModel @Inject constructor(
-    private val repository: RoadMapRepositoryImpl,
+class RoadMapViewModel(
+    private val repository: RoadMapRepository,
 ) : ViewModel() {
 
     private val _token = repository.getToken()
