@@ -51,13 +51,12 @@ import com.mycheva.app.roadmap.presentation.RoadMapScreen
 import com.mycheva.app.roadmap.presentation.RoadMapViewModel
 import com.mycheva.app.splashscreen.presentation.SplashScreen
 import com.mycheva.app.splashscreen.presentation.SplashScreenViewModel
+import org.koin.androidx.compose.koinViewModel
 
-@RequiresApi(Build.VERSION_CODES.O)
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @OptIn(ExperimentalSharedTransitionApi::class)
 @Composable
 fun RootNavGraph(
-    modifier: Modifier = Modifier,
     navController: NavHostController
 ) {
     val navBackStackEntry by navController.currentBackStackEntryAsState()
@@ -88,7 +87,7 @@ fun RootNavGraph(
                 startDestination = SplashScreen
             ) {
                 composable<SplashScreen> {
-                    val viewModel = hiltViewModel<SplashScreenViewModel>()
+                    val viewModel = koinViewModel<SplashScreenViewModel>()
                     val state by viewModel.state.collectAsStateWithLifecycle()
                     SplashScreen(
                         animatedVisibilityScope = this,
@@ -99,7 +98,7 @@ fun RootNavGraph(
                     )
                 }
                 composable<LoginScreen> {
-                    val viewModel = hiltViewModel<LoginViewModel>()
+                    val viewModel = koinViewModel<LoginViewModel>()
                     val state by viewModel.state.collectAsStateWithLifecycle()
                     LoginScreen(
                         state = state,
@@ -110,7 +109,7 @@ fun RootNavGraph(
                     )
                 }
                 composable<ResetPasswordScreen> {
-                    val viewModel = hiltViewModel<ResetPasswordViewModel>()
+                    val viewModel = koinViewModel<ResetPasswordViewModel>()
                     val state by viewModel.state.collectAsStateWithLifecycle()
                     ResetPasswordScreen(
                         state = state,
@@ -125,7 +124,7 @@ fun RootNavGraph(
                 startDestination = DashboardScreen,
             ) {
                 composable<DashboardScreen> {
-                    val viewModel = hiltViewModel<DashboardViewModel>()
+                    val viewModel = koinViewModel<DashboardViewModel>()
                     val state by viewModel.state.collectAsStateWithLifecycle()
                     DashboardScreen(
                         state = state,
@@ -137,7 +136,7 @@ fun RootNavGraph(
                     )
                 }
                 composable<ProfileScreen> {
-                    val viewModel = hiltViewModel<ProfileViewModel>()
+                    val viewModel = koinViewModel<ProfileViewModel>()
                     val state by viewModel.state.collectAsStateWithLifecycle()
                     ProfileScreen(
                         state = state,
@@ -153,7 +152,7 @@ fun RootNavGraph(
                     )
                 }
                 composable<ScheduleScreen> {
-                    val viewModel = hiltViewModel<MeetingsViewModel>()
+                    val viewModel = koinViewModel<MeetingsViewModel>()
                     val state by viewModel.state.collectAsStateWithLifecycle()
                     MeetingsScreen(
                         state = state,
@@ -168,7 +167,7 @@ fun RootNavGraph(
                 }
                 composable<DetailSchedule> {
                     val args = it.toRoute<DetailSchedule>()
-                    val viewModel = hiltViewModel<DetailMeetingViewModel>()
+                    val viewModel = koinViewModel<DetailMeetingViewModel>()
                     val state by viewModel.state.collectAsStateWithLifecycle()
                     DetailMeetingScreen(
                         meetingId = args.eventId,
@@ -180,7 +179,7 @@ fun RootNavGraph(
                     )
                 }
                 composable<AttendanceScreen> {
-                    val viewModel = hiltViewModel<AttendanceViewModel>()
+                    val viewModel = koinViewModel<AttendanceViewModel>()
                     val state by viewModel.state.collectAsStateWithLifecycle()
                     AttendanceScreen(
                         state = state,
@@ -192,7 +191,7 @@ fun RootNavGraph(
                     )
                 }
                 composable<AnnouncementScreen> {
-                    val viewModel = hiltViewModel<AnnouncementViewModel>()
+                    val viewModel = koinViewModel<AnnouncementViewModel>()
                     val state by viewModel.state.collectAsStateWithLifecycle()
                     AnnouncementScreen(
                         state = state,
@@ -206,7 +205,7 @@ fun RootNavGraph(
                     )
                 }
                 composable<ForumScreen> {
-                    val viewModel = hiltViewModel<ForumViewModel>()
+                    val viewModel = koinViewModel<ForumViewModel>()
                     val state by viewModel.state.collectAsStateWithLifecycle()
                     ForumScreen(
                         state = state,
@@ -224,7 +223,7 @@ fun RootNavGraph(
                 }
                 composable<PostScreen> {
                     val args = it.toRoute<PostScreen>()
-                    val viewModel = hiltViewModel<AddPostForumViewModel>()
+                    val viewModel = koinViewModel<AddPostForumViewModel>()
                     val state by viewModel.state.collectAsStateWithLifecycle()
                     AddPostScreen(
                         state = state,
@@ -236,7 +235,7 @@ fun RootNavGraph(
                 }
                 composable<CommentScreen> {
                     val args = it.toRoute<CommentScreen>()
-                    val viewModel = hiltViewModel<RepliesViewModel>()
+                    val viewModel = koinViewModel<RepliesViewModel>()
                     val state by viewModel.state.collectAsStateWithLifecycle()
                     RepliesScreen(
                         state = state,
@@ -248,7 +247,7 @@ fun RootNavGraph(
                     )
                 }
                 composable<BookmarkScreen> {
-                    val viewModel = hiltViewModel<BookmarkViewModel>()
+                    val viewModel = koinViewModel<BookmarkViewModel>()
                     val state by viewModel.state.collectAsStateWithLifecycle()
                     BookmarkScreen(
                         state = state,
@@ -262,7 +261,7 @@ fun RootNavGraph(
                 }
                 composable<RoadmapScreen> {
                     val args = it.toRoute<RoadmapScreen>()
-                    val viewModel = hiltViewModel<RoadMapViewModel>()
+                    val viewModel = koinViewModel<RoadMapViewModel>()
                     val state by viewModel.state.collectAsStateWithLifecycle()
                     RoadMapScreen(
                         divisionId = args.divisionId,

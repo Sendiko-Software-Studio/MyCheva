@@ -4,7 +4,7 @@ import com.mycheva.app.core.preferences.AppPreferences
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
-class SplashScreenRepository @Inject constructor (
+class SplashScreenRepository(
     private val appPreferences: AppPreferences,
 ) {
 
