@@ -8,7 +8,6 @@ import com.mycheva.app.meeting.core.data.toDomain
 import com.mycheva.app.meeting.core.domain.Meeting
 import com.mycheva.app.meeting.main.domain.MeetingsRepository
 import kotlinx.coroutines.flow.Flow
-import javax.inject.Inject
 
 class MeetingsRepositoryImpl(
     private val client: KtorClient,
@@ -16,7 +15,7 @@ class MeetingsRepositoryImpl(
 ): MeetingsRepository {
     override fun getToken(): Flow<String> = appPreferences.getToken()
     override suspend fun getEvents(token: String): Result<List<Meeting>, DataError.Remote> {
-        val response = client.getEvents(token)
+        val response = client.getMeetings(token)
         return when (response) {
             is Result.Success -> {
                 Result.Success(response.data.events.map { it.toDomain() })
