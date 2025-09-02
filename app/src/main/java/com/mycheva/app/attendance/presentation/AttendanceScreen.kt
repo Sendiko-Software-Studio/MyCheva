@@ -183,7 +183,7 @@ fun SharedTransitionScope.AttendanceScreen(
 
                                 try {
                                     cameraProvider.unbindAll()
-                                    val camera = cameraProvider.bindToLifecycle(
+                                    cameraProvider.bindToLifecycle(
                                         lifecycleOwner,
                                         cameraSelector,
                                         preview,
