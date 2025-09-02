@@ -1,8 +1,9 @@
-package com.mycheva.app.core.data
+package com.mycheva.app.meeting.core.data
 
 import com.google.gson.annotations.SerializedName
+import com.mycheva.app.meeting.core.domain.Meeting
 
-data class EventsItem(
+data class MeetingsItem(
 
     @field:SerializedName("date")
     val date: String,
@@ -34,4 +35,15 @@ data class EventsItem(
     @field:SerializedName("updatedAt")
     val updatedAt: String
 )
+
+fun MeetingsItem.toDomain(): Meeting {
+    return Meeting(
+        name = name,
+        date = date,
+        time = time,
+        type = type,
+        place = details,
+        id = id.toString()
+    )
+}
 

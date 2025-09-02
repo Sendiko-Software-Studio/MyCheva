@@ -2,9 +2,11 @@ package com.mycheva.app.meeting.main.presentation
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.mycheva.app.core.network.utils.onError
+import com.mycheva.app.core.network.utils.onSuccess
+import com.mycheva.app.core.ui.utils.UiText
+import com.mycheva.app.core.ui.utils.asUiText
 import com.mycheva.app.meeting.main.domain.MeetingsRepository
-import com.mycheva.app.meeting.main.domain.MeetingsRepositoryImpl
-import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
@@ -12,11 +14,9 @@ import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import javax.inject.Inject
 
-@HiltViewModel
-class MeetingsViewModel @Inject constructor(
-    private val repository: MeetingsRepositoryImpl
+class MeetingsViewModel(
+    private val repository: MeetingsRepository,
 ) : ViewModel() {
 
     private val _token = repository.getToken()
@@ -25,12 +25,12 @@ class MeetingsViewModel @Inject constructor(
         state.copy(token = token)
     }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), MeetingsState())
 
-    fun onEvent(action: MeetingsAction) {
+    fun onEvent(action: MeetingEvent) {
         when (action) {
-            MeetingsAction.OnClearState -> clearState()
-            is MeetingsAction.OnLoadSchedule -> loadSchedule(action.token)
-            is MeetingsAction.OnSearchTextChanged -> searchMeetings(action.value)
-            MeetingsAction.OnClearFilter -> loadSchedule(state.value.token)
+            MeetingEvent.OnClearState -> clearState()
+            is MeetingEvent.OnLoadSchedule -> loadSchedule(action.token)
+            is MeetingEvent.OnSearchTextChanged -> searchMeetings(action.value)
+            MeetingEvent.OnClearFilter -> loadSchedule(state.value.token)
         }
     }
 
@@ -38,35 +38,40 @@ class MeetingsViewModel @Inject constructor(
         _state.update {
             it.copy(
                 isRequestFailed = false,
-                notificationMessage = ""
+                notificationMessage = UiText.DynamicString("")
             )
         }
     }
 
     private fun searchMeetings(value: String) {
         _state.update { it.copy(searchText = value) }
-        val searched = state.value.events.filter {
-            it.name.contains(value) || it.desc.contains(value)
+        val searched = state.value.meetings.filter {
+            it.name.contains(value) || it.place.contains(value)
         }
         _state.update {
             it.copy(
-                events = searched
+                meetings = searched
             )
         }
     }
 
     private fun loadSchedule(token: String) = viewModelScope.launch(Dispatchers.IO) {
         _state.update { it.copy(isLoading = true) }
-        repository.getEvents("Bearer $token")
+        repository.getEvents(token)
             .onSuccess { result ->
-                _state.update { it.copy(events = result.events, isLoading = false) }
+                _state.update { state ->
+                    state.copy(
+                        meetings = result.map { MeetingUi.fromDomain(it) },
+                        isLoading = false
+                    )
+                }
             }
-            .onFailure { error ->
+            .onError { error ->
                 _state.update {
                     it.copy(
                         isLoading = false,
                         isRequestFailed = true,
-                        notificationMessage = error.message.toString()
+                        notificationMessage = error.asUiText()
                     )
                 }
             }

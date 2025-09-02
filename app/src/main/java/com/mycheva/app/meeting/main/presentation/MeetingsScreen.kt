@@ -1,7 +1,5 @@
 package com.mycheva.app.meeting.main.presentation
 
-import android.os.Build
-import androidx.annotation.RequiresApi
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.AnimatedVisibilityScope
 import androidx.compose.animation.ExperimentalSharedTransitionApi
@@ -39,6 +37,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -46,41 +45,41 @@ import androidx.compose.ui.unit.sp
 import com.mycheva.app.R
 import com.mycheva.app.core.ui.components.CardSkeleton
 import com.mycheva.app.core.ui.components.CustomTextField
+import com.mycheva.app.core.ui.components.MeetingCard
 import com.mycheva.app.core.ui.components.NotificationBox
 import com.mycheva.app.core.ui.components.TextFieldType
 import com.mycheva.app.core.ui.components.formatDateString
 import com.mycheva.app.core.ui.theme.Neutral50
 import com.mycheva.app.core.ui.theme.Primary500
 import com.mycheva.app.core.ui.theme.poppinsFamily
-import com.mycheva.app.core.ui.components.MeetingCard
 import com.mycheva.app.meeting.main.presentation.component.CalendarSkeleton
 import kotlinx.coroutines.delay
 
-@RequiresApi(Build.VERSION_CODES.O)
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalSharedTransitionApi::class)
 @Composable
 fun SharedTransitionScope.MeetingsScreen(
     state: MeetingsState,
     animatedVisibilityScope: AnimatedVisibilityScope,
-    onEvent: (MeetingsAction) -> Unit,
-    onNavigate: (eventId: String) -> Unit
+    onEvent: (MeetingEvent) -> Unit,
+    onNavigate: (eventId: String) -> Unit,
 ) {
     val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior()
+    val context = LocalContext.current
 
     LaunchedEffect(key1 = state.token) {
         if (state.token.isNotBlank())
-            onEvent(MeetingsAction.OnLoadSchedule(state.token))
+            onEvent(MeetingEvent.OnLoadSchedule(state.token))
     }
 
     LaunchedEffect(key1 = state.notificationMessage) {
-        if (state.notificationMessage.isNotBlank()) {
+        if (state.notificationMessage.asString(context).isNotBlank()) {
             delay(2000)
-            onEvent(MeetingsAction.OnClearState)
+            onEvent(MeetingEvent.OnClearState)
         }
     }
 
     NotificationBox(
-        message = state.notificationMessage,
+        message = state.notificationMessage.asString(),
         isLoading = false,
         isErrorNotification = state.isRequestFailed
     ) {
@@ -112,8 +111,8 @@ fun SharedTransitionScope.MeetingsScreen(
                     item {
                         CustomTextField(
                             value = state.searchText,
-                            onValueChange = { onEvent(MeetingsAction.OnSearchTextChanged(it)) },
-                            onClearClick = { onEvent(MeetingsAction.OnClearFilter) },
+                            onValueChange = { onEvent(MeetingEvent.OnSearchTextChanged(it)) },
+                            onClearClick = { onEvent(MeetingEvent.OnClearFilter) },
                             type = TextFieldType.White,
                             modifier = Modifier
                                 .fillMaxWidth()
@@ -128,7 +127,7 @@ fun SharedTransitionScope.MeetingsScreen(
                         )
                     }
                     item {
-                        AnimatedVisibility(!state.isLoading && state.events.isEmpty()) {
+                        AnimatedVisibility(!state.isLoading && state.meetings.isEmpty()) {
                             Box(
                                 modifier = Modifier.fillMaxSize(),
                                 contentAlignment = Alignment.Center
@@ -147,13 +146,13 @@ fun SharedTransitionScope.MeetingsScreen(
                             horizontalArrangement = Arrangement.spacedBy(8.dp),
                             modifier = Modifier.padding(bottom = 16.dp)
                         ) {
-                            val dates = state.events.distinctBy {
+                            val dates = state.meetings.distinctBy {
                                 it.date
                             }
                             item {
-                                (1..5).forEach {
+                                (1..5).forEach { _ ->
                                     AnimatedVisibility(
-                                        visible = state.isLoading && state.events.isEmpty(),
+                                        visible = state.isLoading && state.meetings.isEmpty(),
                                         enter = expandHorizontally(),
                                         exit = shrinkHorizontally()
                                     ) {
@@ -171,13 +170,17 @@ fun SharedTransitionScope.MeetingsScreen(
                                         horizontalAlignment = Alignment.CenterHorizontally
                                     ) {
                                         Text(
-                                            text = formatDateString(it.date.toString().substring(0, 10)).substring(0, 2),
+                                            text = formatDateString(
+                                                it.date.substring(0, 10)
+                                            ).substring(0, 2),
                                             fontWeight = FontWeight.Bold,
                                             fontFamily = poppinsFamily,
                                             color = Neutral50
                                         )
                                         Text(
-                                            text = formatDateString(it.date.toString().substring(0, 10)).substring(2, 6),
+                                            text = formatDateString(
+                                                it.date.substring(0, 10)
+                                            ).substring(2, 6),
                                             fontWeight = FontWeight.Normal,
                                             fontFamily = poppinsFamily,
                                             color = Neutral50,
@@ -191,7 +194,7 @@ fun SharedTransitionScope.MeetingsScreen(
                     item {
                         repeat(5) {
                             AnimatedVisibility(
-                                visible = state.isLoading && state.events.isEmpty(),
+                                visible = state.isLoading && state.meetings.isEmpty(),
                                 enter = expandVertically(),
                                 exit = shrinkVertically()
                             ) {
@@ -203,12 +206,12 @@ fun SharedTransitionScope.MeetingsScreen(
                             }
                         }
                     }
-                    items(state.events) { event ->
+                    items(state.meetings) { meeting ->
                         MeetingCard(
                             modifier = Modifier.padding(start = 16.dp, end = 16.dp, bottom = 16.dp),
-                            eventsItem = event,
-                            onClick = { eventId ->
-                                onNavigate(eventId)
+                            meeting = meeting,
+                            onClick = { meetingId ->
+                                onNavigate(meetingId)
                             }
                         )
                     }
