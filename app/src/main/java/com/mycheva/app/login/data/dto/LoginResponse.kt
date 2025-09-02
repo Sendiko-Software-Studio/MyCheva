@@ -1,6 +1,7 @@
-package com.mycheva.app.login.data
+package com.mycheva.app.login.data.dto
 
 import com.google.gson.annotations.SerializedName
+import com.mycheva.app.login.domain.UserWithToken
 
 data class LoginResponse(
 
@@ -8,7 +9,7 @@ data class LoginResponse(
 	val message: String,
 
 	@field:SerializedName("user")
-	val user: User,
+	val userLoginItem: UserLoginItem,
 
 	@field:SerializedName("status")
 	val status: Int,
@@ -17,7 +18,7 @@ data class LoginResponse(
 	val token: String
 )
 
-data class User(
+data class UserLoginItem(
 
 	@field:SerializedName("profileUrl")
 	val profileUrl: String,
@@ -37,3 +38,12 @@ data class User(
 	@field:SerializedName("updatedAt")
 	val updatedAt: String
 )
+
+fun LoginResponse.toDomain(): UserWithToken {
+	return UserWithToken(
+        id = userLoginItem.id,
+        name = userLoginItem.name,
+        profileUrl = userLoginItem.profileUrl,
+		token = token
+    )
+}

@@ -2,12 +2,13 @@ package com.mycheva.app.login.presentation
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.mycheva.app.core.network.NOT_FOUND
-import com.mycheva.app.core.network.SERVER_ERROR
-import com.mycheva.app.core.network.UNAUTHORIZED
+import com.mycheva.app.core.network.utils.NOT_FOUND
+import com.mycheva.app.core.network.utils.SERVER_ERROR
+import com.mycheva.app.core.network.utils.UNAUTHORIZED
+import com.mycheva.app.core.network.utils.onSuccess
 import com.mycheva.app.core.ui.data.TextFieldError
-import com.mycheva.app.login.data.LoginRequest
-import com.mycheva.app.login.domain.LoginRepositoryImpl
+import com.mycheva.app.login.data.dto.LoginRequest
+import com.mycheva.app.login.data.LoginRepositoryImpl
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -69,14 +70,10 @@ class LoginViewModel @Inject constructor(
             return
         }
         _state.update { it.copy(isLoading = true) }
-        val data = LoginRequest(
-                name = state.value.usernameText,
-                password = state.value.passwordText
-            )
         viewModelScope.launch(Dispatchers.IO) {
-            repository.login(data)
+            repository.login(state.value.usernameText, state.value.passwordText)
                 .onSuccess { result ->
-                    repository.saveToken(result.token)
+                    repository.saveToken(result)
                     repository.saveUserId(result.user.id.toString())
                     _state.update {
                         it.copy(

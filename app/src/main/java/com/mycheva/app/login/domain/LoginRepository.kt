@@ -1,11 +1,14 @@
 package com.mycheva.app.login.domain
 
-import com.mycheva.app.login.data.LoginRequest
-import com.mycheva.app.login.data.LoginResponse
+import com.mycheva.app.core.network.utils.DataError
+import com.mycheva.app.core.network.utils.Result
 
 interface LoginRepository {
 
-    suspend fun login(loginRequest: LoginRequest): Result<LoginResponse>
+    suspend fun login(
+        username: String,
+        password: String,
+    ): Result<UserWithToken, DataError.Remote>
 
     suspend fun saveToken(token: String)
 
