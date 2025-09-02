@@ -2,7 +2,10 @@ package com.mycheva.app.roadmap.presentation
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.mycheva.app.roadmap.domain.RoadMapRepositoryImpl
+import com.mycheva.app.core.network.utils.onError
+import com.mycheva.app.core.network.utils.onSuccess
+import com.mycheva.app.core.ui.utils.asUiText
+import com.mycheva.app.roadmap.data.RoadMapRepositoryImpl
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -15,7 +18,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class RoadMapViewModel @Inject constructor(
-    private val repository: RoadMapRepositoryImpl
+    private val repository: RoadMapRepositoryImpl,
 ) : ViewModel() {
 
     private val _token = repository.getToken()
@@ -34,22 +37,22 @@ class RoadMapViewModel @Inject constructor(
     private fun loadData(token: String, divisionId: String) {
         _state.update { it.copy(isLoading = true) }
         viewModelScope.launch(Dispatchers.IO) {
-            repository.getRoadMaps("Bearer $token")
+            repository.getRoadMaps(token)
                 .onSuccess { result ->
-                    _state.update {
-                        it.copy(
-                            roadMaps = result.roadmaps.filter { roadmaps ->
+                    _state.update { state ->
+                        state.copy(
+                            roadMaps = result.filter { roadmaps ->
                                 roadmaps.divisionId.toString() == divisionId
-                            },
+                            }.map { RoadMapUi.fromRoadmap(it) },
                             isLoading = false
                         )
                     }
                 }
-                .onFailure { error ->
+                .onError { error ->
                     _state.update {
                         it.copy(
                             isRequestFailed = true,
-                            notificationMessage = error.message.toString(),
+                            notificationMessage = error.asUiText(),
                             isLoading = false
                         )
                     }
