@@ -6,8 +6,6 @@ import com.mycheva.app.core.network.utils.onError
 import com.mycheva.app.core.network.utils.onSuccess
 import com.mycheva.app.core.ui.utils.UiText
 import com.mycheva.app.core.ui.utils.asUiText
-import com.mycheva.app.forum.add.data.dto.ForumPostRequest
-import com.mycheva.app.forum.add.data.AddPostRepositoryImpl
 import com.mycheva.app.forum.add.domain.AddPostRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
@@ -17,11 +15,10 @@ import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import javax.inject.Inject
 
 @HiltViewModel
 class AddPostForumViewModel(
-    private val repository: AddPostRepository
+    private val repository: AddPostRepository,
 ) : ViewModel() {
 
     private val _token = repository.getToken()
@@ -61,17 +58,15 @@ class AddPostForumViewModel(
     private fun post(token: String, userId: String, content: String) =
         viewModelScope.launch(Dispatchers.IO) {
             if (_state.value.postText.isBlank()) {
-                _state.update { it.copy(
-                    isRequestError = true,
-                    notificationMessage = UiText.DynamicString("Post can't be empty.")
-                ) }
+                _state.update {
+                    it.copy(
+                        isRequestError = true,
+                        notificationMessage = UiText.DynamicString("Post can't be empty.")
+                    )
+                }
                 return@launch
             }
             _state.update { it.copy(isLoading = true) }
-            val data = ForumPostRequest(
-                userId = userId.toInt(),
-                content = content
-            )
             repository.postForum(token, userId, content)
                 .onSuccess { result ->
                     _state.update {
