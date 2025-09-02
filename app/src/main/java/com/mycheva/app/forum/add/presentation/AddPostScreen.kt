@@ -20,6 +20,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight.Companion.Bold
 import androidx.compose.ui.unit.dp
 import com.mycheva.app.core.ui.components.LargeTopBar
@@ -37,13 +38,14 @@ fun AddPostScreen(
     onNavigateBack: () -> Unit,
 ) {
     val focusRequester = remember { FocusRequester() }
+    val context = LocalContext.current
 
     LaunchedEffect(true) {
         focusRequester.requestFocus()
     }
 
     LaunchedEffect(key1 = state.notificationMessage) {
-        if (state.notificationMessage.isNotBlank()) {
+        if (state.notificationMessage.asString(context).isNotBlank()) {
             delay(2000)
             onEvent(AddPostForumEvent.OnClearState)
         }
@@ -57,7 +59,7 @@ fun AddPostScreen(
     }
 
     NotificationBox(
-        message = state.notificationMessage,
+        message = state.notificationMessage.asString(),
         isLoading = state.isLoading,
         isErrorNotification = state.isRequestError
     ) {
@@ -80,7 +82,8 @@ fun AddPostScreen(
                 ) {
                     item {
                         PlainTextField(
-                            modifier = Modifier.fillMaxWidth()
+                            modifier = Modifier
+                                .fillMaxWidth()
                                 .focusRequester(focusRequester),
                             value = state.postText,
                             placeholder = "Apa yang ingin ditanyakan?",
@@ -99,7 +102,7 @@ fun AddPostScreen(
                                 ),
                                 modifier = Modifier
                                     .weight(1f),
-                                onClick = {  },
+                                onClick = { },
                                 content = {
                                     Text(
                                         text = "Unggah gambar",
@@ -117,7 +120,15 @@ fun AddPostScreen(
                                 ),
                                 modifier = Modifier
                                     .weight(1f),
-                                onClick = { onEvent(AddPostForumEvent.OnPost(state.token, state.userId, state.postText)) },
+                                onClick = {
+                                    onEvent(
+                                        AddPostForumEvent.OnPost(
+                                            state.token,
+                                            state.userId,
+                                            state.postText
+                                        )
+                                    )
+                                },
                                 content = {
                                     Text(
                                         text = "Kirim",

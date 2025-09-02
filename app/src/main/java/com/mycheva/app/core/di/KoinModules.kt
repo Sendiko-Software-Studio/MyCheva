@@ -11,6 +11,8 @@ import com.mycheva.app.core.network.ApiServices
 import com.mycheva.app.core.network.HttpClientFactory
 import com.mycheva.app.core.network.KtorClient
 import com.mycheva.app.core.preferences.DatastoreFactory
+import com.mycheva.app.forum.add.data.AddPostRepositoryImpl
+import com.mycheva.app.forum.add.presentation.AddPostForumViewModel
 import com.mycheva.app.meeting.detail.data.DetailMeetingRepositoryImpl
 import com.mycheva.app.meeting.detail.presentation.DetailMeetingViewModel
 import com.mycheva.app.meeting.main.data.MeetingsRepositoryImpl
@@ -40,6 +42,7 @@ val koinModules = module {
     singleOf(::ProfileRepositoryImpl)
     singleOf(::MeetingsRepositoryImpl)
     singleOf(::DetailMeetingRepositoryImpl)
+    singleOf(::AddPostRepositoryImpl)
 
     factory { AnnouncementViewModel(get()) }
     factory { AttendanceViewModel(get()) }
@@ -47,4 +50,5 @@ val koinModules = module {
     factory { ProfileViewModel(get()) }
     factory { MeetingsViewModel(get()) }
     factory { DetailMeetingViewModel(get()) }
+    factory { AddPostForumViewModel(get()) }
 }

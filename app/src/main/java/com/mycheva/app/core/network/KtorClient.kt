@@ -9,8 +9,8 @@ import com.mycheva.app.core.network.utils.DataError
 import com.mycheva.app.core.network.utils.LIVE_SERVER
 import com.mycheva.app.core.network.utils.Result
 import com.mycheva.app.core.network.utils.safeCall
-import com.mycheva.app.forum.add.data.ForumPostRequest
-import com.mycheva.app.forum.add.data.ForumPostResponse
+import com.mycheva.app.forum.add.data.dto.ForumPostRequest
+import com.mycheva.app.forum.add.data.dto.ForumPostResponse
 import com.mycheva.app.forum.comment.data.GetForumResponse
 import com.mycheva.app.forum.comment.data.PostReplyRequest
 import com.mycheva.app.forum.comment.data.PostReplyResponse

@@ -2,8 +2,13 @@ package com.mycheva.app.forum.add.presentation
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.mycheva.app.forum.add.data.ForumPostRequest
-import com.mycheva.app.forum.add.domain.AddPostRepositoryImpl
+import com.mycheva.app.core.network.utils.onError
+import com.mycheva.app.core.network.utils.onSuccess
+import com.mycheva.app.core.ui.utils.UiText
+import com.mycheva.app.core.ui.utils.asUiText
+import com.mycheva.app.forum.add.data.dto.ForumPostRequest
+import com.mycheva.app.forum.add.data.AddPostRepositoryImpl
+import com.mycheva.app.forum.add.domain.AddPostRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -15,8 +20,8 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class AddPostForumViewModel @Inject constructor(
-    private val repository: AddPostRepositoryImpl
+class AddPostForumViewModel(
+    private val repository: AddPostRepository
 ) : ViewModel() {
 
     private val _token = repository.getToken()
@@ -48,7 +53,7 @@ class AddPostForumViewModel @Inject constructor(
                 isLoading = false,
                 isRequestError = false,
                 isRequestSuccess = false,
-                notificationMessage = ""
+                notificationMessage = UiText.DynamicString("")
             )
         }
     }
@@ -56,7 +61,10 @@ class AddPostForumViewModel @Inject constructor(
     private fun post(token: String, userId: String, content: String) =
         viewModelScope.launch(Dispatchers.IO) {
             if (_state.value.postText.isBlank()) {
-                _state.update { it.copy(isRequestError = true, notificationMessage = "Post can't be empty.") }
+                _state.update { it.copy(
+                    isRequestError = true,
+                    notificationMessage = UiText.DynamicString("Post can't be empty.")
+                ) }
                 return@launch
             }
             _state.update { it.copy(isLoading = true) }
@@ -64,22 +72,22 @@ class AddPostForumViewModel @Inject constructor(
                 userId = userId.toInt(),
                 content = content
             )
-            repository.postForum("Bearer $token", data)
+            repository.postForum(token, userId, content)
                 .onSuccess { result ->
                     _state.update {
                         it.copy(
                             isLoading = false,
                             isRequestSuccess = true,
-                            notificationMessage = result.message
+                            notificationMessage = UiText.DynamicString(result)
                         )
                     }
                 }
-                .onFailure { error ->
+                .onError { error ->
                     _state.update {
                         it.copy(
                             isLoading = false,
                             isRequestError = true,
-                            notificationMessage = error.message.toString()
+                            notificationMessage = error.asUiText()
                         )
                     }
                 }
