@@ -1,7 +1,5 @@
-package com.mycheva.app.forum.comment.presentation
+package com.mycheva.app.forum.replies.presentation
 
-import android.os.Build
-import androidx.annotation.RequiresApi
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
@@ -28,6 +26,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -35,43 +34,43 @@ import com.mycheva.app.core.ui.components.CustomTextField
 import com.mycheva.app.core.ui.components.NotificationBox
 import com.mycheva.app.core.ui.components.TextFieldType
 import com.mycheva.app.core.ui.theme.poppinsFamily
-import com.mycheva.app.forum.comment.presentation.component.CommentCard
-import com.mycheva.app.forum.comment.presentation.component.PostCard
+import com.mycheva.app.forum.replies.presentation.component.RepliesCard
+import com.mycheva.app.forum.replies.presentation.component.PostCard
 import com.mycheva.app.forum.main.presentation.ForumUi
 import kotlinx.coroutines.delay
 
-@RequiresApi(Build.VERSION_CODES.O)
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun CommentScreen(
-    state: CommentScreenState,
-    onEvent: (CommentEvent) -> Unit,
+fun RepliesScreen(
+    state: RepliesState,
+    onEvent: (RepliesEvent) -> Unit,
     onNavigateBack: () -> Unit,
     forumId: String
 ) {
     val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior()
+    val context = LocalContext.current
 
     LaunchedEffect(key1 = state.token) {
         if (state.token.isNotBlank()) {
-            onEvent(CommentEvent.OnLoadData(state.token, forumId))
+            onEvent(RepliesEvent.OnLoadData(state.token, forumId))
         }
     }
 
-    LaunchedEffect(key1 = state.isCommentPosted) {
-        if (state.isCommentPosted) {
-            onEvent(CommentEvent.OnLoadData(state.token, forumId))
+    LaunchedEffect(key1 = state.isReplyPosted) {
+        if (state.isReplyPosted) {
+            onEvent(RepliesEvent.OnLoadData(state.token, forumId))
         }
     }
 
     LaunchedEffect(key1 = state.notificationMessage) {
-        if (state.notificationMessage.isNotBlank()) {
+        if (state.notificationMessage.asString(context).isNotBlank()) {
             delay(2000)
-            onEvent(CommentEvent.OnClearState)
+            onEvent(RepliesEvent.OnClearState)
         }
     }
 
     NotificationBox(
-        message = state.notificationMessage,
+        message = state.notificationMessage.asString(),
         isLoading = state.isLoading,
         isErrorNotification = state.isError
     ) {
@@ -110,7 +109,7 @@ fun CommentScreen(
                                 enter = fadeIn(),
                                 exit = fadeOut()
                             ) {
-                                PostCard(forum = ForumUi.toForumUi(state.post!!))
+                                PostCard(forum = ForumUi.fromForum(state.post!!))
                             }
                         }
                         item {
@@ -124,7 +123,7 @@ fun CommentScreen(
                                         .padding(top = 18.dp),
                                     value = state.commentText,
                                     onValueChange = {
-                                        onEvent(CommentEvent.OnCommentTextChange(it))
+                                        onEvent(RepliesEvent.OnRepliesTextChange(it))
                                     },
                                     label = "Berikan komentar anda",
                                     onClearClick = { },
@@ -136,7 +135,7 @@ fun CommentScreen(
                                 IconButton(
                                     onClick = {
                                         onEvent(
-                                            CommentEvent.OnPostComment(
+                                            RepliesEvent.OnPostReplies(
                                                 state.token,
                                                 state.userId,
                                                 forumId
@@ -159,9 +158,9 @@ fun CommentScreen(
                                 fontSize = 14.sp
                             )
                         }
-                        items(state.comments) {
-                            CommentCard(
-                                comment = CommentUi.toCommentUi(it),
+                        items(state.replies) {
+                            RepliesCard(
+                                comment = RepliesUi.fromReply(it),
                                 modifier = Modifier.padding(8.dp)
                             )
                         }

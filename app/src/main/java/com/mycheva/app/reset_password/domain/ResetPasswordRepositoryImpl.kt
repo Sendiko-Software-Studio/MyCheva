@@ -1,8 +1,8 @@
 package com.mycheva.app.reset_password.domain
 
 import com.mycheva.app.core.network.ApiServices
-import com.mycheva.app.core.network.NOT_FOUND
-import com.mycheva.app.core.network.SERVER_ERROR
+import com.mycheva.app.core.network.utils.NOT_FOUND
+import com.mycheva.app.core.network.utils.SERVER_ERROR
 import com.mycheva.app.core.preferences.AppPreferences
 import com.mycheva.app.reset_password.data.ResetPasswordRequest
 import com.mycheva.app.reset_password.data.ResetPasswordResponse

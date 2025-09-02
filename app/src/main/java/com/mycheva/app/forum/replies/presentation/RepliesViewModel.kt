@@ -1,10 +1,12 @@
-package com.mycheva.app.forum.comment.presentation
+package com.mycheva.app.forum.replies.presentation
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.mycheva.app.forum.comment.data.PostReplyRequest
-import com.mycheva.app.forum.comment.domain.CommentRepositoryImpl
-import dagger.hilt.android.lifecycle.HiltViewModel
+import com.mycheva.app.core.network.utils.onError
+import com.mycheva.app.core.network.utils.onSuccess
+import com.mycheva.app.core.ui.utils.UiText
+import com.mycheva.app.core.ui.utils.asUiText
+import com.mycheva.app.forum.replies.data.RepliesRepositoryImpl
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
@@ -12,31 +14,29 @@ import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import javax.inject.Inject
 
-@HiltViewModel
-class CommentViewModel @Inject constructor(
-    private val repository: CommentRepositoryImpl
+class RepliesViewModel(
+    private val repository: RepliesRepositoryImpl,
 ) : ViewModel() {
 
     private val _token = repository.getToken()
     private val _userId = repository.getUserId()
-    private val _state = MutableStateFlow(CommentScreenState())
+    private val _state = MutableStateFlow(RepliesState())
     val state = combine(_token, _userId, _state) { token, userId, state ->
         state.copy(
             token = token,
             userId = userId
         )
-    }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), CommentScreenState())
+    }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), RepliesState())
 
-    fun onEvent(event: CommentEvent) {
+    fun onEvent(event: RepliesEvent) {
         when (event) {
-            is CommentEvent.OnCommentTextChange -> changeCommentText(event.value)
+            is RepliesEvent.OnRepliesTextChange -> changeCommentText(event.value)
 
-            CommentEvent.OnClearState -> clearState()
+            RepliesEvent.OnClearState -> clearState()
 
-            is CommentEvent.OnLoadData -> loadData(event.token, event.forumId)
-            is CommentEvent.OnPostComment -> postReply(event.token, event.userId, event.forumId)
+            is RepliesEvent.OnLoadData -> loadData(event.token, event.forumId)
+            is RepliesEvent.OnPostReplies -> postReply(event.token, event.userId, event.forumId)
         }
     }
 
@@ -45,8 +45,8 @@ class CommentViewModel @Inject constructor(
             it.copy(
                 isLoading = false,
                 isError = false,
-                notificationMessage = "",
-                isCommentPosted = false,
+                notificationMessage = UiText.DynamicString(""),
+                isReplyPosted = false,
                 commentText = ""
             )
         }
@@ -64,33 +64,28 @@ class CommentViewModel @Inject constructor(
                 _state.update {
                     it.copy(
                         isError = true,
-                        notificationMessage = "Comment can't be empty."
+                        notificationMessage = UiText.DynamicString("Comment can't be empty.")
                     )
                 }
                 return@launch
             }
             _state.update { it.copy(isLoading = true) }
-            val data = PostReplyRequest(
-                userId = userId.toInt(),
-                forumId = forumId.toInt(),
-                content = state.value.commentText
-            )
-            repository.postReply(token = "Bearer $token", request = data)
+            repository.postReply(token = token, userId, forumId, state.value.commentText)
                 .onSuccess { result ->
                     _state.update {
                         it.copy(
                             isLoading = false,
-                            isCommentPosted = true,
-                            notificationMessage = result.message
+                            isReplyPosted = true,
+                            notificationMessage = UiText.DynamicString(result)
                         )
                     }
                 }
-                .onFailure { error ->
+                .onError { error ->
                     _state.update {
                         it.copy(
                             isLoading = false,
                             isError = true,
-                            notificationMessage = error.message.toString()
+                            notificationMessage = error.asUiText()
                         )
                     }
                 }
@@ -99,23 +94,23 @@ class CommentViewModel @Inject constructor(
 
     private fun loadData(token: String, forumId: String) = viewModelScope.launch(Dispatchers.IO) {
         _state.update { it.copy(isLoading = true) }
-        repository.loadData("Bearer $token", forumId)
+        repository.loadData(token, forumId)
             .onSuccess { result ->
                 _state.update {
                     it.copy(
-                        comments = result.forum.replies.reversed(),
                         isLoading = false,
+                        replies = result.replies,
                         post = result.forum,
-                        totalComment = result.forum.replies.size
+                        totalComment = result.replies.size
                     )
                 }
             }
-            .onFailure { error ->
+            .onError { error ->
                 _state.update {
                     it.copy(
                         isLoading = false,
                         isError = true,
-                        notificationMessage = error.message.toString()
+                        notificationMessage = error.asUiText()
                     )
                 }
             }
