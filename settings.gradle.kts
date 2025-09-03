@@ -23,4 +23,5 @@ dependencyResolutionManagement {
 }
 
 rootProject.name = "MyCheva"
-include(":app")
+include(":androidApp")
+include(":shared")
